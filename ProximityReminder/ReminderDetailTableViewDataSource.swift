@@ -44,6 +44,7 @@ class ReminderDetailTableViewDataSource: NSObject, UITableViewDataSource {
             //Reminder content
             
             let contentCell: ReminderContentTableViewCell = tableView.dequeueReusableCell(withIdentifier: "reminderContentCell", for: indexPath) as! ReminderContentTableViewCell
+            contentCell.selectionStyle = .none
             contentCell.update(withContentDetail: reminderDetailDisplayable.content)
             return contentCell
         }
@@ -56,6 +57,8 @@ class ReminderDetailTableViewDataSource: NSObject, UITableViewDataSource {
                 //Activation status
                 
                 let activationCell: ReminderSwitchTableViewCell = tableView.dequeueReusableCell(withIdentifier: "reminderActivationCell", for: indexPath) as! ReminderSwitchTableViewCell
+                
+                activationCell.selectionStyle = .none
                 activationCell.update(withDualModeDisplayableData: reminderDetailDisplayable.notifierActivationStatus)
                 
                 return activationCell
@@ -65,7 +68,7 @@ class ReminderDetailTableViewDataSource: NSObject, UITableViewDataSource {
                 //Location detail
                 
                 let locationDetailCell: ReminderLocationTableViewCell = tableView.dequeueReusableCell(withIdentifier: "locationCell", for: indexPath) as! ReminderLocationTableViewCell
-                locationDetailCell.update(notifierTypeWith: reminderDetailDisplayable.notifierTypeDetail)
+                locationDetailCell.update(notifierTypeWith: reminderDetailDisplayable.reminderNotifierTypeDetail)
                 locationDetailCell.update(locationWith: reminderDetailDisplayable.locationDetail)
                 return locationDetailCell
             }
@@ -74,4 +77,19 @@ class ReminderDetailTableViewDataSource: NSObject, UITableViewDataSource {
     }
     
     
+}
+
+extension ReminderDetailTableViewDataSource: UITableViewDelegate {
+    
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        
+        if indexPath.section == 0 {
+            return 80.0
+        }
+        else {
+            return UITableView.automaticDimension
+        }
+        
+    }
 }

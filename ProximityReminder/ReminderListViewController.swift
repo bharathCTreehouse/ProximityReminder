@@ -20,6 +20,7 @@ class ReminderListViewController: UIViewController {
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        configureNavigationBarButtonItems()
         fetchAllReminderData()
     }
     
@@ -35,12 +36,37 @@ class ReminderListViewController: UIViewController {
     }
     
     
+    func configureNavigationBarButtonItems() {
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .add, target: self, action: #selector(createNewReminderButtonTapped(_:)))
+    }
+    
+    
+    @objc func createNewReminderButtonTapped(_ sender: UIBarButtonItem) {
+        
+        let newReminder: Reminder = Reminder.init(context: CoreDataContextConfigurer.mainContext())
+        newReminder.lastModifiedDate = Date()
+        
+        let reminderDetailVC: ReminderDetailViewController = ReminderDetailViewController(withReminder: newReminder)
+        
+        let navController: UINavigationController = UINavigationController(rootViewController: reminderDetailVC)
+        present(navController, animated: true, completion: nil)
+    }
+}
+
+
+
+extension ReminderListViewController: NSFetchedResultsControllerDelegate {
+    
+    
     func fetchAllReminderData() {
         
         let sorter: NSSortDescriptor = NSSortDescriptor.init(key: "lastModifiedDate", ascending: false)
         
         let fetchedResultsController: NSFetchedResultsController<Reminder> = FetchedResultsControllerCreator.fetchedResultsControllerForReminder(withPredicate: nil, propertiesToGet: nil, sortDescriptors: [sorter], inContext: CoreDataContextConfigurer.mainContext(), sectionNameKey: "lastModifiedDate")
-            
+        
+        fetchedResultsController.delegate = self
+        
         
         do {
             
@@ -49,7 +75,7 @@ class ReminderListViewController: UIViewController {
             //Reload tableView to show all the reminders
             if reminderListTableView == nil {
                 
-               //Table view not configured. So first configure.
+                //Table view not configured. So first configure.
                 configureReminderListTableView(withFetchedResultsController: fetchedResultsController)
             }
             else {
@@ -62,5 +88,31 @@ class ReminderListViewController: UIViewController {
     }
     
     
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        
+        reminderListTableView.beginUpdates()
+        
+    }
+    
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
+        
+        reminderListTableView.reloadData()
+
+    }
+    
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        
+        reminderListTableView.reloadData()
+        
+    }
+    
+    
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        
+        reminderListTableView.endUpdates()
+        
+    }
 }
 

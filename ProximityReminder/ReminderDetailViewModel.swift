@@ -22,19 +22,19 @@ class ReminderDetailViewModel {
 
 extension ReminderDetailViewModel: ReminderDetailDisplayable {
     
-    
-    var notifierTypeDetail: (text: String, attr: ReminderLabelTextAttribute) {
+    var reminderNotifierTypeDetail: (text: String, attribute: ReminderLabelTextAttribute) {
         
         let reminderNotifier: ReminderNotifier = ReminderNotifier(rawValue: Int(reminder.notifierType))!
         
         if reminderNotifier == .undecided {
             
-            return (text: "", attr: ReminderLabelTextAttribute.init(withFont: UIFont.systemFont(ofSize: 17.0), color: UIColor.lightGray))
+            return (text: "", attribute: ReminderLabelTextAttribute.init(withFont: UIFont.systemFont(ofSize: 17.0), color: UIColor.lightGray))
         }
         else {
-            return (text: reminderNotifier.displayString, attr: ReminderLabelTextAttribute.init(withFont: UIFont.boldSystemFont(ofSize: 17.0), color: UIColor.black))
+            return (text: reminderNotifier.displayString, attribute: ReminderLabelTextAttribute.init(withFont: UIFont.boldSystemFont(ofSize: 17.0), color: UIColor.black))
         }
     }
+    
     
     var notifierActivationStatus: ReminderDualModeDisplayable {
         

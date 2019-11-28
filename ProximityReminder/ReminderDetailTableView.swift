@@ -12,15 +12,19 @@ import UIKit
 
 class ReminderDetailTableView: UITableView {
     
+    var detailDataSource: ReminderDetailTableViewDataSource! = nil
     
     init(withDetailSource detailSource: ReminderDetailDisplayable) {
         
         super.init(frame: .zero, style: .grouped)
         translatesAutoresizingMaskIntoConstraints = false
+        
+        detailDataSource = ReminderDetailTableViewDataSource(withDetailDataSource: detailSource)
+        self.dataSource = detailDataSource
+        self.delegate = detailDataSource
+        
         configure()
         
-        let detailDataSource = ReminderDetailTableViewDataSource(withDetailDataSource: detailSource)
-        self.dataSource = detailDataSource
     }
     
     
@@ -31,17 +35,17 @@ class ReminderDetailTableView: UITableView {
     
     func configure() {
         
-        estimatedRowHeight = 50.0
-        rowHeight = UITableView.automaticDimension
+        //estimatedRowHeight = 50.0
+        //rowHeight = UITableView.automaticDimension
         
         //For the content of the reminder
-        register(UINib.init(nibName: NSStringFromClass(ReminderContentTableViewCell.classForCoder()), bundle: .main), forCellReuseIdentifier: "reminderContentCell")
+        register(UINib.init(nibName: "ReminderContentTableViewCell", bundle: .main), forCellReuseIdentifier: "reminderContentCell")
         
         //Activation status of the notifier
         register(ReminderSwitchTableViewCell.classForCoder(), forCellReuseIdentifier: "reminderActivationCell")
         
         //location
-        register(ReminderLocationTableViewCell.classForCoder(), forCellReuseIdentifier: "locationCell")
+        register(UINib.init(nibName: "ReminderLocationTableViewCell", bundle: .main), forCellReuseIdentifier: "locationCell")
     }
     
 }

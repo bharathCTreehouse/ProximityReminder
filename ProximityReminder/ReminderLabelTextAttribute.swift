@@ -10,15 +10,16 @@ import Foundation
 import UIKit
 
 
-class ReminderLabelTextAttribute {
+class ReminderLabelTextAttribute: ReminderViewAttribute {
     
     let labelTextFont: UIFont
     let labelTextColor: UIColor
     
-    init(withFont font: UIFont, color: UIColor) {
+    init(withFont font: UIFont, color: UIColor, alpha: CGFloat = 1.0) {
         
         labelTextFont = font
         labelTextColor = color
+        super.init(withAlpha: alpha)
         
     }
 }

@@ -12,7 +12,6 @@ import UIKit
 
 protocol ReminderListDisplayable: ReminderInformationDisplayable {
     
-    var photoCount: (text: String, attribute: ReminderLabelTextAttribute) { get }
     var lastModifiedDetail: (text: String, attribute: ReminderLabelTextAttribute) { get }
 
 }

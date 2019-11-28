@@ -21,6 +21,7 @@ class ReminderDetailViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
     }
     
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -28,17 +29,26 @@ class ReminderDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
-        if reminderDetailTableView == nil {
-            configureDetailTableView()
-        }
+        configureDetailTableView()
+        configureNavigationBarButtonItems()
+        
     }
     
     
     override func loadView() {
+        
         self.view = UIView()
         self.view.backgroundColor = UIColor.white
+    }
+    
+    
+    func configureNavigationBarButtonItems() {
+        
+        navigationItem.leftBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .close, target: self, action: #selector(closeButtonTapped(_:)))
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .save, target: self, action: #selector(saveButtonTapped(_:)))
     }
     
     
@@ -56,4 +66,62 @@ class ReminderDetailViewController: UIViewController {
         reminderDetailTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
     }
 
+}
+
+
+
+extension ReminderDetailViewController {
+    
+    
+    @objc func closeButtonTapped(_ sender: UIBarButtonItem) {
+        
+        if CoreDataContextConfigurer.unsavedChangesExistOnMainContext() == false {
+            
+            //No unsaved changes present. So just dismiss.
+            dismiss(animated: true, completion: nil)
+            
+        }
+        else {
+            
+            
+            displayAlertController(withStyle: .actionSheet, alertHeading: ReminderAlertHeading(withTitle: "There are unsaved changes. What do you wish to do with them?"), alertAction: ReminderAlertAction(withDefaultActionTitles: ["Save"], destructiveActionTitles: ["Discard"], cancelTitle: "Cancel"), actionTapHandler: { [unowned self] (actionIdx: Int) -> Void in
+                
+                if actionIdx == 0 {
+                    
+                    //Save
+                    
+                    do {
+                        try CoreDataContextConfigurer.saveChangesPresentInMainContext()
+                        self.dismiss(animated: true, completion: nil)
+                        
+                    }
+                    catch  {
+                        //Show save failure error
+                    }
+                }
+                    
+                else if actionIdx == 1 {
+                    
+                    //Discard
+                    CoreDataContextConfigurer.discardChangesOnMainContext()
+                    self.dismiss(animated: true, completion: nil)
+                    
+                }
+            })
+        }
+    }
+    
+    
+    @objc func saveButtonTapped(_ sender: UIBarButtonItem) {
+        
+        do {
+            try CoreDataContextConfigurer.saveChangesPresentInMainContext()
+            dismiss(animated: true, completion: nil)
+
+        }
+        catch {
+            //Show save failure error
+        }
+    }
+    
 }

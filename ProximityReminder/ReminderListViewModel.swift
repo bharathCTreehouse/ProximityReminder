@@ -25,21 +25,45 @@ class ReminderListViewModel {
 extension ReminderListViewModel: ReminderListDisplayable {
     
     
-    var photoCount: (text: String, attribute: ReminderLabelTextAttribute) {
+    var reminderNotifierTypeDetail: (text: String, attribute: ReminderLabelTextAttribute) {
         
-        return (text: "", attribute: ReminderLabelTextAttribute(withFont: UIFont.systemFont(ofSize: 12.0), color: UIColor.lightGray))
+        let notifier: ReminderNotifier = ReminderNotifier(rawValue: Int(reminder.notifierType))!
+        
+        if notifier == .undecided {
+            
+            return (text: "Unspecified notifier type", attribute: ReminderLabelTextAttribute(withFont: UIFont.systemFont(ofSize: 15.0), color: UIColor.lightGray))
+        }
+        else {
+            
+            return (text: notifier.displayString, attribute: ReminderLabelTextAttribute(withFont: UIFont.systemFont(ofSize: 15.0), color: UIColor.black))
+            
+            //TODO: If the reminder is not activated, reduce the alpha value.
+        }
     }
+    
     
     var content: (text: String, attribute: ReminderLabelTextAttribute) {
         
-        return (text: reminder.content, attribute: ReminderLabelTextAttribute(withFont: UIFont.italicSystemFont(ofSize: 17.0), color: UIColor.darkGray))
-
+        if reminder.content.isEmpty == true {
+            
+            return (text: "No reminder content", attribute: ReminderLabelTextAttribute(withFont: UIFont.systemFont(ofSize: 17.0), color: UIColor.lightGray))
+        }
+        else {
+            return (text: reminder.content, attribute: ReminderLabelTextAttribute(withFont: UIFont.systemFont(ofSize: 17.0), color: UIColor.darkGray))
+        }
     }
+    
     
     var locationDetail: (text: String, attribute: ReminderLabelTextAttribute) {
         
-        return (text: reminder.locationString, attribute: ReminderLabelTextAttribute(withFont: UIFont.systemFont(ofSize: 15.0), color: UIColor.black))
-
+        if reminder.locationString.isEmpty == true {
+            return (text: "No reminder location", attribute: ReminderLabelTextAttribute(withFont: UIFont.systemFont(ofSize: 15.0), color: UIColor.lightGray))
+        }
+        else {
+            return (text: reminder.locationString, attribute: ReminderLabelTextAttribute(withFont: UIFont.systemFont(ofSize: 15.0), color: UIColor.black))
+            
+            //TODO: If the reminder is not activated, reduce the alpha value.
+        }
     }
     
     var lastModifiedDetail: (text: String, attribute: ReminderLabelTextAttribute) {

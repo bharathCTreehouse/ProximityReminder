@@ -36,7 +36,7 @@
                             </label>
                         </subviews>
                     </stackView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No photos" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4pn-Al-uY9">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Unspecified notifier type" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4pn-Al-uY9">
                         <rect key="frame" x="32" y="112.5" width="256" height="24"/>
                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -70,7 +70,7 @@
                 <outlet property="reminderContentLabel" destination="bxT-KW-rwo" id="u1r-QD-5TK"/>
                 <outlet property="reminderLastModifiedLabel" destination="1JF-2w-1XL" id="gKX-tB-tne"/>
                 <outlet property="reminderLocationLabel" destination="YC7-D3-pe0" id="dUA-3L-PDe"/>
-                <outlet property="reminderPhotoCountLabel" destination="4pn-Al-uY9" id="s9Q-XH-bDC"/>
+                <outlet property="reminderNotifierTypeLabel" destination="4pn-Al-uY9" id="gup-eI-4cp"/>
             </connections>
             <point key="canvasLocation" x="137.68115942028987" y="91.071428571428569"/>
         </tableViewCell>

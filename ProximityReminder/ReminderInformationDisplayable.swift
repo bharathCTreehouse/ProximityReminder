@@ -12,4 +12,5 @@ import UIKit
 protocol ReminderInformationDisplayable {
     var content: (text: String, attribute: ReminderLabelTextAttribute) { get }
     var locationDetail: (text: String, attribute: ReminderLabelTextAttribute) { get }
+    var reminderNotifierTypeDetail: (text: String, attribute: ReminderLabelTextAttribute) { get }
 }

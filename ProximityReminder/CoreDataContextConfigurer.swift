@@ -9,6 +9,11 @@
 import Foundation
 import CoreData
 
+enum ReminderCoreDataError: Error {
+    case saveFailure
+    case stackCreationFailure
+}
+
 
 class CoreDataContextConfigurer {
     
@@ -37,5 +42,41 @@ class CoreDataContextConfigurer {
             
         }
         return defaultContext
+    }
+    
+    
+    static func saveChangesPresentInMainContext() throws {
+        
+        if defaultContext == nil {
+            defaultContext = mainContext()
+            //The context itself was nil, so no point attempting a save.
+        }
+        else {
+            if unsavedChangesExistOnMainContext() == true {
+                do {
+                    try defaultContext.save()
+                }
+                catch {
+                    throw ReminderCoreDataError.saveFailure
+                }
+            }
+        }
+        
+    }
+    
+    
+    static func unsavedChangesExistOnMainContext() -> Bool {
+        return defaultContext.hasChanges
+    }
+    
+    
+    static func discardChangesOnMainContext() {
+        
+        if defaultContext == nil {
+            defaultContext = mainContext()
+        }
+        else {
+            defaultContext.rollback()
+        }
     }
 }
