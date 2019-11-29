@@ -14,14 +14,14 @@ class ReminderDetailTableView: UITableView {
     
     var detailDataSource: ReminderDetailTableViewDataSource! = nil
     
-    init(withDetailSource detailSource: ReminderDetailDisplayable, contentTextViewDelegate txtViewDelegate: UITextViewDelegate?) {
+    init(withDetailSource detailSource: ReminderDetailDisplayable, contentTextViewDelegate txtViewDelegate: UITextViewDelegate?, activationActionDelegate switchActionDelegate: ReminderSwitchActionDelegate) {
         
         super.init(frame: .zero, style: .grouped)
         translatesAutoresizingMaskIntoConstraints = false
         
-        detailDataSource = ReminderDetailTableViewDataSource(withDetailDataSource: detailSource, contentDelegate: txtViewDelegate)
-        self.dataSource = detailDataSource
-        self.delegate = detailDataSource
+        detailDataSource = ReminderDetailTableViewDataSource(withDetailDataSource: detailSource, contentDelegate: txtViewDelegate, activationDelegate: switchActionDelegate)
+        dataSource = detailDataSource
+        delegate = self
         
         configure()
         
@@ -46,10 +46,29 @@ class ReminderDetailTableView: UITableView {
         register(UINib.init(nibName: "ReminderLocationTableViewCell", bundle: .main), forCellReuseIdentifier: "locationCell")
     }
     
+}
+
+extension ReminderDetailTableView: UITableViewDelegate {
+    
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        
+        if indexPath.section == 0 {
+            return 150.0
+        }
+        else {
+            return UITableView.automaticDimension
+        }
+        
+    }
+}
+
+
+
+extension ReminderDetailTableView {
     
     
     func refreshContentViewAppearance() {
-        
         
         detailDataSource.updateContentTextViewAppearance(forTableView: self)
         
@@ -62,8 +81,15 @@ class ReminderDetailTableView: UITableView {
     
     
     func refreshContentView() {
+        
         refreshContentViewAppearance()
         refreshContentTextViewText()
     }
     
+    
+    func refreshLocationView(forActivationState enabled: Bool) {
+        
+        detailDataSource.updateLocationCell(forActivationState: enabled, inTableView: self)
+        
+    }
 }

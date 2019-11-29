@@ -37,6 +37,17 @@ class ReminderLocationTableViewCell: UITableViewCell {
     }
     
     
+    func reactToActivationState(_ enabled: Bool) {
+        
+        if enabled == true {
+            contentView.alpha = 1.0
+        }
+        else {
+            contentView.alpha = 0.3
+        }
+    }
+    
+    
     deinit {
         notifierTypeLabel = nil
         locationLabel = nil

@@ -10,9 +10,15 @@ import Foundation
 import UIKit
 
 
+protocol ReminderSwitchActionDelegate: class {
+    func dualModeSwitchDidEndToggle(withCurrentState state: Bool)
+}
+
+
 class ReminderSwitchTableViewCell: UITableViewCell {
     
     let dualModeSwitch: UISwitch!
+    weak private(set) var switchActionDelegate: ReminderSwitchActionDelegate!
     
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -20,6 +26,8 @@ class ReminderSwitchTableViewCell: UITableViewCell {
         dualModeSwitch = UISwitch()
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         accessoryView = dualModeSwitch
+        dualModeSwitch.addTarget(self, action: #selector(dualModeSwitchToggled(_:)), for: .valueChanged)
+        selectionStyle = .none
     }
     
     
@@ -36,5 +44,21 @@ class ReminderSwitchTableViewCell: UITableViewCell {
         
         dualModeSwitch.onTintColor = data.activationDetail.selectionColor
         dualModeSwitch.isOn = data.activationDetail.isActive
+    }
+    
+    
+    func assignSwitchActionDelegate(to delegate: ReminderSwitchActionDelegate) {
+        
+        switchActionDelegate = delegate
+    }
+    
+    
+    @objc func dualModeSwitchToggled(_ sender: UISwitch) {
+        switchActionDelegate.dualModeSwitchDidEndToggle(withCurrentState: sender.isOn)
+    }
+    
+    
+    deinit {
+        switchActionDelegate = nil
     }
 }

@@ -13,13 +13,17 @@ import UIKit
 class ReminderDetailTableViewDataSource: NSObject, UITableViewDataSource {
     
     let reminderDetailDisplayable: ReminderDetailDisplayable!
+    
     weak private(set) var contentTextViewDelegate: UITextViewDelegate?
     
+    weak private(set) var reminderActivationActionDelegate: ReminderSwitchActionDelegate! = nil
     
-    init(withDetailDataSource dataSource: ReminderDetailDisplayable, contentDelegate: UITextViewDelegate? ) {
+    
+    init(withDetailDataSource dataSource: ReminderDetailDisplayable, contentDelegate: UITextViewDelegate?, activationDelegate: ReminderSwitchActionDelegate) {
         
         reminderDetailDisplayable = dataSource
         contentTextViewDelegate = contentDelegate
+        reminderActivationActionDelegate = activationDelegate
     }
     
     
@@ -46,9 +50,11 @@ class ReminderDetailTableViewDataSource: NSObject, UITableViewDataSource {
             //Reminder content
             
             let contentCell: ReminderContentTableViewCell = tableView.dequeueReusableCell(withIdentifier: "reminderContentCell", for: indexPath) as! ReminderContentTableViewCell
-            contentCell.selectionStyle = .none
+            
             contentCell.update(withContentDetail: reminderDetailDisplayable.content)
+            
             contentCell.assignContentTextViewDelegate(to: contentTextViewDelegate)
+            
             return contentCell
         }
         else {
@@ -60,8 +66,7 @@ class ReminderDetailTableViewDataSource: NSObject, UITableViewDataSource {
                 //Activation status
                 
                 let activationCell: ReminderSwitchTableViewCell = tableView.dequeueReusableCell(withIdentifier: "reminderActivationCell", for: indexPath) as! ReminderSwitchTableViewCell
-                
-                activationCell.selectionStyle = .none
+                activationCell.assignSwitchActionDelegate(to: reminderActivationActionDelegate)
                 activationCell.update(withDualModeDisplayableData: reminderDetailDisplayable.notifierActivationStatus)
                 
                 return activationCell
@@ -72,13 +77,19 @@ class ReminderDetailTableViewDataSource: NSObject, UITableViewDataSource {
                 
                 let locationDetailCell: ReminderLocationTableViewCell = tableView.dequeueReusableCell(withIdentifier: "locationCell", for: indexPath) as! ReminderLocationTableViewCell
                 locationDetailCell.update(notifierTypeWith: reminderDetailDisplayable.reminderNotifierTypeDetail)
+                
                 locationDetailCell.update(locationWith: reminderDetailDisplayable.locationDetail)
+                locationDetailCell.reactToActivationState(reminderDetailDisplayable.notifierActivationStatus.activationDetail.isActive)
+                
                 return locationDetailCell
             }
         }
         
     }
-    
+}
+
+
+extension ReminderDetailTableViewDataSource {
     
     func updateContentTextViewAppearance(forTableView tableView: ReminderDetailTableView ) {
         
@@ -94,20 +105,15 @@ class ReminderDetailTableViewDataSource: NSObject, UITableViewDataSource {
         cell.updateContentTextView(withText: reminderDetailDisplayable.content.text)
     }
     
-}
-
-
-extension ReminderDetailTableViewDataSource: UITableViewDelegate {
     
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    func updateLocationCell(forActivationState enabled: Bool, inTableView tableView: ReminderDetailTableView) {
         
-        if indexPath.section == 0 {
-            return 150.0
-        }
-        else {
-            return UITableView.automaticDimension
-        }
+        let cell: ReminderLocationTableViewCell = tableView.cellForRow(at: IndexPath.init(row: 1, section: 1)) as! ReminderLocationTableViewCell
+        
+        cell.reactToActivationState(enabled)
         
     }
+    
 }
+
+

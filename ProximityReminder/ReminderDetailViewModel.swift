@@ -82,8 +82,7 @@ extension ReminderDetailViewModel: ReminderDetailDisplayable {
     
     var notifierActivationStatus: ReminderDualModeDisplayable {
         
-        //TODO: Change the harcoded value
-        let vm = ReminderDetailNotificationActivationViewModel(withNotifierActivationState: true)
+        let vm = ReminderDetailNotificationActivationViewModel(withNotifierActivationState: reminder.isActivated)
         return vm
     }
     

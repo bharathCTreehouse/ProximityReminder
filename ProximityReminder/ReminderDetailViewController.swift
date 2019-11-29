@@ -58,7 +58,7 @@ class ReminderDetailViewController: UIViewController {
         
         detailViewModel = ReminderDetailViewModel(withReminder: reminder)
         
-        reminderDetailTableView = ReminderDetailTableView(withDetailSource: detailViewModel, contentTextViewDelegate: self)
+        reminderDetailTableView = ReminderDetailTableView(withDetailSource: detailViewModel, contentTextViewDelegate: self, activationActionDelegate: self)
         view.addSubview(reminderDetailTableView)
         reminderDetailTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         reminderDetailTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
@@ -177,4 +177,17 @@ extension ReminderDetailViewController: UITextViewDelegate {
         reminder.content = textView.text
     }
 
+}
+
+
+extension ReminderDetailViewController: ReminderSwitchActionDelegate {
+    
+    
+    func dualModeSwitchDidEndToggle(withCurrentState state: Bool) {
+        
+        reminder.isActivated = state
+        reminderDetailTableView.refreshLocationView(forActivationState: state)
+        
+    }
+    
 }
