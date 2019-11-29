@@ -13,11 +13,13 @@ import UIKit
 class ReminderDetailTableViewDataSource: NSObject, UITableViewDataSource {
     
     let reminderDetailDisplayable: ReminderDetailDisplayable!
+    weak private(set) var contentTextViewDelegate: UITextViewDelegate?
     
     
-    init(withDetailDataSource dataSource:ReminderDetailDisplayable ) {
+    init(withDetailDataSource dataSource: ReminderDetailDisplayable, contentDelegate: UITextViewDelegate? ) {
         
         reminderDetailDisplayable = dataSource
+        contentTextViewDelegate = contentDelegate
     }
     
     
@@ -46,6 +48,7 @@ class ReminderDetailTableViewDataSource: NSObject, UITableViewDataSource {
             let contentCell: ReminderContentTableViewCell = tableView.dequeueReusableCell(withIdentifier: "reminderContentCell", for: indexPath) as! ReminderContentTableViewCell
             contentCell.selectionStyle = .none
             contentCell.update(withContentDetail: reminderDetailDisplayable.content)
+            contentCell.assignContentTextViewDelegate(to: contentTextViewDelegate)
             return contentCell
         }
         else {
@@ -77,7 +80,22 @@ class ReminderDetailTableViewDataSource: NSObject, UITableViewDataSource {
     }
     
     
+    func updateContentTextViewAppearance(forTableView tableView: ReminderDetailTableView ) {
+        
+        let cell: ReminderContentTableViewCell = tableView.cellForRow(at: IndexPath.init(row: 0, section: 0)) as! ReminderContentTableViewCell
+        cell.updateContentTextViewAppearance(usingAttributeDetail: reminderDetailDisplayable.content.attribute)
+    }
+    
+    
+    func updateContentTextViewText(forTableView  tableView: ReminderDetailTableView) {
+        
+        let cell: ReminderContentTableViewCell = tableView.cellForRow(at: IndexPath.init(row: 0, section: 0)) as! ReminderContentTableViewCell
+        
+        cell.updateContentTextView(withText: reminderDetailDisplayable.content.text)
+    }
+    
 }
+
 
 extension ReminderDetailTableViewDataSource: UITableViewDelegate {
     
@@ -85,7 +103,7 @@ extension ReminderDetailTableViewDataSource: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
         if indexPath.section == 0 {
-            return 80.0
+            return 150.0
         }
         else {
             return UITableView.automaticDimension

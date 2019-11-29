@@ -27,8 +27,12 @@ class ReminderListViewController: UIViewController {
     
     func configureReminderListTableView(withFetchedResultsController controller: NSFetchedResultsController<Reminder>) {
         
-        reminderListTableView = ReminderListTableView(withFetchedResultsController: controller)
+        reminderListTableView = ReminderListTableView(withFetchedResultsController: controller, reminderTapHandler: { [unowned self] (tappedReminder: Reminder) -> Void in
+            
+            self.presentDetailViewController(forReminder: tappedReminder)
+        })
         view.addSubview(reminderListTableView)
+        
         reminderListTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         reminderListTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         reminderListTableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
@@ -46,11 +50,17 @@ class ReminderListViewController: UIViewController {
         
         let newReminder: Reminder = Reminder.init(context: CoreDataContextConfigurer.mainContext())
         newReminder.lastModifiedDate = Date()
+        presentDetailViewController(forReminder: newReminder)
+    }
+    
+    
+    func presentDetailViewController(forReminder reminder: Reminder) {
         
-        let reminderDetailVC: ReminderDetailViewController = ReminderDetailViewController(withReminder: newReminder)
+        let reminderDetailVC: ReminderDetailViewController = ReminderDetailViewController(withReminder: reminder)
         
         let navController: UINavigationController = UINavigationController(rootViewController: reminderDetailVC)
         present(navController, animated: true, completion: nil)
+        
     }
 }
 
@@ -90,14 +100,14 @@ extension ReminderListViewController: NSFetchedResultsControllerDelegate {
     
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         
-        reminderListTableView.beginUpdates()
+        //reminderListTableView.beginUpdates()
         
     }
     
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
         
-        reminderListTableView.reloadData()
+        //reminderListTableView.reloadData()
 
     }
     
@@ -111,7 +121,7 @@ extension ReminderListViewController: NSFetchedResultsControllerDelegate {
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         
-        reminderListTableView.endUpdates()
+        //reminderListTableView.endUpdates()
         
     }
 }

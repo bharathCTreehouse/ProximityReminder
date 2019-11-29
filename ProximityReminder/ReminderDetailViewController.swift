@@ -14,6 +14,8 @@ class ReminderDetailViewController: UIViewController {
     
     let reminder: Reminder
     
+    var detailViewModel: ReminderDetailViewModel!
+
     
     init(withReminder reminder: Reminder) {
         
@@ -54,9 +56,9 @@ class ReminderDetailViewController: UIViewController {
     
     func configureDetailTableView() {
         
-        let detailViewModel: ReminderDetailViewModel = ReminderDetailViewModel(withReminder: reminder)
+        detailViewModel = ReminderDetailViewModel(withReminder: reminder)
         
-        reminderDetailTableView = ReminderDetailTableView(withDetailSource: detailViewModel)
+        reminderDetailTableView = ReminderDetailTableView(withDetailSource: detailViewModel, contentTextViewDelegate: self)
         view.addSubview(reminderDetailTableView)
         reminderDetailTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         reminderDetailTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
@@ -65,6 +67,11 @@ class ReminderDetailViewController: UIViewController {
         
         reminderDetailTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
     }
+    
+    
+    deinit {
+        reminderDetailTableView = nil
+    }
 
 }
 
@@ -72,8 +79,9 @@ class ReminderDetailViewController: UIViewController {
 
 extension ReminderDetailViewController {
     
-    
     @objc func closeButtonTapped(_ sender: UIBarButtonItem) {
+        
+        view.endEditing(true)
         
         if CoreDataContextConfigurer.unsavedChangesExistOnMainContext() == false {
             
@@ -114,14 +122,59 @@ extension ReminderDetailViewController {
     
     @objc func saveButtonTapped(_ sender: UIBarButtonItem) {
         
+        view.endEditing(true)
+        
         do {
             try CoreDataContextConfigurer.saveChangesPresentInMainContext()
             dismiss(animated: true, completion: nil)
-
+            
         }
         catch {
             //Show save failure error
         }
     }
+}
+
+
+
+extension ReminderDetailViewController: UITextViewDelegate {
     
+    
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        
+        if reminder.content.isEmpty == true {
+            
+            detailViewModel.updateEmptyState(with: .emptyWithEditingBegun)
+            reminderDetailTableView.refreshContentView()
+        }
+        else {
+            
+            detailViewModel.updateEmptyState(with: .notApplicable)
+         reminderDetailTableView.refreshContentViewAppearance()
+
+        }
+    }
+    
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        
+        if reminder.content.isEmpty == true {
+            
+            detailViewModel.updateEmptyState(with: .empty)
+            reminderDetailTableView.refreshContentView()
+        }
+        else {
+            
+            detailViewModel.updateEmptyState(with: .notApplicable)
+            reminderDetailTableView.refreshContentViewAppearance()
+            
+        }
+    }
+    
+    
+    func textViewDidChange(_ textView: UITextView) {
+        
+        reminder.content = textView.text
+    }
+
 }

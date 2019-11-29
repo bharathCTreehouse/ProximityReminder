@@ -14,16 +14,20 @@ import CoreData
 
 class ReminderListTableView: UITableView {
     
+    var listDataSource: ReminderListTableViewDataSource! = nil
+    var reminderTappedHandler: ((Reminder) -> Void)? = nil
     
-    init(withFetchedResultsController controller: NSFetchedResultsController<Reminder>) {
+    init(withFetchedResultsController controller: NSFetchedResultsController<Reminder>, reminderTapHandler handler: ((Reminder) -> Void)?) {
         
+        reminderTappedHandler = handler
         super.init(frame: .zero, style: .grouped)
         translatesAutoresizingMaskIntoConstraints = false
         
         configure()
        
-        let dataSource: ReminderListTableViewDataSource = ReminderListTableViewDataSource(withFetchedResultsController: controller)
-        self.dataSource = dataSource
+        listDataSource = ReminderListTableViewDataSource(withFetchedResultsController: controller)
+        dataSource = listDataSource
+        delegate = self
     }
     
     
@@ -36,7 +40,23 @@ class ReminderListTableView: UITableView {
         
         estimatedRowHeight = 60.0
         rowHeight = UITableView.automaticDimension
-        register(UINib.init(nibName: NSStringFromClass(ReminderListTableViewCell.classForCoder()), bundle: .main), forCellReuseIdentifier: "reminderListCell")
+        register(UINib.init(nibName: "ReminderListTableViewCell", bundle: .main), forCellReuseIdentifier: "reminderListCell")
+    }
+    
+}
+
+
+
+extension ReminderListTableView: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let reminder: Reminder = listDataSource.fetchedController.object(at: indexPath)
+        
+        reminderTappedHandler?(reminder)
+        
+        tableView.deselectRow(at: indexPath, animated: true)
+        
     }
     
 }

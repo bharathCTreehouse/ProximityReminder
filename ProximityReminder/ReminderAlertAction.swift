@@ -23,6 +23,10 @@ class ReminderAlertAction {
         destructiveActionTitles = dstTitles
         cancelActionTitle = cancelTitle
     }
+    
+    deinit {
+        print("ReminderAlertAction")
+    }
 }
 
 
@@ -53,7 +57,7 @@ extension ReminderAlertAction {
         
         for title in destructiveActionTitles {
             
-            let action: UIAlertAction = UIAlertAction.init(title: title, style: .destructive, handler: { [unowned self] (act: UIAlertAction) -> Void in
+            let action: UIAlertAction = UIAlertAction.init(title: title, style: .destructive, handler: { (act: UIAlertAction) -> Void in
                 
                 completionHandler(allActions.firstIndex(of: act)! + self.defaultActionTitles.count)
             })
@@ -72,7 +76,7 @@ extension ReminderAlertAction {
         }
         else {
             
-            return UIAlertAction.init(title: cancelActionTitle!, style: .cancel, handler: { [unowned self] (act: UIAlertAction) -> Void in
+            return UIAlertAction.init(title: cancelActionTitle!, style: .cancel, handler: { (act: UIAlertAction) -> Void in
                 
                 completionHandler(self.defaultActionTitles.count + self.destructiveActionTitles.count + 1)
             })

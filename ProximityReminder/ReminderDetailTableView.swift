@@ -14,12 +14,12 @@ class ReminderDetailTableView: UITableView {
     
     var detailDataSource: ReminderDetailTableViewDataSource! = nil
     
-    init(withDetailSource detailSource: ReminderDetailDisplayable) {
+    init(withDetailSource detailSource: ReminderDetailDisplayable, contentTextViewDelegate txtViewDelegate: UITextViewDelegate?) {
         
         super.init(frame: .zero, style: .grouped)
         translatesAutoresizingMaskIntoConstraints = false
         
-        detailDataSource = ReminderDetailTableViewDataSource(withDetailDataSource: detailSource)
+        detailDataSource = ReminderDetailTableViewDataSource(withDetailDataSource: detailSource, contentDelegate: txtViewDelegate)
         self.dataSource = detailDataSource
         self.delegate = detailDataSource
         
@@ -35,8 +35,6 @@ class ReminderDetailTableView: UITableView {
     
     func configure() {
         
-        //estimatedRowHeight = 50.0
-        //rowHeight = UITableView.automaticDimension
         
         //For the content of the reminder
         register(UINib.init(nibName: "ReminderContentTableViewCell", bundle: .main), forCellReuseIdentifier: "reminderContentCell")
@@ -46,6 +44,26 @@ class ReminderDetailTableView: UITableView {
         
         //location
         register(UINib.init(nibName: "ReminderLocationTableViewCell", bundle: .main), forCellReuseIdentifier: "locationCell")
+    }
+    
+    
+    
+    func refreshContentViewAppearance() {
+        
+        
+        detailDataSource.updateContentTextViewAppearance(forTableView: self)
+        
+    }
+    
+    
+    func refreshContentTextViewText() {
+        detailDataSource.updateContentTextViewText(forTableView: self)
+    }
+    
+    
+    func refreshContentView() {
+        refreshContentViewAppearance()
+        refreshContentTextViewText()
     }
     
 }

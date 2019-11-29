@@ -25,11 +25,11 @@
                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="H1Q-1x-WpK">
                         <rect key="frame" x="16" y="51.5" width="288" height="36"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="location" translatesAutoresizingMaskIntoConstraints="NO" id="LUc-eO-EHc">
-                                <rect key="frame" x="0.0" y="0.0" width="15.5" height="36"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="15.5" placeholderIntrinsicHeight="36" image="location" translatesAutoresizingMaskIntoConstraints="NO" id="LUc-eO-EHc">
+                                <rect key="frame" x="0.0" y="0.0" width="13.5" height="36"/>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="The Nilgiris, Kumarswamy layout, 34th cross" textAlignment="justified" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YC7-D3-pe0">
-                                <rect key="frame" x="23.5" y="0.0" width="264.5" height="36"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="The Nilgiris, Kumarswamy layout, 34th cross" textAlignment="justified" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YC7-D3-pe0">
+                                <rect key="frame" x="21.5" y="0.0" width="266.5" height="36"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -50,7 +50,6 @@
                     </label>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="H1Q-1x-WpK" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="4oM-h9-78k"/>
                     <constraint firstItem="4pn-Al-uY9" firstAttribute="top" secondItem="H1Q-1x-WpK" secondAttribute="bottom" constant="25" id="6gN-ka-9pH"/>
                     <constraint firstAttribute="trailingMargin" secondItem="4pn-Al-uY9" secondAttribute="trailing" constant="16" id="C3Z-eY-Cd4"/>
                     <constraint firstItem="bxT-KW-rwo" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="16" id="DSC-ps-qCm"/>
@@ -63,6 +62,7 @@
                     <constraint firstAttribute="trailing" secondItem="bxT-KW-rwo" secondAttribute="trailing" constant="16" id="bJb-Me-QJ7"/>
                     <constraint firstAttribute="trailingMargin" secondItem="1JF-2w-1XL" secondAttribute="trailing" constant="16" id="eM6-BL-kN2"/>
                     <constraint firstItem="bxT-KW-rwo" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="sQE-C9-26c"/>
+                    <constraint firstItem="H1Q-1x-WpK" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="ziE-Du-riA"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
