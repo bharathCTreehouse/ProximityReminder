@@ -88,8 +88,7 @@ extension ReminderDetailTableView {
     
     
     func refreshLocationView(forActivationState enabled: Bool) {
-        
-        detailDataSource.updateLocationCell(forActivationState: enabled, inTableView: self)
+        detailDataSource.updateLocationCellAppearance(inTableView: self)
         
     }
 }

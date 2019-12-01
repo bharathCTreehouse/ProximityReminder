@@ -28,6 +28,13 @@ class ReminderListTableViewDataSource: NSObject, UITableViewDataSource {
     }
     
     
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        
+        let secInfo: NSFetchedResultsSectionInfo? = fetchedController.sections?[section]
+        return secInfo?.name ?? ""
+    }
+    
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         return  fetchedController.sections?[section].numberOfObjects ?? 0

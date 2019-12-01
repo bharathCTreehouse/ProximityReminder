@@ -45,6 +45,11 @@ class ReminderDetailViewModel {
     let reminder: Reminder
     private(set) var contentEmptyState: ReminderContentEmptyState
     
+    var alphaValue: CGFloat {
+        return (reminder.isActivated == true) ? 1.0 : 0.0
+    }
+    
+    
     init(withReminder reminder: Reminder) {
         
         self.reminder = reminder
@@ -61,6 +66,7 @@ class ReminderDetailViewModel {
         
         contentEmptyState = state
     }
+    
 }
 
 
@@ -75,7 +81,9 @@ extension ReminderDetailViewModel: ReminderDetailDisplayable {
             return (text: "", attribute: ReminderLabelTextAttribute.init(withFont: UIFont.systemFont(ofSize: 17.0), color: UIColor.lightGray))
         }
         else {
-            return (text: reminderNotifier.displayString, attribute: ReminderLabelTextAttribute.init(withFont: UIFont.boldSystemFont(ofSize: 17.0), color: UIColor.black))
+            
+            
+            return (text: reminderNotifier.displayString, attribute: ReminderLabelTextAttribute.init(withFont: UIFont.boldSystemFont(ofSize: 17.0), color: UIColor.black, alpha: alphaValue))
         }
     }
     
@@ -105,7 +113,7 @@ extension ReminderDetailViewModel: ReminderDetailDisplayable {
             return (text: "Enter location", attribute: ReminderLabelTextAttribute.init(withFont: UIFont.systemFont(ofSize: 17.0), color: UIColor.lightGray))
         }
         else {
-            return (text: reminder.locationString, attribute: ReminderLabelTextAttribute.init(withFont: UIFont.systemFont(ofSize: 17.0), color: UIColor.black))
+            return (text: reminder.locationString, attribute: ReminderLabelTextAttribute.init(withFont: UIFont.systemFont(ofSize: 17.0), color: UIColor.black, alpha: alphaValue))
         }
     }
 }

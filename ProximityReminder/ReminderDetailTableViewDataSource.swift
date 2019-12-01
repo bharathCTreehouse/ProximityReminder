@@ -79,7 +79,6 @@ class ReminderDetailTableViewDataSource: NSObject, UITableViewDataSource {
                 locationDetailCell.update(notifierTypeWith: reminderDetailDisplayable.reminderNotifierTypeDetail)
                 
                 locationDetailCell.update(locationWith: reminderDetailDisplayable.locationDetail)
-                locationDetailCell.reactToActivationState(reminderDetailDisplayable.notifierActivationStatus.activationDetail.isActive)
                 
                 return locationDetailCell
             }
@@ -106,11 +105,13 @@ extension ReminderDetailTableViewDataSource {
     }
     
     
-    func updateLocationCell(forActivationState enabled: Bool, inTableView tableView: ReminderDetailTableView) {
+    func updateLocationCellAppearance(inTableView tableView: ReminderDetailTableView) {
         
         let cell: ReminderLocationTableViewCell = tableView.cellForRow(at: IndexPath.init(row: 1, section: 1)) as! ReminderLocationTableViewCell
         
-        cell.reactToActivationState(enabled)
+        cell.updateLocationDetailAlpha(using: reminderDetailDisplayable.locationDetail.attribute)
+        
+        cell.updateNotifierDetailAlpha(using: reminderDetailDisplayable.reminderNotifierTypeDetail.attribute)
         
     }
     

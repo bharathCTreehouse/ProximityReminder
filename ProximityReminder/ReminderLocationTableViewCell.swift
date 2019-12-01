@@ -25,6 +25,8 @@ class ReminderLocationTableViewCell: UITableViewCell {
         notifierTypeLabel.font = notifierDetail.1.labelTextFont
         notifierTypeLabel.textColor = notifierDetail.1.labelTextColor
         notifierTypeLabel.text = notifierDetail.0
+        
+        updateNotifierDetailAlpha(using: notifierDetail.1)
     }
     
     
@@ -34,17 +36,20 @@ class ReminderLocationTableViewCell: UITableViewCell {
         locationLabel.textColor = locationDetail.1.labelTextColor
         locationLabel.text = locationDetail.0
         
+        updateLocationDetailAlpha(using: locationDetail.1)
     }
     
     
-    func reactToActivationState(_ enabled: Bool) {
+    func updateLocationDetailAlpha(using attr: ReminderLabelTextAttribute) {
         
-        if enabled == true {
-            contentView.alpha = 1.0
-        }
-        else {
-            contentView.alpha = 0.3
-        }
+        locationLabel.alpha = attr.reminderViewAlpha
+       
+    }
+    
+    func updateNotifierDetailAlpha(using attr: ReminderLabelTextAttribute) {
+        
+        notifierTypeLabel.alpha = attr.reminderViewAlpha
+        
     }
     
     

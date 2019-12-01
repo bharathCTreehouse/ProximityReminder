@@ -68,8 +68,10 @@ extension ReminderListViewModel: ReminderListDisplayable {
     
     var lastModifiedDetail: (text: String, attribute: ReminderLabelTextAttribute) {
         
-        //TODO: Format the date to display only the time.
-        return (text: "\(reminder.lastModifiedDate)", attribute: ReminderLabelTextAttribute(withFont: UIFont.systemFont(ofSize: 15.0), color: UIColor.black))
-
+        
+        let lastModifiedTimeString: String = ReminderDateFormatConfigurer.dateFormatter(withDateStyle: .none, timeStyle: .short).string(from: reminder.lastModifiedDate)
+        
+        return (text: lastModifiedTimeString, attribute: ReminderLabelTextAttribute(withFont: UIFont.italicSystemFont(ofSize: 15.0), color: UIColor.black))
+        
     }
 }

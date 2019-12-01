@@ -12,9 +12,13 @@ import UIKit
 
 class ReminderViewAttribute {
     
-    let reminderViewAlpha: CGFloat
+    private(set) var reminderViewAlpha: CGFloat
     
     init(withAlpha alpha: CGFloat = 1.0) {
         reminderViewAlpha = alpha
+    }
+    
+    func changeAlphaValue(to value: CGFloat) {
+        reminderViewAlpha = value
     }
 }

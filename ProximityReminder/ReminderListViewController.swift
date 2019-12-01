@@ -73,7 +73,7 @@ extension ReminderListViewController: NSFetchedResultsControllerDelegate {
         
         let sorter: NSSortDescriptor = NSSortDescriptor.init(key: "lastModifiedDate", ascending: false)
         
-        let fetchedResultsController: NSFetchedResultsController<Reminder> = FetchedResultsControllerCreator.fetchedResultsControllerForReminder(withPredicate: nil, propertiesToGet: nil, sortDescriptors: [sorter], inContext: CoreDataContextConfigurer.mainContext(), sectionNameKey: "lastModifiedDate")
+        let fetchedResultsController: NSFetchedResultsController<Reminder> = FetchedResultsControllerCreator.fetchedResultsControllerForReminder(withPredicate: nil, propertiesToGet: nil, sortDescriptors: [sorter], inContext: CoreDataContextConfigurer.mainContext(), sectionNameKey: "lastModifiedDateSansTime")
         
         fetchedResultsController.delegate = self
         
