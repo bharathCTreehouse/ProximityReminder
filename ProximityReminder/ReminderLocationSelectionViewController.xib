@@ -17,9 +17,13 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <searchBar contentMode="redraw" searchBarStyle="minimal" placeholder="Search or Enter Address" translatesAutoresizingMaskIntoConstraints="NO" id="e4U-ZF-468">
+                <searchBar contentMode="redraw" searchBarStyle="minimal" placeholder="Search or Enter Address" showsCancelButton="YES" translatesAutoresizingMaskIntoConstraints="NO" id="e4U-ZF-468">
                     <rect key="frame" x="8" y="60" width="398" height="56"/>
-                    <textInputTraits key="textInputTraits"/>
+                    <textInputTraits key="textInputTraits" spellCheckingType="no" returnKeyType="search" enablesReturnKeyAutomatically="YES" smartInsertDeleteType="no"/>
+                    <scopeButtonTitles>
+                        <string>Title</string>
+                        <string>Title</string>
+                    </scopeButtonTitles>
                 </searchBar>
                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="ptc-tw-G3J">
                     <rect key="frame" x="24" y="124" width="366" height="32"/>

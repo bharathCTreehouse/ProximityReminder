@@ -7,10 +7,18 @@
 //
 
 import Foundation
+import CoreLocation
 
 
-struct ReminderLocation {
+class ReminderLocation {
     
-    //accept CLPlaceMark?
+    let placeMark: CLPlacemark
+    let locationName: String?
+    
+    init(withPlaceMark placeMark: CLPlacemark, nameOfTheLocation name: String?) {
+        
+        self.placeMark = placeMark
+        locationName = name
+    }
     
 }

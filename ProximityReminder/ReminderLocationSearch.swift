@@ -12,16 +12,10 @@ import MapKit
 
 class ReminderLocationSearch {
     
-    private let queryString: String
-    private var localSearch: MKLocalSearch!
+    static private var localSearch: MKLocalSearch!
     
     
-    init(withQueryString query: String) {
-        queryString = query
-    }
-    
-    
-    func initiateSearch(withCompletionHandler completionHandler: @escaping (([MKMapItem], Error?) -> Void)) {
+    static func initiateSearch(forText text: String, withCompletionHandler completionHandler: @escaping (([MKMapItem], Error?) -> Void)) {
         
         if localSearch.isSearching == true {
             //Cancel existing search.
@@ -29,7 +23,7 @@ class ReminderLocationSearch {
         }
         
         let searchRequest: MKLocalSearch.Request = MKLocalSearch.Request()
-        searchRequest.naturalLanguageQuery = queryString
+        searchRequest.naturalLanguageQuery = text
         localSearch = MKLocalSearch.init(request: searchRequest)
         
         localSearch.start { (response: MKLocalSearch.Response?, error: Error?) in
@@ -39,7 +33,7 @@ class ReminderLocationSearch {
     }
     
     
-    func cancelSearch() {
+    static func cancelSearch() {
         localSearch.cancel()
     }
     
