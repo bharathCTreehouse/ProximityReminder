@@ -15,7 +15,13 @@ class ReminderLocationSelectionViewController: UIViewController {
     @IBOutlet private(set) var notifierTypeSegmentControl: UISegmentedControl!
     
     private var locationListTableView: ReminderLocationSelectionTableView!
-    private var listViewModels: [ReminderLocationListViewModel] = []
+    
+    private var listViewModels: [ReminderLocationListViewModel] = [] {
+        didSet {
+            locationListTableView.update(withDisplayables: listViewModels)
+        }
+    }
+    
     private var locationSearchBarDelegate: ReminderLocationSearchDelegate!
 
     
@@ -87,23 +93,28 @@ class ReminderLocationSelectionViewController: UIViewController {
         if let text = text {
             
             if text.isEmpty == false {
+                
                 ReminderLocationSearch.initiateSearch(forText: text, withCompletionHandler: {  [unowned self] (mapItems: [MKMapItem], error: Error?) -> Void in
                     
-                    //Parse and get the required information out from these map items.
-                    if let error = error {
-                        print(error)
-                    }
-                    else {
-                        if mapItems.isEmpty == false {
-                            
-                            //Parse them please.
-                            let locations: [ReminderLocation] = mapItems.reminderLocations
-                            
-                            //Create view models from each one of these locations and pass them onto the UI.
-                            self.listViewModels = locations.reminderLocationListViewModels
-                            
+                    DispatchQueue.main.async {
+                        
+                        //Parse and get the required information out from these map items.
+                        if let error = error {
+                            print(error)
+                        }
+                        else {
+                            if mapItems.isEmpty == false {
+                                
+                                //Parse them please.
+                                let locations: [ReminderLocation] = mapItems.reminderLocations
+                                
+                                //Create view models from each one of these locations and pass them onto the UI.
+                                self.listViewModels = locations.reminderLocationListViewModels
+                                
+                            }
                         }
                     }
+                    
                 })
             }
         }

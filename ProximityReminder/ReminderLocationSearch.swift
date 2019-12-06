@@ -17,9 +17,12 @@ class ReminderLocationSearch {
     
     static func initiateSearch(forText text: String, withCompletionHandler completionHandler: @escaping (([MKMapItem], Error?) -> Void)) {
         
-        if localSearch.isSearching == true {
-            //Cancel existing search.
-            cancelSearch()
+        if localSearch != nil {
+            
+            if localSearch.isSearching == true {
+                //Cancel existing search.
+                cancelSearch()
+            }
         }
         
         let searchRequest: MKLocalSearch.Request = MKLocalSearch.Request()

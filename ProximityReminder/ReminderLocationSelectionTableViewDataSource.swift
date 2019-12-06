@@ -35,7 +35,14 @@ class ReminderLocationSelectionTableViewDataSource: NSObject, UITableViewDataSou
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        return UITableViewCell()
+        let displayableData: ReminderLocationSearchResultListDisplayable = locationSearchListDisplayables[indexPath.row]
+        
+        let cell: ReminderLocationListTableViewCell = tableView.dequeueReusableCell(withIdentifier: "locationDetailCell", for: indexPath) as! ReminderLocationListTableViewCell
+        
+        cell.updateLocationName(with: displayableData.locationDetail.titleTextDetail)
+        cell.updateLocationAddress(with: displayableData.locationDetail.subtitleTextDetail)
+        
+        return cell
     }
     
     

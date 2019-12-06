@@ -20,7 +20,11 @@ class ReminderLocationSelectionTableView: UITableView {
         locationSelectionDataSource = ReminderLocationSelectionTableViewDataSource(withSearchListDisplayableDataSource: displayables)
         super.init(frame: .zero, style: .plain)
         translatesAutoresizingMaskIntoConstraints = false
+        register(ReminderLocationListTableViewCell.classForCoder(), forCellReuseIdentifier: "locationDetailCell")
+        estimatedRowHeight = 50.0
+        rowHeight = UITableView.automaticDimension
         dataSource = locationSelectionDataSource
+        
     }
     
     
@@ -32,6 +36,7 @@ class ReminderLocationSelectionTableView: UITableView {
     func update(withDisplayables displayables: [ReminderLocationListViewModel]) {
         
         locationSelectionDataSource.update(withListDisplayables: displayables)
+        reloadData()
     }
     
 }

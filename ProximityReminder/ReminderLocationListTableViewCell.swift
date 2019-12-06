@@ -1,22 +1,27 @@
 //
-//  ReminderLocationTableViewCell.swift
+//  ReminderLocationListTableViewCell.swift
 //  ProximityReminder
 //
-//  Created by Bharath on 26/11/19.
+//  Created by Bharath on 07/12/19.
 //  Copyright © 2019 Bharath. All rights reserved.
 //
 
+import Foundation
 import UIKit
 
-class ReminderLocationTableViewCell: UITableViewCell {
+
+class ReminderLocationListTableViewCell: UITableViewCell {
     
     weak private(set) var titleSubtitleView: ReminderTitleSubtitleView!
-    
+
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        addTitleSubtitleView()
+        selectionStyle = .none
+        accessoryType = .checkmark
+        accessoryView = UIButton.init(type: .infoLight)
+        addDetailView()
     }
     
     
@@ -25,7 +30,7 @@ class ReminderLocationTableViewCell: UITableViewCell {
     }
     
     
-    private func addTitleSubtitleView() {
+    private func addDetailView() {
         
         if titleSubtitleView == nil {
             
@@ -40,33 +45,19 @@ class ReminderLocationTableViewCell: UITableViewCell {
     }
     
     
-    func update(notifierTypeWith notifierDetail: (String, ReminderLabelTextAttribute) ) {
+    func updateLocationName(with nameDetail: (text: String, attribute: ReminderLabelTextAttribute)) {
         
-        titleSubtitleView.update(titleLabelWith: notifierDetail)
+        titleSubtitleView.update(titleLabelWith: nameDetail)
     }
     
     
-    func update(locationWith locationDetail: (String, ReminderLabelTextAttribute) ) {
+    func updateLocationAddress(with addrDetail: (text: String, attribute: ReminderLabelTextAttribute)) {
         
-        titleSubtitleView.update(subtitleLabelWith: locationDetail)
-    }
-    
-    
-    func updateLocationDetailAlpha(using attr: ReminderLabelTextAttribute) {
-        
-        titleSubtitleView.changeSubtitleLabelAlphaValue(to: attr.reminderViewAlpha)
-        
-    }
-    
-    
-    func updateNotifierDetailAlpha(using attr: ReminderLabelTextAttribute) {
-        
-        titleSubtitleView.changeTitleLabelAlphaValue(to: attr.reminderViewAlpha)
+        titleSubtitleView.update(subtitleLabelWith: addrDetail)
     }
     
     
     deinit {
         titleSubtitleView = nil
     }
-    
 }
