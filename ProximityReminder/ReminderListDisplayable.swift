@@ -12,6 +12,6 @@ import UIKit
 
 protocol ReminderListDisplayable: ReminderInformationDisplayable {
     
-    var lastModifiedDetail: (text: String, attribute: ReminderLabelTextAttribute) { get }
+    var lastModifiedDetail: ReminderTitleTextDisplayable { get }
 
 }

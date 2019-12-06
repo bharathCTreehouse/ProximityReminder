@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 protocol ReminderInformationDisplayable {
-    var content: (text: String, attribute: ReminderLabelTextAttribute) { get }
-    var locationDetail: (text: String, attribute: ReminderLabelTextAttribute) { get }
-    var reminderNotifierTypeDetail: (text: String, attribute: ReminderLabelTextAttribute) { get }
+    var content: ReminderTitleTextDisplayable { get }
+    var locationDetail: ReminderTitleTextDisplayable { get }
+    var reminderNotifierTypeDetail: ReminderTitleTextDisplayable { get }
 }

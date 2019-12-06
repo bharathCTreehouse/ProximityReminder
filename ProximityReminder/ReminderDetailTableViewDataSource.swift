@@ -51,7 +51,7 @@ class ReminderDetailTableViewDataSource: NSObject, UITableViewDataSource {
             
             let contentCell: ReminderContentTableViewCell = tableView.dequeueReusableCell(withIdentifier: "reminderContentCell", for: indexPath) as! ReminderContentTableViewCell
             
-            contentCell.update(withContentDetail: reminderDetailDisplayable.content)
+            contentCell.update(withContentDetail: reminderDetailDisplayable.content.titleTextDetail)
             
             contentCell.assignContentTextViewDelegate(to: contentTextViewDelegate)
             
@@ -76,9 +76,9 @@ class ReminderDetailTableViewDataSource: NSObject, UITableViewDataSource {
                 //Location detail
                 
                 let locationDetailCell: ReminderLocationTableViewCell = tableView.dequeueReusableCell(withIdentifier: "locationCell", for: indexPath) as! ReminderLocationTableViewCell
-                locationDetailCell.update(notifierTypeWith: reminderDetailDisplayable.reminderNotifierTypeDetail)
+                locationDetailCell.update(notifierTypeWith: reminderDetailDisplayable.reminderNotifierTypeDetail.titleTextDetail)
                 
-                locationDetailCell.update(locationWith: reminderDetailDisplayable.locationDetail)
+                locationDetailCell.update(locationWith: reminderDetailDisplayable.locationDetail.titleTextDetail)
                 
                 return locationDetailCell
             }
@@ -93,7 +93,8 @@ extension ReminderDetailTableViewDataSource {
     func updateContentTextViewAppearance(forTableView tableView: ReminderDetailTableView ) {
         
         let cell: ReminderContentTableViewCell = tableView.cellForRow(at: IndexPath.init(row: 0, section: 0)) as! ReminderContentTableViewCell
-        cell.updateContentTextViewAppearance(usingAttributeDetail: reminderDetailDisplayable.content.attribute)
+        
+        cell.updateContentTextViewAppearance(usingAttributeDetail: reminderDetailDisplayable.content.titleTextDetail.attribute)
     }
     
     
@@ -101,7 +102,7 @@ extension ReminderDetailTableViewDataSource {
         
         let cell: ReminderContentTableViewCell = tableView.cellForRow(at: IndexPath.init(row: 0, section: 0)) as! ReminderContentTableViewCell
         
-        cell.updateContentTextView(withText: reminderDetailDisplayable.content.text)
+        cell.updateContentTextView(withText: reminderDetailDisplayable.content.titleTextDetail.text)
     }
     
     
@@ -109,9 +110,9 @@ extension ReminderDetailTableViewDataSource {
         
         let cell: ReminderLocationTableViewCell = tableView.cellForRow(at: IndexPath.init(row: 1, section: 1)) as! ReminderLocationTableViewCell
         
-        cell.updateLocationDetailAlpha(using: reminderDetailDisplayable.locationDetail.attribute)
+        cell.updateLocationDetailAlpha(using: reminderDetailDisplayable.locationDetail.titleTextDetail.attribute)
         
-        cell.updateNotifierDetailAlpha(using: reminderDetailDisplayable.reminderNotifierTypeDetail.attribute)
+        cell.updateNotifierDetailAlpha(using: reminderDetailDisplayable.reminderNotifierTypeDetail.titleTextDetail.attribute)
         
     }
     

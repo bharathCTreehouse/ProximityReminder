@@ -13,13 +13,27 @@ class ReminderLocationSelectionViewController: UIViewController {
     
     @IBOutlet private(set) var locationSearchBar: UISearchBar!
     @IBOutlet private(set) var notifierTypeSegmentControl: UISegmentedControl!
-    var locationSearchBarDelegate: ReminderLocationSearchDelegate!
+    
+    private var locationListTableView: ReminderLocationSelectionTableView!
+    private var listViewModels: [ReminderLocationListViewModel] = []
+    private var locationSearchBarDelegate: ReminderLocationSearchDelegate!
 
-
+    
+    init() {
+        super.init(nibName: "ReminderLocationSelectionViewController", bundle: .main)
+    }
+    
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    
     override func viewDidLoad() {
         
         super.viewDidLoad()
         configureLocationSearchBar()
+        configureLocationSearchTableView()
     }
     
     
@@ -34,6 +48,17 @@ class ReminderLocationSelectionViewController: UIViewController {
         
         locationSearchBar.delegate = locationSearchBarDelegate
         
+    }
+    
+    
+    func configureLocationSearchTableView() {
+        
+        locationListTableView = ReminderLocationSelectionTableView(withListDisplayables: listViewModels)
+        view.addSubview(locationListTableView)
+        locationListTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        locationListTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        locationListTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        locationListTableView.topAnchor.constraint(equalTo: notifierTypeSegmentControl.bottomAnchor, constant: 8.0).isActive = true
     }
     
     
@@ -62,7 +87,7 @@ class ReminderLocationSelectionViewController: UIViewController {
         if let text = text {
             
             if text.isEmpty == false {
-                ReminderLocationSearch.initiateSearch(forText: text, withCompletionHandler: { (mapItems: [MKMapItem], error: Error?) -> Void in
+                ReminderLocationSearch.initiateSearch(forText: text, withCompletionHandler: {  [unowned self] (mapItems: [MKMapItem], error: Error?) -> Void in
                     
                     //Parse and get the required information out from these map items.
                     if let error = error {
@@ -75,7 +100,7 @@ class ReminderLocationSelectionViewController: UIViewController {
                             let locations: [ReminderLocation] = mapItems.reminderLocations
                             
                             //Create view models from each one of these locations and pass them onto the UI.
-                            let listViewModels: [ReminderLocationListViewModel] = locations.reminderLocationListViewModels
+                            self.listViewModels = locations.reminderLocationListViewModels
                             
                         }
                     }
@@ -86,14 +111,11 @@ class ReminderLocationSelectionViewController: UIViewController {
     }
     
     
-    
-    
     deinit {
+        
         locationSearchBar = nil
         notifierTypeSegmentControl = nil
+        locationListTableView = nil
+        locationSearchBarDelegate = nil
     }
-
-
-    
-
 }

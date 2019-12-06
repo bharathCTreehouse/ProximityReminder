@@ -9,6 +9,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ReminderLocationSelectionViewController" customModule="ProximityReminder" customModuleProvider="target">
             <connections>
+                <outlet property="locationSearchBar" destination="e4U-ZF-468" id="qcX-ZI-A4R"/>
+                <outlet property="notifierTypeSegmentControl" destination="ptc-tw-G3J" id="yN6-Zi-tR7"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -33,23 +35,15 @@
                     </segments>
                     <color key="selectedSegmentTintColor" systemColor="systemBlueColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 </segmentedControl>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="oZ7-Zo-yVt" customClass="ReminderLocationSelectionTableView" customModule="ProximityReminder" customModuleProvider="target">
-                    <rect key="frame" x="8" y="171" width="398" height="691"/>
-                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                </tableView>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="oZ7-Zo-yVt" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="8" id="068-GY-drW"/>
                 <constraint firstItem="e4U-ZF-468" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="8" id="CUR-ln-4YX"/>
-                <constraint firstItem="oZ7-Zo-yVt" firstAttribute="top" secondItem="ptc-tw-G3J" secondAttribute="bottom" constant="16" id="OKE-Vm-Vv3"/>
                 <constraint firstItem="e4U-ZF-468" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" constant="-8" id="h0V-cq-XSY"/>
                 <constraint firstItem="e4U-ZF-468" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="16" id="hKk-QK-han"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="oZ7-Zo-yVt" secondAttribute="trailing" constant="8" id="jWz-y5-flC"/>
                 <constraint firstItem="ptc-tw-G3J" firstAttribute="top" secondItem="e4U-ZF-468" secondAttribute="bottom" constant="8" id="mjq-oP-JXC"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="ptc-tw-G3J" secondAttribute="trailing" constant="24" id="mwu-kX-hrc"/>
                 <constraint firstItem="ptc-tw-G3J" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="24" id="rIb-Gs-WuK"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="oZ7-Zo-yVt" secondAttribute="bottom" id="uVg-G8-eI6"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <point key="canvasLocation" x="139" y="86"/>

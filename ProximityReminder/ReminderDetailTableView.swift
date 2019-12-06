@@ -13,9 +13,12 @@ import UIKit
 class ReminderDetailTableView: UITableView {
     
     var detailDataSource: ReminderDetailTableViewDataSource! = nil
+    var tapHandler: ((IndexPath) -> Void)? = nil
     
-    init(withDetailSource detailSource: ReminderDetailDisplayable, contentTextViewDelegate txtViewDelegate: UITextViewDelegate?, activationActionDelegate switchActionDelegate: ReminderSwitchActionDelegate) {
+    
+    init(withDetailSource detailSource: ReminderDetailDisplayable, contentTextViewDelegate txtViewDelegate: UITextViewDelegate?, activationActionDelegate switchActionDelegate: ReminderSwitchActionDelegate, tapCompletion handler:  ((IndexPath) -> Void)?) {
         
+        tapHandler = handler
         super.init(frame: .zero, style: .grouped)
         translatesAutoresizingMaskIntoConstraints = false
         
@@ -35,7 +38,6 @@ class ReminderDetailTableView: UITableView {
     
     func configure() {
         
-        
         //For the content of the reminder
         register(UINib.init(nibName: "ReminderContentTableViewCell", bundle: .main), forCellReuseIdentifier: "reminderContentCell")
         
@@ -43,7 +45,15 @@ class ReminderDetailTableView: UITableView {
         register(ReminderSwitchTableViewCell.classForCoder(), forCellReuseIdentifier: "reminderActivationCell")
         
         //location
-        register(UINib.init(nibName: "ReminderLocationTableViewCell", bundle: .main), forCellReuseIdentifier: "locationCell")
+        register(ReminderLocationTableViewCell.classForCoder(), forCellReuseIdentifier: "locationCell")
+
+    }
+    
+    
+    deinit {
+        
+        tapHandler = nil
+        detailDataSource = nil
     }
     
 }
@@ -61,19 +71,23 @@ extension ReminderDetailTableView: UITableViewDelegate {
         }
         
     }
+    
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        tableView.deselectRow(at: indexPath, animated: true)
+        tapHandler?(indexPath)
+    }
 }
 
 
 
 extension ReminderDetailTableView {
     
-    
     func refreshContentViewAppearance() {
         
         detailDataSource.updateContentTextViewAppearance(forTableView: self)
-        
     }
-    
     
     func refreshContentTextViewText() {
         detailDataSource.updateContentTextViewText(forTableView: self)

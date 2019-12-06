@@ -10,52 +10,63 @@ import UIKit
 
 class ReminderLocationTableViewCell: UITableViewCell {
     
-    @IBOutlet private(set) var notifierTypeLabel: UILabel!
-    @IBOutlet private(set) var locationLabel: UILabel!
+    weak private(set) var titleSubtitleView: ReminderTitleSubtitleView!
     
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        addTitleSubtitleView()
+    }
+    
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    
+    func addTitleSubtitleView() {
+        
+        if titleSubtitleView == nil {
+            
+            titleSubtitleView = (Bundle.main.loadNibNamed("ReminderTitleSubtitleView", owner: nil, options: nil)?.first as! ReminderTitleSubtitleView)
+            titleSubtitleView.translatesAutoresizingMaskIntoConstraints = false
+            contentView.addSubview(titleSubtitleView)
+            titleSubtitleView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
+            titleSubtitleView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
+            titleSubtitleView.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
+            titleSubtitleView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
+        }
     }
     
     
     func update(notifierTypeWith notifierDetail: (String, ReminderLabelTextAttribute) ) {
         
-        notifierTypeLabel.font = notifierDetail.1.labelTextFont
-        notifierTypeLabel.textColor = notifierDetail.1.labelTextColor
-        notifierTypeLabel.text = notifierDetail.0
-        
-        updateNotifierDetailAlpha(using: notifierDetail.1)
+        titleSubtitleView.update(titleLabelWith: notifierDetail)
     }
     
     
     func update(locationWith locationDetail: (String, ReminderLabelTextAttribute) ) {
         
-        locationLabel.font = locationDetail.1.labelTextFont
-        locationLabel.textColor = locationDetail.1.labelTextColor
-        locationLabel.text = locationDetail.0
-        
-        updateLocationDetailAlpha(using: locationDetail.1)
+        titleSubtitleView.update(subtitleLabelWith: locationDetail)
     }
     
     
     func updateLocationDetailAlpha(using attr: ReminderLabelTextAttribute) {
         
-        locationLabel.alpha = attr.reminderViewAlpha
-       
+        titleSubtitleView.changeSubtitleLabelAlphaValue(to: attr.reminderViewAlpha)
+        
     }
+    
     
     func updateNotifierDetailAlpha(using attr: ReminderLabelTextAttribute) {
         
-        notifierTypeLabel.alpha = attr.reminderViewAlpha
-        
+        titleSubtitleView.changeTitleLabelAlphaValue(to: attr.reminderViewAlpha)
     }
     
     
     deinit {
-        notifierTypeLabel = nil
-        locationLabel = nil
+        titleSubtitleView = nil
     }
     
 }

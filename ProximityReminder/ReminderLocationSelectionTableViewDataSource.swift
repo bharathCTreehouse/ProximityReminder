@@ -12,11 +12,26 @@ import UIKit
 
 class ReminderLocationSelectionTableViewDataSource: NSObject, UITableViewDataSource {
     
+    private var locationSearchListDisplayables: [ReminderLocationSearchResultListDisplayable]!
+    
+    
+    init(withSearchListDisplayableDataSource dataSource: [ReminderLocationSearchResultListDisplayable]) {
+        
+        locationSearchListDisplayables = dataSource
+    }
+    
+    
+    func update(withListDisplayables displayables: [ReminderLocationSearchResultListDisplayable]) {
+        
+        locationSearchListDisplayables = displayables
+    }
+    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return 1
+        return locationSearchListDisplayables.count
     }
+    
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         

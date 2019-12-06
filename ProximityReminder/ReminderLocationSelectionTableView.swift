@@ -12,18 +12,26 @@ import UIKit
 
 class ReminderLocationSelectionTableView: UITableView {
     
-    let locationSelectionDataSource: ReminderLocationSelectionTableViewDataSource!
+    var locationSelectionDataSource: ReminderLocationSelectionTableViewDataSource! = nil
     
     
-    init() {
-        locationSelectionDataSource = ReminderLocationSelectionTableViewDataSource()
+    init(withListDisplayables displayables: [ReminderLocationListViewModel]) {
+        
+        locationSelectionDataSource = ReminderLocationSelectionTableViewDataSource(withSearchListDisplayableDataSource: displayables)
         super.init(frame: .zero, style: .plain)
+        translatesAutoresizingMaskIntoConstraints = false
         dataSource = locationSelectionDataSource
     }
     
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+ 
+    func update(withDisplayables displayables: [ReminderLocationListViewModel]) {
+        
+        locationSelectionDataSource.update(withListDisplayables: displayables)
     }
     
 }

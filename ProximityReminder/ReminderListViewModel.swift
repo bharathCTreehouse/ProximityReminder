@@ -15,7 +15,6 @@ class ReminderListViewModel {
     
     let reminder: Reminder
     
-    
     init(withReminder reminder: Reminder) {
         self.reminder = reminder
     }
@@ -25,53 +24,56 @@ class ReminderListViewModel {
 extension ReminderListViewModel: ReminderListDisplayable {
     
     
-    var reminderNotifierTypeDetail: (text: String, attribute: ReminderLabelTextAttribute) {
+    var reminderNotifierTypeDetail: ReminderTitleTextDisplayable {
         
         let notifier: ReminderNotifier = ReminderNotifier(rawValue: Int(reminder.notifierType))!
         
         if notifier == .undecided {
             
-            return (text: "Unspecified notifier type", attribute: ReminderLabelTextAttribute(withFont: UIFont.systemFont(ofSize: 15.0), color: UIColor.lightGray))
+            return ReminderTitleTextViewModel(withText: "Unspecified notifier type", font: UIFont.systemFont(ofSize: 15.0), color: UIColor.lightGray)
         }
         else {
             
-            return (text: notifier.displayString, attribute: ReminderLabelTextAttribute(withFont: UIFont.systemFont(ofSize: 15.0), color: UIColor.black))
+            return ReminderTitleTextViewModel(withText: notifier.displayString, font: UIFont.systemFont(ofSize: 15.0), color: UIColor.black)
             
             //TODO: If the reminder is not activated, reduce the alpha value.
         }
     }
     
     
-    var content: (text: String, attribute: ReminderLabelTextAttribute) {
+    var content: ReminderTitleTextDisplayable {
         
         if reminder.content.isEmpty == true {
             
-            return (text: "No reminder content", attribute: ReminderLabelTextAttribute(withFont: UIFont.systemFont(ofSize: 17.0), color: UIColor.lightGray))
+            return ReminderTitleTextViewModel(withText: "No reminder content", font: UIFont.systemFont(ofSize: 17.0), color: UIColor.lightGray)
         }
         else {
-            return (text: reminder.content, attribute: ReminderLabelTextAttribute(withFont: UIFont.systemFont(ofSize: 17.0), color: UIColor.darkGray))
+            
+            return ReminderTitleTextViewModel(withText: reminder.content, font: UIFont.systemFont(ofSize: 17.0), color: UIColor.darkGray)
+            
         }
     }
     
     
-    var locationDetail: (text: String, attribute: ReminderLabelTextAttribute) {
+    var locationDetail: ReminderTitleTextDisplayable {
         
         if reminder.locationString.isEmpty == true {
-            return (text: "No reminder location", attribute: ReminderLabelTextAttribute(withFont: UIFont.systemFont(ofSize: 15.0), color: UIColor.lightGray))
+            
+            return ReminderTitleTextViewModel(withText: "No reminder location", font: UIFont.systemFont(ofSize: 15.0), color: UIColor.lightGray)
         }
         else {
-            return (text: reminder.locationString, attribute: ReminderLabelTextAttribute(withFont: UIFont.systemFont(ofSize: 15.0), color: UIColor.black))
+            
+            return ReminderTitleTextViewModel(withText: reminder.locationString, font: UIFont.systemFont(ofSize: 15.0), color: UIColor.black)
+
             
             //TODO: If the reminder is not activated, reduce the alpha value.
         }
     }
     
-    var lastModifiedDetail: (text: String, attribute: ReminderLabelTextAttribute) {
-        
+    var lastModifiedDetail: ReminderTitleTextDisplayable {
         
         let lastModifiedTimeString: String = ReminderDateFormatConfigurer.dateFormatter(withDateStyle: .none, timeStyle: .short).string(from: reminder.lastModifiedDate)
         
-        return (text: lastModifiedTimeString, attribute: ReminderLabelTextAttribute(withFont: UIFont.italicSystemFont(ofSize: 15.0), color: UIColor.black))
-        
+        return ReminderTitleTextViewModel(withText: lastModifiedTimeString, font: UIFont.italicSystemFont(ofSize: 15.0), color: UIColor.black)
     }
 }

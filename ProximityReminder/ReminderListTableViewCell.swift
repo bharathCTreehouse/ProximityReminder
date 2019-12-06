@@ -26,22 +26,22 @@ class ReminderListTableViewCell: UITableViewCell {
     
     func update(withReminderListDataSource dataSource: ReminderListDisplayable) {
         
-        reminderContentLabel.font = dataSource.content.attribute.labelTextFont
-        reminderContentLabel.textColor = dataSource.content.attribute.labelTextColor
-        reminderContentLabel.text = dataSource.content.text
+        reminderContentLabel.font = dataSource.content.titleTextDetail.attribute.labelTextFont
+        reminderContentLabel.textColor = dataSource.content.titleTextDetail.attribute.labelTextColor
+        reminderContentLabel.text = dataSource.content.titleTextDetail.text
         
-        reminderLocationLabel.font = dataSource.locationDetail.attribute.labelTextFont
-        reminderLocationLabel.textColor = dataSource.locationDetail.attribute.labelTextColor
-        reminderLocationLabel.text = dataSource.locationDetail.text
+        reminderLocationLabel.font = dataSource.locationDetail.titleTextDetail.attribute.labelTextFont
+        reminderLocationLabel.textColor = dataSource.locationDetail.titleTextDetail.attribute.labelTextColor
+        reminderLocationLabel.text = dataSource.locationDetail.titleTextDetail.text
         
-        reminderLastModifiedLabel.font = dataSource.lastModifiedDetail.attribute.labelTextFont
-        reminderLastModifiedLabel.textColor = dataSource.lastModifiedDetail.attribute.labelTextColor
-        reminderLastModifiedLabel.text = "Last modified at \(dataSource.lastModifiedDetail.text)"
+        reminderLastModifiedLabel.font = dataSource.lastModifiedDetail.titleTextDetail.attribute.labelTextFont
+        reminderLastModifiedLabel.textColor = dataSource.lastModifiedDetail.titleTextDetail.attribute.labelTextColor
+        reminderLastModifiedLabel.text = "Last modified at \(dataSource.lastModifiedDetail.titleTextDetail.text)"
         
         
-        reminderNotifierTypeLabel.font = dataSource.reminderNotifierTypeDetail.attribute.labelTextFont
-        reminderNotifierTypeLabel.textColor = dataSource.reminderNotifierTypeDetail.attribute.labelTextColor
-        reminderNotifierTypeLabel.text = dataSource.reminderNotifierTypeDetail.text
+        reminderNotifierTypeLabel.font = dataSource.reminderNotifierTypeDetail.titleTextDetail.attribute.labelTextFont
+        reminderNotifierTypeLabel.textColor = dataSource.reminderNotifierTypeDetail.titleTextDetail.attribute.labelTextColor
+        reminderNotifierTypeLabel.text = dataSource.reminderNotifierTypeDetail.titleTextDetail.text
         
     }
     

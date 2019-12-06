@@ -58,7 +58,12 @@ class ReminderDetailViewController: UIViewController {
         
         detailViewModel = ReminderDetailViewModel(withReminder: reminder)
         
-        reminderDetailTableView = ReminderDetailTableView(withDetailSource: detailViewModel, contentTextViewDelegate: self, activationActionDelegate: self)
+        reminderDetailTableView = ReminderDetailTableView(withDetailSource: detailViewModel, contentTextViewDelegate: self, activationActionDelegate: self, tapCompletion: { [unowned self] (tappedIndexPath: IndexPath) -> Void in
+            
+            let locationSelectionVC: ReminderLocationSelectionViewController = ReminderLocationSelectionViewController()
+            self.navigationController?.pushViewController(locationSelectionVC, animated: true)
+        })
+        
         view.addSubview(reminderDetailTableView)
         reminderDetailTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         reminderDetailTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true

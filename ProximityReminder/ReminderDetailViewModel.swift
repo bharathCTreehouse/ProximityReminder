@@ -39,7 +39,6 @@ enum ReminderLocationEmptyState {
 }
 
 
-
 class ReminderDetailViewModel {
     
     let reminder: Reminder
@@ -72,19 +71,19 @@ class ReminderDetailViewModel {
 
 extension ReminderDetailViewModel: ReminderDetailDisplayable {
     
-    var reminderNotifierTypeDetail: (text: String, attribute: ReminderLabelTextAttribute) {
+    var reminderNotifierTypeDetail: ReminderTitleTextDisplayable {
         
         let reminderNotifier: ReminderNotifier = ReminderNotifier(rawValue: Int(reminder.notifierType))!
         
         if reminderNotifier == .undecided {
             
-            return (text: "", attribute: ReminderLabelTextAttribute.init(withFont: UIFont.systemFont(ofSize: 17.0), color: UIColor.lightGray))
+            return ReminderTitleTextViewModel(withText: "", font: UIFont.systemFont(ofSize: 17.0), color: UIColor.lightGray)
         }
         else {
             
-            
-            return (text: reminderNotifier.displayString, attribute: ReminderLabelTextAttribute.init(withFont: UIFont.boldSystemFont(ofSize: 17.0), color: UIColor.black, alpha: alphaValue))
+            return ReminderTitleTextViewModel(withText: reminderNotifier.displayString, font: UIFont.boldSystemFont(ofSize: 17.0), color: UIColor.black, alpha: alphaValue)
         }
+        
     }
     
     
@@ -95,25 +94,29 @@ extension ReminderDetailViewModel: ReminderDetailDisplayable {
     }
     
     
-    var content: (text: String, attribute: ReminderLabelTextAttribute) {
+    var content: ReminderTitleTextDisplayable {
         
         if contentEmptyState == .empty {
             
-            return (text: contentEmptyState.displayText!, attribute: ReminderLabelTextAttribute.init(withFont: UIFont.systemFont(ofSize: 17.0), color: contentEmptyState.displayTextColor))
+            return ReminderTitleTextViewModel(withText: contentEmptyState.displayText!, font: UIFont.systemFont(ofSize: 17.0), color: contentEmptyState.displayTextColor)
         }
         else {
-            return (text: reminder.content, attribute: ReminderLabelTextAttribute.init(withFont: UIFont.systemFont(ofSize: 17.0), color: contentEmptyState.displayTextColor))
+            return ReminderTitleTextViewModel(withText: reminder.content, font: UIFont.systemFont(ofSize: 17.0), color: contentEmptyState.displayTextColor)
         }
     }
     
-    var locationDetail: (text: String, attribute: ReminderLabelTextAttribute) {
+    
+    var locationDetail: ReminderTitleTextDisplayable {
         
         if reminder.locationString.isEmpty == true {
             
-            return (text: "Enter location", attribute: ReminderLabelTextAttribute.init(withFont: UIFont.systemFont(ofSize: 17.0), color: UIColor.lightGray))
+            return ReminderTitleTextViewModel(withText: "Enter location", font: UIFont.systemFont(ofSize: 17.0), color: UIColor.lightGray)
         }
         else {
-            return (text: reminder.locationString, attribute: ReminderLabelTextAttribute.init(withFont: UIFont.systemFont(ofSize: 17.0), color: UIColor.black, alpha: alphaValue))
+            
+            return ReminderTitleTextViewModel(withText: reminder.locationString, font: UIFont.systemFont(ofSize: 17.0), color: UIColor.black, alpha: alphaValue)
+            
+            
         }
     }
 }
