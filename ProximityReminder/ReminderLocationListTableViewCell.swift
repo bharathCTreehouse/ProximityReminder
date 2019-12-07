@@ -13,14 +13,17 @@ import UIKit
 class ReminderLocationListTableViewCell: UITableViewCell {
     
     weak private(set) var titleSubtitleView: ReminderTitleSubtitleView!
+    private(set) var indexPath: IndexPath! = nil
+    private(set) var infoButtonTappedHandler: ((IndexPath) -> Void)? = nil
 
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
-        accessoryType = .checkmark
-        accessoryView = UIButton.init(type: .infoLight)
+        let infoButton: UIButton = UIButton.init(type: .infoLight)
+        infoButton.addTarget(self, action: #selector(infoButtonTapped(_:)), for: .touchUpInside)
+        accessoryView = infoButton
         addDetailView()
     }
     
@@ -45,6 +48,14 @@ class ReminderLocationListTableViewCell: UITableViewCell {
     }
     
     
+    
+    func updateIndexPath(with indexPath: IndexPath, infoTapHandler handler: ((IndexPath) -> Void)?) {
+        
+        self.indexPath = indexPath
+        infoButtonTappedHandler = handler
+    }
+    
+    
     func updateLocationName(with nameDetail: (text: String, attribute: ReminderLabelTextAttribute)) {
         
         titleSubtitleView.update(titleLabelWith: nameDetail)
@@ -57,7 +68,15 @@ class ReminderLocationListTableViewCell: UITableViewCell {
     }
     
     
+    @objc func infoButtonTapped(_ sender: UIButton) {
+        
+        infoButtonTappedHandler?(indexPath)
+    }
+    
+    
     deinit {
         titleSubtitleView = nil
+        indexPath = nil
+        infoButtonTappedHandler = nil
     }
 }

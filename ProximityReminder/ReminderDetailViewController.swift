@@ -60,7 +60,7 @@ class ReminderDetailViewController: UIViewController {
         
         reminderDetailTableView = ReminderDetailTableView(withDetailSource: detailViewModel, contentTextViewDelegate: self, activationActionDelegate: self, tapCompletion: { [unowned self] (tappedIndexPath: IndexPath) -> Void in
             
-            let locationSelectionVC: ReminderLocationSelectionViewController = ReminderLocationSelectionViewController()
+            let locationSelectionVC: ReminderLocationSelectionViewController = ReminderLocationSelectionViewController(withReminder: self.reminder)
             self.navigationController?.pushViewController(locationSelectionVC, animated: true)
         })
         

@@ -10,14 +10,22 @@ import Foundation
 import UIKit
 
 
+protocol ReminderLocationListTableViewInfoButtonResponder: class {
+    func locationInfoButtonTapped(atIndexPath idxPath: IndexPath)
+}
+
+
 class ReminderLocationSelectionTableViewDataSource: NSObject, UITableViewDataSource {
     
     private var locationSearchListDisplayables: [ReminderLocationSearchResultListDisplayable]!
     
+    weak private(set) var infoButtonTapResponder: ReminderLocationListTableViewInfoButtonResponder? = nil
     
-    init(withSearchListDisplayableDataSource dataSource: [ReminderLocationSearchResultListDisplayable]) {
+    
+    init(withSearchListDisplayableDataSource dataSource: [ReminderLocationSearchResultListDisplayable], infoButtonTapResponder responder: ReminderLocationListTableViewInfoButtonResponder?) {
         
         locationSearchListDisplayables = dataSource
+        infoButtonTapResponder = responder
     }
     
     
@@ -39,10 +47,20 @@ class ReminderLocationSelectionTableViewDataSource: NSObject, UITableViewDataSou
         
         let cell: ReminderLocationListTableViewCell = tableView.dequeueReusableCell(withIdentifier: "locationDetailCell", for: indexPath) as! ReminderLocationListTableViewCell
         
+        cell.updateIndexPath(with: indexPath, infoTapHandler: { [unowned self] (tappedIdxPath: IndexPath) -> Void in
+            self.infoButtonTapResponder?.locationInfoButtonTapped(atIndexPath: tappedIdxPath)
+        })
+        
         cell.updateLocationName(with: displayableData.locationDetail.titleTextDetail)
         cell.updateLocationAddress(with: displayableData.locationDetail.subtitleTextDetail)
         
         return cell
+    }
+    
+    
+    deinit {
+        locationSearchListDisplayables = nil
+        infoButtonTapResponder = nil
     }
     
     

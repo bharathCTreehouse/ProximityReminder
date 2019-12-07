@@ -23,9 +23,13 @@ class ReminderLocationSelectionViewController: UIViewController {
     }
     
     private var locationSearchBarDelegate: ReminderLocationSearchDelegate!
+    
+    let reminder: Reminder
 
     
-    init() {
+    init(withReminder reminder: Reminder) {
+        
+        self.reminder = reminder
         super.init(nibName: "ReminderLocationSelectionViewController", bundle: .main)
     }
     
@@ -59,7 +63,7 @@ class ReminderLocationSelectionViewController: UIViewController {
     
     func configureLocationSearchTableView() {
         
-        locationListTableView = ReminderLocationSelectionTableView(withListDisplayables: listViewModels)
+        locationListTableView = ReminderLocationSelectionTableView(withListDisplayables: listViewModels, selectionResponder: self)
         view.addSubview(locationListTableView)
         locationListTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         locationListTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
@@ -129,4 +133,26 @@ class ReminderLocationSelectionViewController: UIViewController {
         locationListTableView = nil
         locationSearchBarDelegate = nil
     }
+}
+
+
+
+extension ReminderLocationSelectionViewController: ReminderLocationSelectionResponder {
+    
+    
+    func reactTo(tapType type: ReminderLocationCellTapType, atIndexPath idxPath: IndexPath) {
+        
+        if type == .locationTapped {
+            //call a handler and pass the selected location.
+            let loc: ReminderLocationListViewModel = listViewModels[idxPath.row]
+            //loc.location.locationName
+            //loc.formattedAddress
+            
+        }
+        else if type == .locationInfoTapped {
+            //push the map view controller along with the selected location.
+        }
+    }
+    
+    
 }

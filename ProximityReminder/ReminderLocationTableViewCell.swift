@@ -17,6 +17,8 @@ class ReminderLocationTableViewCell: UITableViewCell {
         
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         addTitleSubtitleView()
+        selectionStyle = .none
+        accessoryType = .disclosureIndicator
     }
     
     

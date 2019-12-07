@@ -75,8 +75,9 @@ extension ReminderDetailTableView: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        tableView.deselectRow(at: indexPath, animated: true)
-        tapHandler?(indexPath)
+        if indexPath.section == 1 && indexPath.row == 1 {
+            tapHandler?(indexPath)
+        }
     }
 }
 
