@@ -23,7 +23,6 @@ class ReminderListViewModel {
 
 extension ReminderListViewModel: ReminderListDisplayable {
     
-    
     var reminderNotifierTypeDetail: ReminderTitleTextDisplayable {
         
         let notifier: ReminderNotifier = ReminderNotifier(rawValue: Int(reminder.notifierType))!
@@ -57,13 +56,13 @@ extension ReminderListViewModel: ReminderListDisplayable {
     
     var locationDetail: ReminderTitleTextDisplayable {
         
-        if reminder.locationString.isEmpty == true {
+        if reminder.location == nil {
             
             return ReminderTitleTextViewModel(withText: "No reminder location", font: UIFont.systemFont(ofSize: 15.0), color: UIColor.lightGray)
         }
         else {
             
-            return ReminderTitleTextViewModel(withText: reminder.locationString, font: UIFont.systemFont(ofSize: 15.0), color: UIColor.black)
+            return ReminderTitleTextViewModel(withText: reminder.location?.name ?? reminder.location!.address, font: UIFont.systemFont(ofSize: 15.0), color: UIColor.black)
 
             
             //TODO: If the reminder is not activated, reduce the alpha value.

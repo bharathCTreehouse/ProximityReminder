@@ -11,9 +11,9 @@ import Foundation
 
 enum ReminderNotifier: Int {
     
-    case undecided
-    case entry
-    case exit
+    case undecided = 2
+    case entry = 0
+    case exit = 1
     
     var displayString: String {
         

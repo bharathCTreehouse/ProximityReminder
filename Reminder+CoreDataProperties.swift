@@ -2,7 +2,7 @@
 //  Reminder+CoreDataProperties.swift
 //  ProximityReminder
 //
-//  Created by Bharath on 28/11/19.
+//  Created by Bharath on 07/12/19.
 //  Copyright © 2019 Bharath. All rights reserved.
 //
 //
@@ -20,7 +20,7 @@ extension Reminder {
     @NSManaged public var content: String
     @NSManaged public var isActivated: Bool
     @NSManaged public var lastModifiedDate: Date
-    @NSManaged public var locationString: String
     @NSManaged public var notifierType: Int16
+    @NSManaged public var location: Location?
 
 }

@@ -116,6 +116,22 @@ extension ReminderDetailTableViewDataSource {
         
     }
     
+    func updateLocationDetail(inTableView tableView: ReminderDetailTableView) {
+        
+        let indexPath: IndexPath = IndexPath.init(row: 1, section: 1)
+        
+        let cell: ReminderLocationTableViewCell = tableView.cellForRow(at: indexPath) as! ReminderLocationTableViewCell
+        
+        //Update location text
+        cell.update(locationWith: reminderDetailDisplayable.locationDetail.titleTextDetail)
+        
+        //Update notifier text
+        cell.update(notifierTypeWith: reminderDetailDisplayable.reminderNotifierTypeDetail.titleTextDetail)
+        
+        tableView.reloadRows(at: [indexPath], with: .automatic)
+        
+    }
+    
 }
 
 

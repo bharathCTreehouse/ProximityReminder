@@ -17,7 +17,7 @@ enum ReminderCoreDataError: Error {
 
 class CoreDataContextConfigurer {
     
-    static private(set) var defaultContext: NSManagedObjectContext!
+    static private var defaultContext: NSManagedObjectContext!
     
     
     static func mainContext() -> NSManagedObjectContext {
@@ -45,23 +45,51 @@ class CoreDataContextConfigurer {
     }
     
     
-    static func saveChangesPresentInMainContext() throws {
+    static func saveChangesPresentInMainContext(forceSave force: Bool = false) throws {
         
         if defaultContext == nil {
             defaultContext = mainContext()
             //The context itself was nil, so no point attempting a save.
         }
         else {
-            if unsavedChangesExistOnMainContext() == true {
+            
+            if force == true {
+                
+                //Do not perform hasChanges check.
+                
                 do {
-                    try defaultContext.save()
+                    try saveMainContext()
                 }
-                catch {
-                    throw ReminderCoreDataError.saveFailure
+                catch(let saveError as ReminderCoreDataError) {
+                    throw saveError
+                }
+            }
+            else {
+                
+                //Check if unsaved data present before proceeding to save.
+                if unsavedChangesExistOnMainContext() == true {
+                    
+                    do {
+                        try saveMainContext()
+                    }
+                    catch(let saveError as ReminderCoreDataError) {
+                        throw saveError
+                    }
                 }
             }
         }
         
+    }
+    
+    
+    private static func saveMainContext() throws {
+        
+        do {
+            try defaultContext.save()
+        }
+        catch {
+            throw ReminderCoreDataError.saveFailure
+        }
     }
     
     

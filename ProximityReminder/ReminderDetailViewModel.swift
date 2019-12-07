@@ -45,7 +45,7 @@ class ReminderDetailViewModel {
     private(set) var contentEmptyState: ReminderContentEmptyState
     
     var alphaValue: CGFloat {
-        return (reminder.isActivated == true) ? 1.0 : 0.0
+        return (reminder.isActivated == true) ? 1.0 : 0.4
     }
     
     
@@ -108,13 +108,13 @@ extension ReminderDetailViewModel: ReminderDetailDisplayable {
     
     var locationDetail: ReminderTitleTextDisplayable {
         
-        if reminder.locationString.isEmpty == true {
+        if reminder.location == nil {
             
             return ReminderTitleTextViewModel(withText: "Enter location", font: UIFont.systemFont(ofSize: 17.0), color: UIColor.lightGray)
         }
         else {
             
-            return ReminderTitleTextViewModel(withText: reminder.locationString, font: UIFont.systemFont(ofSize: 17.0), color: UIColor.black, alpha: alphaValue)
+            return ReminderTitleTextViewModel(withText: reminder.location?.address ?? "", font: UIFont.systemFont(ofSize: 17.0), color: UIColor.black, alpha: alphaValue)
             
             
         }

@@ -44,6 +44,16 @@ class ReminderLocationSelectionViewController: UIViewController {
         super.viewDidLoad()
         configureLocationSearchBar()
         configureLocationSearchTableView()
+        configureNotifierSegmentControl()
+    }
+    
+    
+    func configureNotifierSegmentControl() {
+        
+        let notifier: ReminderNotifier = ReminderNotifier(rawValue: Int(reminder.notifierType)) ?? ReminderNotifier.undecided
+        if notifier == .entry || notifier == .exit {
+            notifierTypeSegmentControl.selectedSegmentIndex = notifier.rawValue
+        }
     }
     
     
@@ -69,6 +79,11 @@ class ReminderLocationSelectionViewController: UIViewController {
         locationListTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         locationListTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         locationListTableView.topAnchor.constraint(equalTo: notifierTypeSegmentControl.bottomAnchor, constant: 8.0).isActive = true
+    }
+    
+    
+    @IBAction func notifierSegmentTapped(_ sender: UISegmentedControl) {
+        reminder.notifierType = Int16(sender.selectedSegmentIndex)
     }
     
     
@@ -142,17 +157,48 @@ extension ReminderLocationSelectionViewController: ReminderLocationSelectionResp
     
     func reactTo(tapType type: ReminderLocationCellTapType, atIndexPath idxPath: IndexPath) {
         
+        let locationVM: ReminderLocationListViewModel = listViewModels[idxPath.row]
+        let reminderLocation: ReminderLocation = locationVM.location
+        
         if type == .locationTapped {
-            //call a handler and pass the selected location.
-            let loc: ReminderLocationListViewModel = listViewModels[idxPath.row]
-            //loc.location.locationName
-            //loc.formattedAddress
             
+            //Call a handler and pass the selected location.
+            reminder.notifierType = Int16(notifierTypeSegmentControl.selectedSegmentIndex)
+            
+            if reminder.location == nil {
+                
+                //Create new location.
+                
+                let location: Location = Location.init(context: CoreDataContextConfigurer.mainContext())
+                location.uniqueIdentifier = "\(reminder.objectID)"
+                location.name = reminderLocation.locationName
+                location.address = locationVM.formattedAddress
+                location.latitude = reminderLocation.placeMark.location?.coordinate.latitude ?? 0.0   //TODO: Have this checked.
+                location.longitude = reminderLocation.placeMark.location?.coordinate.longitude ?? 0.0  //TODO: Have this checked.
+                reminder.location = location
+            }
+            else {
+                
+                //location already present. Just update.
+                
+                let loc: Location = reminder.location!
+                loc.name = reminderLocation.locationName
+                loc.address = locationVM.formattedAddress
+                loc.latitude = reminderLocation.placeMark.location?.coordinate.latitude ?? 0.0   //TODO: Have this checked.
+                loc.longitude = reminderLocation.placeMark.location?.coordinate.longitude ?? 0.0  //TODO: Have this checked.
+                reminder.location = loc
+            }
+            
+            navigationController?.popViewController(animated: true)
         }
         else if type == .locationInfoTapped {
-            //push the map view controller along with the selected location.
+            
+            //Push the map view controller along with the selected location.
+            if let coordinate = reminderLocation.placeMark.location?.coordinate {
+                
+                let mapViewController: ReminderLocationMapViewController = ReminderLocationMapViewController(withLocation: coordinate)
+                navigationController?.pushViewController(mapViewController, animated: true)
+            }
         }
     }
-    
-    
 }
