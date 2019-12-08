@@ -56,6 +56,7 @@
 		8E981BF223942017002CC3E6 /* ReminderLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E981BF123942017002CC3E6 /* ReminderLocation.swift */; };
 		8E981BF423942050002CC3E6 /* ReminderLocationListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E981BF323942050002CC3E6 /* ReminderLocationListViewModel.swift */; };
 		8E981BF6239440FA002CC3E6 /* ReminderLocationSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E981BF5239440FA002CC3E6 /* ReminderLocationSearch.swift */; };
+		8EB2EC24239CD93800A1D95A /* ReminderLocationAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EB2EC23239CD93800A1D95A /* ReminderLocationAnnotation.swift */; };
 		8EC6E5A7239BD3260088E65E /* Location+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC6E5A5239BD3260088E65E /* Location+CoreDataClass.swift */; };
 		8EC6E5A8239BD3260088E65E /* Location+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC6E5A6239BD3260088E65E /* Location+CoreDataProperties.swift */; };
 		8EC6E5AE239C36500088E65E /* ReminderLocationMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC6E5AC239C36500088E65E /* ReminderLocationMapViewController.swift */; };
@@ -118,6 +119,7 @@
 		8E981BF123942017002CC3E6 /* ReminderLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderLocation.swift; sourceTree = "<group>"; };
 		8E981BF323942050002CC3E6 /* ReminderLocationListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderLocationListViewModel.swift; sourceTree = "<group>"; };
 		8E981BF5239440FA002CC3E6 /* ReminderLocationSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderLocationSearch.swift; sourceTree = "<group>"; };
+		8EB2EC23239CD93800A1D95A /* ReminderLocationAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderLocationAnnotation.swift; sourceTree = "<group>"; };
 		8EC6E5A5239BD3260088E65E /* Location+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Location+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
 		8EC6E5A6239BD3260088E65E /* Location+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Location+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
 		8EC6E5AC239C36500088E65E /* ReminderLocationMapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderLocationMapViewController.swift; sourceTree = "<group>"; };
@@ -366,6 +368,7 @@
 			children = (
 				8EC6E5AC239C36500088E65E /* ReminderLocationMapViewController.swift */,
 				8EC6E5AD239C36500088E65E /* ReminderLocationMapViewController.xib */,
+				8EB2EC23239CD93800A1D95A /* ReminderLocationAnnotation.swift */,
 			);
 			name = Maps;
 			sourceTree = "<group>";
@@ -478,6 +481,7 @@
 				8E7B1219238A97CA0063DE3E /* ReminderInformationDisplayable.swift in Sources */,
 				8E7B1216238A97660063DE3E /* ReminderDetailDisplayable.swift in Sources */,
 				8E366051238A83AB0012E19C /* ReminderListDisplayable.swift in Sources */,
+				8EB2EC24239CD93800A1D95A /* ReminderLocationAnnotation.swift in Sources */,
 				8E7079C5239AE0BD00639308 /* ReminderLocationListTableViewCell.swift in Sources */,
 				8E79574923897FE30028F0EE /* SceneDelegate.swift in Sources */,
 				8E7B121D238AFB290063DE3E /* ProximityReminder.xcdatamodeld in Sources */,

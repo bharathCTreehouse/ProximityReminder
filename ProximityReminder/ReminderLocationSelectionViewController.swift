@@ -196,7 +196,7 @@ extension ReminderLocationSelectionViewController: ReminderLocationSelectionResp
             //Push the map view controller along with the selected location.
             if let coordinate = reminderLocation.placeMark.location?.coordinate {
                 
-                let mapViewController: ReminderLocationMapViewController = ReminderLocationMapViewController(withLocation: coordinate)
+                let mapViewController: ReminderLocationMapViewController = ReminderLocationMapViewController(withLocationCoordinate: coordinate, nameOfLocation: reminderLocation.locationName, addressOfLocation: locationVM.formattedAddress)
                 navigationController?.pushViewController(mapViewController, animated: true)
             }
         }

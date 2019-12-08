@@ -14,11 +14,18 @@ import CoreLocation
 class ReminderLocationMapViewController: UIViewController {
     
     @IBOutlet weak private(set) var mapView: MKMapView!
-    let location: CLLocationCoordinate2D
+    @IBOutlet weak private(set) var addressLabel: UILabel!
+
+    let locationCoordinate: CLLocationCoordinate2D
+    let locationName: String?
+    let locationAddress: String
     
     
-    init(withLocation location: CLLocationCoordinate2D) {
-        self.location = location
+    init(withLocationCoordinate location: CLLocationCoordinate2D, nameOfLocation name: String? = nil, addressOfLocation address: String) {
+        
+        locationCoordinate = location
+        locationName = name
+        locationAddress = address
         super.init(nibName: "ReminderLocationMapViewController", bundle: .main)
     }
     
@@ -27,41 +34,50 @@ class ReminderLocationMapViewController: UIViewController {
     }
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
-        loadLocation()
+        navigationItem.title = locationName
+        addressLabel.text = locationAddress
+        loadLocationAndAnnotate()
+        addOverlayCircle()
     }
     
     
-    func loadLocation() {
+    func loadLocationAndAnnotate() {
         
-        let mapRegion: MKCoordinateRegion = MKCoordinateRegion(center: location, latitudinalMeters: 125.0, longitudinalMeters: 125.0)
-        //location.latitude = 0
-        //coordinate.longitude = 0;
-        //mapRegion.center = location
-        //mapRegion.span.latitudeDelta = 0.2
-        //mapRegion.span.longitudeDelta = 0.2
+        //Load and zoom into a region.
+        let mapRegion: MKCoordinateRegion = MKCoordinateRegion(center: locationCoordinate, latitudinalMeters: 125.0, longitudinalMeters: 125.0)
+        mapView.setRegion(mapRegion, animated: true)
         
-        self.mapView.setRegion(mapRegion, animated: true)
-        self.mapView.addAnnotation(self)
+        //Add the annotation.
+        let locationAnnotation: ReminderLocationAnnotation = ReminderLocationAnnotation(withLocationCoordinate: locationCoordinate)
+        mapView.addAnnotation(locationAnnotation)
+    }
+    
+    
+    func addOverlayCircle() {
         
+        let circle: MKCircle = MKCircle.init(center: locationCoordinate, radius: 40.0)
+        mapView.addOverlay(circle)
     }
 
 
     deinit {
         mapView = nil
+        addressLabel = nil
     }
    
 }
 
 
-extension ReminderLocationMapViewController: MKAnnotation {
-    
-    var coordinate: CLLocationCoordinate2D {
-        return location
-    }
-}
-
-
 extension ReminderLocationMapViewController: MKMapViewDelegate {
     
+    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+        
+        let circle = MKCircleRenderer(overlay: overlay)
+        circle.strokeColor = UIColor.blue
+        circle.fillColor = UIColor(red: 255.0, green: 0.0, blue: 0.0, alpha: 0.1)
+        circle.lineWidth = 1.0
+        return circle
+    }
 }
