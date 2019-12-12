@@ -53,6 +53,7 @@ class ReminderLocationSelectionTableView: UITableView {
         estimatedRowHeight = 50.0
         rowHeight = UITableView.automaticDimension
         delegate = self
+        keyboardDismissMode = .onDrag
     }
     
  

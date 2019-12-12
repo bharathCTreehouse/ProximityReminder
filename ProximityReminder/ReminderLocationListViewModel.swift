@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 
-class ReminderLocationListViewModel {
+class ReminderLocationListViewModel: ReminderLocationSearchResultListDisplayable {
     
     let location: ReminderLocation
     
@@ -19,10 +19,6 @@ class ReminderLocationListViewModel {
         
         self.location = location
     }
-    
-}
-
-extension ReminderLocationListViewModel: ReminderLocationSearchResultListDisplayable {
     
     
     var locationDetail: ReminderSubtitleTextDisplayable {
@@ -35,6 +31,7 @@ extension ReminderLocationListViewModel: ReminderLocationSearchResultListDisplay
     }
     
 }
+
 
 
 extension ReminderLocationListViewModel {
