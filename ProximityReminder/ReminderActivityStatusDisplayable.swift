@@ -11,11 +11,6 @@ import UIKit
 
 
 enum ReminderActivityStatus {
-    
-//    case notStarted (displayDetail: ReminderTitleTextDisplayable?)
-//    case inProgress (displayDetail: ReminderTitleTextDisplayable, activityIndicatorAttribute: ReminderActivityIndicatorInfo?)
-//    case finished (displayDetail: ReminderSubtitleTextDisplayable)
-    
     case notStarted
     case inProgress
     case finished
@@ -24,7 +19,6 @@ enum ReminderActivityStatus {
 
 protocol ReminderActivityStatusDisplayable {
     
-    //var activityStatusDetail: (status: ReminderActivityStatus, titleDetail: ReminderTitleTextDisplayable?, subtitleDetail: ReminderSubtitleTextDisplayable?, activityIndicatorAttribute: ReminderActivityIndicatorInfo?) { get }
     
     var statusInProgressDisplayableDetail: (textDetail: ReminderTitleTextDisplayable, activityIndicatorAttribute: ReminderActivityIndicatorInfo?) { get }
     

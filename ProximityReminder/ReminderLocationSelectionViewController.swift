@@ -14,6 +14,8 @@ class ReminderLocationSelectionViewController: UIViewController {
     @IBOutlet private(set) var locationSearchBar: UISearchBar!
     @IBOutlet private(set) var notifierTypeSegmentControl: UISegmentedControl!
     
+    private(set) var currentLocationView: ReminderActivityIndicatorTitleSubtitleView! = nil
+    
     private var locationListTableView: ReminderLocationSelectionTableView!
     
     private var listViewModels: [ReminderLocationListViewModel] = [] {
@@ -65,9 +67,18 @@ class ReminderLocationSelectionViewController: UIViewController {
             self.handle(searchBarActionState: actionState)
             
         })
-        
         locationSearchBar.delegate = locationSearchBarDelegate
         
+    }
+    
+    
+    func configureCurrentLocationSelectionView() {
+        
+        let loc: ReminderLocation = ReminderLocation(withPlaceMark: nil, nameOfTheLocation: nil)
+        
+        let currentLocationListVM: ReminderCurrentLocationListViewModel = ReminderCurrentLocationListViewModel(withStatus: .inProgress, reminderLocation: loc)
+        
+        let currentLocListView: ReminderActivityIndicatorTitleSubtitleView = ReminderActivityIndicatorTitleSubtitleView(withActivityStatusDisplayableDataSource: currentLocationListVM, activityStatus: .inProgress)
     }
     
     
@@ -147,6 +158,7 @@ class ReminderLocationSelectionViewController: UIViewController {
         notifierTypeSegmentControl = nil
         locationListTableView = nil
         locationSearchBarDelegate = nil
+        currentLocationView = nil
     }
 }
 
