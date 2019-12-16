@@ -69,7 +69,6 @@ class ReminderLocationManager: NSObject {
 
 extension ReminderLocationManager: CLLocationManagerDelegate {
     
-    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
         if locations.isEmpty == false {

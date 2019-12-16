@@ -27,6 +27,11 @@ class ReminderLocationSelectionViewController: UIViewController {
     private var locationSearchBarDelegate: ReminderLocationSearchDelegate!
     
     let reminder: Reminder
+    
+    private lazy var reminderLocationManager: ReminderLocationManager = {
+        
+        return ReminderLocationManager(withDelegate: self)
+    }()
 
     
     init(withReminder reminder: Reminder) {
@@ -44,13 +49,29 @@ class ReminderLocationSelectionViewController: UIViewController {
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        configureLocationSearchBar()
-        configureLocationSearchTableView()
-        configureNotifierSegmentControl()
+        configureSubViews()
+        beginFetchingCurrentLocation()
     }
     
     
-    func configureNotifierSegmentControl() {
+    func configureSubViews() {
+        
+        if locationSearchBar == nil {
+            configureLocationSearchBar()
+        }
+        if locationListTableView == nil {
+            configureLocationSearchTableView()
+        }
+        if notifierTypeSegmentControl == nil {
+            configureNotifierSegmentControl()
+        }
+        if currentLocationView == nil {
+            configureCurrentLocationSelectionView()
+        }
+    }
+    
+    
+    private func configureNotifierSegmentControl() {
         
         let notifier: ReminderNotifier = ReminderNotifier(rawValue: Int(reminder.notifierType)) ?? ReminderNotifier.undecided
         if notifier == .entry || notifier == .exit {
@@ -59,7 +80,7 @@ class ReminderLocationSelectionViewController: UIViewController {
     }
     
     
-    func configureLocationSearchBar() {
+    private func configureLocationSearchBar() {
         
         locationSearchBarDelegate = ReminderLocationSearchDelegate(withSearchActionHandler: { [unowned self] (actionState: ReminderSearchActionState) -> Void in
             
@@ -72,24 +93,27 @@ class ReminderLocationSelectionViewController: UIViewController {
     }
     
     
-    func configureCurrentLocationSelectionView() {
+    private func configureCurrentLocationSelectionView() {
         
-        let loc: ReminderLocation = ReminderLocation(withPlaceMark: nil, nameOfTheLocation: nil)
+        let currentLocationListVM: ReminderCurrentLocationListViewModel = ReminderCurrentLocationListViewModel(withLocation: nil)
         
-        let currentLocationListVM: ReminderCurrentLocationListViewModel = ReminderCurrentLocationListViewModel(withStatus: .inProgress, reminderLocation: loc)
+        currentLocationView = ReminderActivityIndicatorTitleSubtitleView(withActivityStatusDisplayableDataSource: currentLocationListVM, activityStatus: .notStarted)
+        view.addSubview(currentLocationView)
+        currentLocationView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        currentLocationView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        currentLocationView.topAnchor.constraint(equalTo: notifierTypeSegmentControl.bottomAnchor, constant: 5.0).isActive = true
         
-        let currentLocListView: ReminderActivityIndicatorTitleSubtitleView = ReminderActivityIndicatorTitleSubtitleView(withActivityStatusDisplayableDataSource: currentLocationListVM, activityStatus: .inProgress)
     }
     
     
-    func configureLocationSearchTableView() {
+    private func configureLocationSearchTableView() {
         
         locationListTableView = ReminderLocationSelectionTableView(withListDisplayables: listViewModels, selectionResponder: self)
         view.addSubview(locationListTableView)
         locationListTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         locationListTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         locationListTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        locationListTableView.topAnchor.constraint(equalTo: notifierTypeSegmentControl.bottomAnchor, constant: 8.0).isActive = true
+        locationListTableView.topAnchor.constraint(equalTo: currentLocationView.bottomAnchor, constant: 0.0).isActive = true
     }
     
     
@@ -170,7 +194,7 @@ extension ReminderLocationSelectionViewController: ReminderLocationSelectionResp
     func reactTo(tapType type: ReminderLocationCellTapType, atIndexPath idxPath: IndexPath) {
         
         let locationVM: ReminderLocationListViewModel = listViewModels[idxPath.row]
-        let reminderLocation: ReminderLocation = locationVM.location
+        let reminderLocation: ReminderLocation? = locationVM.location
         
         if type == .locationTapped {
             
@@ -206,11 +230,40 @@ extension ReminderLocationSelectionViewController: ReminderLocationSelectionResp
         else if type == .locationInfoTapped {
             
             //Push the map view controller along with the selected location.
-            if let coordinate = reminderLocation.placeMark.location?.coordinate {
+            if let coordinate = reminderLocation?.placeMark.location?.coordinate {
                 
                 let mapViewController: ReminderLocationMapViewController = ReminderLocationMapViewController(withLocationCoordinate: coordinate, nameOfLocation: reminderLocation.locationName, addressOfLocation: locationVM.formattedAddress)
                 navigationController?.pushViewController(mapViewController, animated: true)
             }
         }
     }
+}
+
+
+extension ReminderLocationSelectionViewController: ReminderLocationManagerDelegate {
+    
+    
+    func beginFetchingCurrentLocation() {
+        reminderLocationManager.fetchCurrentLocation()
+    }
+    
+    
+    func reactToLocationStatus(_ status: ReminderLocationStatus) {
+        
+        switch status {
+            
+            case .locationAccessRequested: print("locationAccess_requested")
+            case .locationAccessGranted: print("locationAccess_granted")
+            case .locationAccessRejected: print("locationAccess_rejected")
+            case .didStartFetchingCurrentLocation: print("didStartFetchingCurrentLocation")
+            case .currentLocationFetched(location: let currLoc):
+                print(currLoc)
+            case .failedToFetchCurrentLocation: print("failedToFetchCurrentLocation")
+            case .didEndFetchingCurrentLocation: print("didEndFetchingCurrentLocation")
+            default: break
+
+        }
+    }
+    
+    
 }

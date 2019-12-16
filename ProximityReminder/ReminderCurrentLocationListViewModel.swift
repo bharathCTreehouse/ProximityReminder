@@ -12,22 +12,14 @@ import UIKit
 
 class ReminderCurrentLocationListViewModel: ReminderLocationListViewModel {
     
-    var status: ReminderActivityStatus
-    
-    init(withStatus status: ReminderActivityStatus, reminderLocation loc: ReminderLocation) {
-        
-        self.status = status
-        super.init(withLocation: loc)
-    }
-    
     
     override var locationDetail: ReminderSubtitleTextDisplayable {
         
-        if location.locationName != nil {
+        if location?.locationName != nil {
             return super.locationDetail
         }
         else {
-            //When the current location name is not available, we shall show "current location" with a slighly different font and color.
+            //When the current location name is not available, we shall show "current location" as the title with a slighly different font and color.
             return  ReminderSubtitleTextViewModel(withSubtitleDetail: (text: formattedAddress, font: UIFont.systemFont(ofSize: 16.0), color: UIColor.black, alpha: 1.0), titleDetail: (text: "Current location", font: UIFont.italicSystemFont(ofSize: 18.0), color: UIColor.black, alpha: 1.0))
             
         }
