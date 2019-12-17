@@ -12,12 +12,16 @@ import UIKit
 
 class ReminderLocationListViewModel: ReminderLocationSearchResultListDisplayable {
     
-    let location: ReminderLocation?
+    private(set) var location: ReminderLocation?
     
     
     init(withLocation location: ReminderLocation?) {
-        
         self.location = location
+    }
+    
+    
+    func updateLocation(with loc: ReminderLocation?) {
+        location = loc
     }
     
     
@@ -28,6 +32,11 @@ class ReminderLocationListViewModel: ReminderLocationSearchResultListDisplayable
         let subtitleViewModel: ReminderSubtitleTextViewModel = ReminderSubtitleTextViewModel(withSubtitleDetail: (text: formattedAddress, font: UIFont.systemFont(ofSize: 16.0), color: UIColor.black, alpha: 1.0), titleDetail: (text: location?.locationName ?? "", font: UIFont.boldSystemFont(ofSize: 18.0), color: UIColor.black, alpha: 1.0))
         
         return subtitleViewModel
+    }
+    
+    
+    deinit {
+        location = nil
     }
     
 }

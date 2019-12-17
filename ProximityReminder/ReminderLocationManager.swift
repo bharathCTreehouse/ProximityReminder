@@ -30,7 +30,12 @@ protocol ReminderLocationManagerDelegate: class {
 
 class ReminderLocationManager: NSObject {
     
-    private let manager: CLLocationManager = CLLocationManager()
+    private lazy var manager: CLLocationManager = {
+        let locManager = CLLocationManager()
+        locManager.delegate = self
+        return locManager
+    }()
+    
     weak private var locationManagerDelegate: ReminderLocationManagerDelegate? = nil
     
     
@@ -46,7 +51,8 @@ class ReminderLocationManager: NSObject {
             locationManagerDelegate?.reactToLocationStatus( .locationAccessRequested)
             manager.requestWhenInUseAuthorization()
         }
-        else {
+        else if CLLocationManager.authorizationStatus() == .authorizedAlways || CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
+            
             locationManagerDelegate?.reactToLocationStatus( .didStartFetchingCurrentLocation)
             manager.startUpdatingLocation()
         }

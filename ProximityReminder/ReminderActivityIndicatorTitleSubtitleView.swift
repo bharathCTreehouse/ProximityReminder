@@ -12,7 +12,7 @@ import UIKit
 
 class ReminderActivityIndicatorTitleSubtitleView: UIView {
     
-    let displayableDataSource: ReminderActivityStatusDisplayable
+    private var displayableDataSource: ReminderActivityStatusDisplayable
     private var activityStatus: ReminderActivityStatus = .notStarted {
         didSet {
             reactToStatusChange()
@@ -22,6 +22,8 @@ class ReminderActivityIndicatorTitleSubtitleView: UIView {
     private(set) var titleLabel: UILabel? = nil
     private(set) var subtitleLabel: UILabel? = nil
     private var titleLabelLeadingConstraint: NSLayoutConstraint! = nil
+    private var titleLabelBottomConstraint: NSLayoutConstraint! = nil
+
 
 
     init(withActivityStatusDisplayableDataSource displayable: ReminderActivityStatusDisplayable, activityStatus status: ReminderActivityStatus) {
@@ -40,6 +42,12 @@ class ReminderActivityIndicatorTitleSubtitleView: UIView {
     
     func changeActivityStatus(to status: ReminderActivityStatus) {
         activityStatus = status
+    }
+    
+    
+    func updateDisplayableDataSource(with ds: ReminderActivityStatusDisplayable) {
+        
+        displayableDataSource = ds
     }
     
     
@@ -62,24 +70,25 @@ class ReminderActivityIndicatorTitleSubtitleView: UIView {
             }
             
             //Add the in-progress label if not already added.
-            if titleLabel == nil {
-                let textAttr: (text: String, attribute: ReminderLabelTextAttribute) = displayableDataSource.statusInProgressDisplayableDetail.textDetail.titleTextDetail
-                configureTitleLabel(usingDetail: textAttr)
-            }
+            let textAttr: (text: String, attribute: ReminderLabelTextAttribute) = displayableDataSource.statusInProgressDisplayableDetail.textDetail.titleTextDetail
+            configureTitleLabel(usingDetail: textAttr)
+            
+            
         }
         else if activityStatus == .finished {
             //We need both the title and sub title labels.
             //Remove the activity view.
             activityIndicatorView?.removeFromSuperview()
             
-            if titleLabel == nil {
-                let textAttr: (text: String, attribute: ReminderLabelTextAttribute) = displayableDataSource.statusFinishedDisplayableDetail.titleTextDetail
-                configureTitleLabel(usingDetail: textAttr)
-            }
+            var textAttr: (text: String, attribute: ReminderLabelTextAttribute) = displayableDataSource.statusFinishedDisplayableDetail.titleTextDetail
+            configureTitleLabel(usingDetail: textAttr)
+            
+            textAttr = displayableDataSource.statusFinishedDisplayableDetail.subtitleTextDetail
             if subtitleLabel == nil {
-                let textAttr: (text: String, attribute: ReminderLabelTextAttribute) = displayableDataSource.statusFinishedDisplayableDetail.subtitleTextDetail
                 configureSubtitleLabel(usingDetail: textAttr)
-                
+            }
+            else {
+                subtitleLabel!.text = textAttr.text
             }
         }
         else if activityStatus == .notStarted {
@@ -105,22 +114,34 @@ extension ReminderActivityIndicatorTitleSubtitleView {
     
     func configureTitleLabel(usingDetail detail: (text: String, attribute: ReminderLabelTextAttribute)) {
         
-        titleLabel = UILabel()
-        titleLabel!.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel!.numberOfLines = 1
-        titleLabel!.font = detail.attribute.labelTextFont
-        titleLabel!.textColor = detail.attribute.labelTextColor
-        addSubview(titleLabel!)
-        titleLabelLeadingConstraint.isActive = false
+        if titleLabel == nil {
+            
+            titleLabel = UILabel()
+            titleLabel!.translatesAutoresizingMaskIntoConstraints = false
+            titleLabel!.numberOfLines = 1
+            addSubview(titleLabel!)
+            titleLabel!.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16.0).isActive = true
+            titleLabel!.topAnchor.constraint(equalTo: topAnchor, constant: 9.0).isActive = true
+        }
+        
+        titleLabelLeadingConstraint?.isActive = false
+        titleLabelBottomConstraint?.isActive = false
+        
         if activityStatus == .inProgress {
+            
             titleLabelLeadingConstraint = titleLabel!.leadingAnchor.constraint(equalTo: activityIndicatorView!.trailingAnchor, constant: 8.0)
+            titleLabelBottomConstraint = titleLabel!.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16.0)
+            titleLabelBottomConstraint.isActive = true
+            
         }
         else if activityStatus == .finished {
+            
             titleLabelLeadingConstraint = titleLabel!.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16.0)
         }
         titleLabelLeadingConstraint.isActive = true
-        titleLabel!.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16.0).isActive = true
-        titleLabel!.topAnchor.constraint(equalTo: topAnchor, constant: 9.0).isActive = true
+        
+        titleLabel!.font = detail.attribute.labelTextFont
+        titleLabel!.textColor = detail.attribute.labelTextColor
         titleLabel!.text = detail.text
     }
     
@@ -148,7 +169,8 @@ extension ReminderActivityIndicatorTitleSubtitleView {
         addSubview(subtitleLabel!)
         subtitleLabel!.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16.0).isActive = true
         subtitleLabel!.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16.0).isActive = true
-        subtitleLabel!.topAnchor.constraint(equalTo: topAnchor, constant: 9.0).isActive = true
+        subtitleLabel!.topAnchor.constraint(equalTo: titleLabel!.bottomAnchor, constant: 6.0).isActive = true
+        subtitleLabel!.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -9.0).isActive = true
         subtitleLabel!.text = detail.text
     }
 }
