@@ -32,7 +32,7 @@ extension ReminderCurrentLocationListViewModel: ReminderActivityStatusDisplayabl
     
     var statusInProgressDisplayableDetail: (textDetail: ReminderTitleTextDisplayable, activityIndicatorAttribute: ReminderActivityIndicatorInfo?) {
         
-        let titleViewModel: ReminderTitleTextViewModel = ReminderTitleTextViewModel(withText: "Fetching current location", font: UIFont.systemFont(ofSize: 16.0), color: UIColor.darkGray)
+        let titleViewModel: ReminderTitleTextViewModel = ReminderTitleTextViewModel(withText: "Fetching current location ...", font: UIFont.italicSystemFont(ofSize: 17.0), color: UIColor.darkGray)
         
         let indicatorInfo: ReminderActivityIndicatorInfo = ReminderActivityIndicatorInfo(activityIndicatorStyle: .medium, backgroundColor: nil, shouldHideWhenStopped: true)
         

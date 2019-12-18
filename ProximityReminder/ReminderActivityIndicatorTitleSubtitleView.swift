@@ -23,20 +23,35 @@ class ReminderActivityIndicatorTitleSubtitleView: UIView {
     private(set) var subtitleLabel: UILabel? = nil
     private var titleLabelLeadingConstraint: NSLayoutConstraint! = nil
     private var titleLabelBottomConstraint: NSLayoutConstraint! = nil
+    private var infoButton: UIButton! = nil
+    private var tapResponderHandler: ((ReminderActivityStatus, ReminderLocationTapType) -> Void)?
 
 
 
-    init(withActivityStatusDisplayableDataSource displayable: ReminderActivityStatusDisplayable, activityStatus status: ReminderActivityStatus) {
+    init( withActivityStatusDisplayableDataSource displayable: ReminderActivityStatusDisplayable, activityStatus status: ReminderActivityStatus, infoButtonTapHandler handler: ((ReminderActivityStatus, ReminderLocationTapType) -> Void)? ) {
         
         displayableDataSource = displayable
+        tapResponderHandler = handler
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
         changeActivityStatus(to: status)
+        configureTapGestureRecognizer()
     }
     
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    
+    func configureTapGestureRecognizer() {
+        let tapGestRecog: UITapGestureRecognizer = UITapGestureRecognizer.init(target: self, action: #selector(entireViewTapped(_:)))
+        addGestureRecognizer(tapGestRecog)
+    }
+    
+    
+    @objc private func entireViewTapped(_ sender: UITapGestureRecognizer) {
+        tapResponderHandler?(activityStatus, .locationTapped)
     }
     
     
@@ -53,7 +68,15 @@ class ReminderActivityIndicatorTitleSubtitleView: UIView {
     
     private func reactToStatusChange() {
         
+        
+        if infoButton == nil {
+            configureInfoButton()
+        }
+        
         if activityStatus == .inProgress {
+            
+            infoButton!.alpha = 0.3
+            infoButton!.isEnabled = false
             
             //We do not need the sub title label. So removing it.
             subtitleLabel?.removeFromSuperview()
@@ -76,6 +99,10 @@ class ReminderActivityIndicatorTitleSubtitleView: UIView {
             
         }
         else if activityStatus == .finished {
+            
+            infoButton!.alpha = 1.0
+            infoButton!.isEnabled = true
+            
             //We need both the title and sub title labels.
             //Remove the activity view.
             activityIndicatorView?.removeFromSuperview()
@@ -92,6 +119,9 @@ class ReminderActivityIndicatorTitleSubtitleView: UIView {
             }
         }
         else if activityStatus == .notStarted {
+            
+            infoButton!.alpha = 0.3
+            infoButton!.isEnabled = false
             activityIndicatorView?.removeFromSuperview()
             titleLabel?.removeFromSuperview()
             subtitleLabel?.removeFromSuperview()
@@ -104,6 +134,7 @@ class ReminderActivityIndicatorTitleSubtitleView: UIView {
         titleLabel = nil
         subtitleLabel = nil
         titleLabelLeadingConstraint = nil
+        infoButton = nil
     }
     
 }
@@ -120,8 +151,8 @@ extension ReminderActivityIndicatorTitleSubtitleView {
             titleLabel!.translatesAutoresizingMaskIntoConstraints = false
             titleLabel!.numberOfLines = 1
             addSubview(titleLabel!)
-            titleLabel!.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16.0).isActive = true
-            titleLabel!.topAnchor.constraint(equalTo: topAnchor, constant: 9.0).isActive = true
+            titleLabel!.trailingAnchor.constraint(equalTo: infoButton.leadingAnchor, constant: -8.0).isActive = true
+            titleLabel!.topAnchor.constraint(equalTo: topAnchor, constant: 16.0).isActive = true
         }
         
         titleLabelLeadingConstraint?.isActive = false
@@ -154,7 +185,7 @@ extension ReminderActivityIndicatorTitleSubtitleView {
         activityIndicatorView!.translatesAutoresizingMaskIntoConstraints = false
         addSubview(activityIndicatorView!)
         activityIndicatorView!.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16.0).isActive = true
-        activityIndicatorView!.topAnchor.constraint(equalTo: topAnchor, constant: 8.0).isActive = true
+        activityIndicatorView!.topAnchor.constraint(equalTo: topAnchor, constant: 16.0).isActive = true
         activityIndicatorView!.startAnimating()
     }
     
@@ -168,9 +199,27 @@ extension ReminderActivityIndicatorTitleSubtitleView {
         subtitleLabel!.textColor = detail.attribute.labelTextColor
         addSubview(subtitleLabel!)
         subtitleLabel!.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16.0).isActive = true
-        subtitleLabel!.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16.0).isActive = true
+        subtitleLabel!.trailingAnchor.constraint(equalTo: infoButton.leadingAnchor, constant: -8.0).isActive = true
         subtitleLabel!.topAnchor.constraint(equalTo: titleLabel!.bottomAnchor, constant: 6.0).isActive = true
         subtitleLabel!.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -9.0).isActive = true
         subtitleLabel!.text = detail.text
+    }
+    
+    
+    func configureInfoButton() {
+        
+        infoButton = UIButton.init(type: .infoDark)
+        infoButton.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(infoButton)
+        infoButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16.0).isActive = true
+        //infoButton!.topAnchor.constraint(equalTo: topAnchor, constant: 16.0).isActive = true
+        infoButton.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        infoButton!.addTarget(self, action: #selector(infoButtonTapped(_:)), for: .touchUpInside)
+
+    }
+    
+    
+    @objc func infoButtonTapped(_ sender: UIButton) {
+        tapResponderHandler?(activityStatus, .locationInfoTapped)
     }
 }

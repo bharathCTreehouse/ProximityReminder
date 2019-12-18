@@ -208,8 +208,8 @@
 		8E79574523897FE30028F0EE /* ProximityReminder */ = {
 			isa = PBXGroup;
 			children = (
-				8E981BE32394190C002CC3E6 /* Location */,
 				8E7B121A238AFAFD0063DE3E /* CoreData */,
+				8E981BE32394190C002CC3E6 /* Location */,
 				8E7B1217238A97AF0063DE3E /* Common */,
 				8E7B1214238A97470063DE3E /* ReminderDetail */,
 				8E366052238A84550012E19C /* Misc */,

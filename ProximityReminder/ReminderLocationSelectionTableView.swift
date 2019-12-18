@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 
-enum ReminderLocationCellTapType {
+enum ReminderLocationTapType {
     
     case locationTapped
     case locationInfoTapped
@@ -20,7 +20,7 @@ enum ReminderLocationCellTapType {
 
 protocol ReminderLocationSelectionResponder: class {
     
-    func reactTo(tapType type: ReminderLocationCellTapType, atIndexPath idxPath: IndexPath)
+    func reactTo(tapType type: ReminderLocationTapType, atIndexPath idxPath: IndexPath)
 }
 
 
