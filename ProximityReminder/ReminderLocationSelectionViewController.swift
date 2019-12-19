@@ -15,7 +15,6 @@ class ReminderLocationSelectionViewController: UIViewController {
     @IBOutlet private(set) var notifierTypeSegmentControl: UISegmentedControl!
     
     private(set) var currentLocationView: ReminderActivityIndicatorTitleSubtitleView! = nil
-    
     private var locationListTableView: ReminderLocationSelectionTableView!
     
     private var listViewModels: [ReminderLocationListViewModel] = [] {
@@ -24,15 +23,11 @@ class ReminderLocationSelectionViewController: UIViewController {
         }
     }
     private var currentLocationViewModel: ReminderCurrentLocationListViewModel! = nil
-    
     private var locationSearchBarDelegate: ReminderLocationSearchDelegate!
-    
     let reminder: Reminder
     
-    private lazy var reminderLocationManager: ReminderLocationManager = {
-        
-        return ReminderLocationManager(withDelegate: self)
-    }()
+    private var reminderLocationManager: ReminderLocationManager? = nil
+   
 
     
     init(withReminder reminder: Reminder) {
@@ -51,12 +46,26 @@ class ReminderLocationSelectionViewController: UIViewController {
         
         super.viewDidLoad()
         configureSubViews()
+    }
+    
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        
+        super.viewWillDisappear(animated)
+        reminderLocationManager?.stopFetchingCurrentLocation()
+        reminderLocationManager = nil
+    }
+    
+    
+    override func viewWillAppear(_ animated: Bool) {
+        
+        super.viewWillAppear(animated)
+        reminderLocationManager = ReminderLocationManager(withDelegate: self)
         
         currentLocationView.changeActivityStatus(to: .inProgress)
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute: { [unowned self] () -> Void in
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: { () -> Void in
             self.beginFetchingCurrentLocation()
-
         })
     }
     
@@ -102,12 +111,11 @@ class ReminderLocationSelectionViewController: UIViewController {
         
         currentLocationViewModel = ReminderCurrentLocationListViewModel(withLocation: nil)
         
-        currentLocationView = ReminderActivityIndicatorTitleSubtitleView(withActivityStatusDisplayableDataSource: currentLocationViewModel, activityStatus: .notStarted, infoButtonTapHandler: { [unowned self] (currentActivityStatus: ReminderActivityStatus, tapType: ReminderLocationTapType) -> Void in
+        currentLocationView = ReminderActivityIndicatorTitleSubtitleView(withActivityStatusDisplayableDataSource: currentLocationViewModel, activityStatus: .notStarted, tapHandler: { [unowned self] (currentActivityStatus: ReminderActivityStatus, tapType: ReminderLocationTapType) -> Void in
             
             if currentActivityStatus == .finished {
                 
                 if tapType == .locationInfoTapped {
-                
                     //Push the map view controller.
                     self.showMapViewController(forReminderLocationViewModel: self.currentLocationViewModel)
                 }
@@ -204,6 +212,7 @@ class ReminderLocationSelectionViewController: UIViewController {
         locationListTableView = nil
         locationSearchBarDelegate = nil
         currentLocationView = nil
+        reminderLocationManager = nil
     }
 }
 
@@ -283,7 +292,7 @@ extension ReminderLocationSelectionViewController: ReminderLocationManagerDelega
     
     
     func beginFetchingCurrentLocation() {
-        reminderLocationManager.fetchCurrentLocation()
+        reminderLocationManager?.fetchCurrentLocation()
     }
     
     
@@ -317,7 +326,12 @@ extension ReminderLocationSelectionViewController: ReminderLocationManagerDelega
         
         let geoCoder: CLGeocoder = CLGeocoder()
         
-        geoCoder.reverseGeocodeLocation(loc) { [unowned self] ( allPlacemarks: [CLPlacemark]?, err: Error?) in
+        geoCoder.reverseGeocodeLocation(loc) { ( allPlacemarks: [CLPlacemark]?, err: Error?) in
+            
+            
+            guard let _ = self.reminderLocationManager else {
+                return
+            }
             
             if let allPlacemarks = allPlacemarks {
                 
@@ -337,6 +351,4 @@ extension ReminderLocationSelectionViewController: ReminderLocationManagerDelega
             }
         }
     }
-    
-    
 }

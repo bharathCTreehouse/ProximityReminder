@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import CoreLocation
+import CoreData
 
 class ReminderDetailViewController: UIViewController {
     
@@ -14,6 +16,11 @@ class ReminderDetailViewController: UIViewController {
     let reminder: Reminder
     var detailViewModel: ReminderDetailViewModel!
     var reminderObserversAdded: Bool = false
+    
+    lazy private var locationManager: ReminderLocationManager = {
+       return ReminderLocationManager(withDelegate: self)
+    }()
+
 
     
     init(withReminder reminder: Reminder) {
@@ -168,6 +175,7 @@ extension ReminderDetailViewController {
             do {
                 //ok to force save here. Unsaved data check already performed before getting here.
                 try CoreDataContextConfigurer.saveChangesPresentInMainContext(forceSave: true)
+                updateReminderNotificationStatus()
                 dismiss(animated: true, completion: nil)
                 
             }
@@ -179,6 +187,59 @@ extension ReminderDetailViewController {
             dismiss(animated: true, completion: nil)
         }
     }
+}
+
+
+extension ReminderDetailViewController: ReminderLocationManagerDelegate {
+    
+    
+    /*func beginRegionMonitoring() {
+        
+        let regionIdentifier: String = reminder.objectID.uriRepresentation().description
+        
+        if let lat = reminder.location?.latitude, let longi = reminder.location?.longitude {
+            
+            let regionToMonitor: CLCircularRegion = CLCircularRegion(center: .init(latitude: lat, longitude: longi), radius: .greatestFiniteMagnitude, identifier: regionIdentifier)
+            
+            let notifier: ReminderNotifier = ReminderNotifier(rawValue: Int(reminder.notifierType))!
+            
+            if notifier == .entry {
+                regionToMonitor.notifyOnEntry = true
+            }
+            else if notifier == .exit {
+                regionToMonitor.notifyOnExit = true
+            }
+           
+            locationManager.startMonitoring(regionToMonitor)
+            
+        }
+        
+        //let fetchReq: NSFetchRequest = Reminder.createFetchRequest()
+        //fetchReq.predicate = NSPredicate(format: "objectID.uriRepresentation().description == %@", regionIdentifier)
+        
+    }*/
+    
+  
+    func reactToLocationStatus(_ status: ReminderLocationStatus) {
+        
+        switch status {
+            
+            case .monitoringFailedForRegion(region: let failedRegion, error: let err):
+                if let failedRegion = failedRegion {
+                    print("Err: \(err.localizedDescription)")
+                    print("\(failedRegion.identifier)")
+            }
+            
+            case .didEnterMonitoredRegion(region: let enteredRegion): print("Region: \(enteredRegion)")
+            
+            case .didLeaveMonitoredRegion(region: let enteredRegion): print("Region: \(enteredRegion)")
+            
+            default: break
+            
+        }
+        
+    }
+    
 }
 
 
@@ -236,6 +297,50 @@ extension ReminderDetailViewController: ReminderSwitchActionDelegate {
         
         //Activation switch toggled. No need to update location. Just refresh the appearance.
         reminderDetailTableView.refreshLocationViewAppearance()
+    }
+    
+    
+    
+    func updateReminderNotificationStatus() {
+        
+        if let loc = reminder.location {
+            
+            let regionIdentifier: String = reminder.objectID.uriRepresentation().description
+            
+            let region: CLCircularRegion = CLCircularRegion(center: .init(latitude: loc.latitude, longitude: loc.longitude), radius: .greatestFiniteMagnitude, identifier: regionIdentifier)
+            
+            
+            if reminder.isActivated == false {
+                
+                //Reminder deactivated.
+                
+                if locationManager.monitoredRegions(contains: region) == true {
+                    
+                    //Region was previously being monitored. So stop the notification here.
+                    region.notifyOnExit = false
+                    region.notifyOnEntry = false
+                }
+                
+            }
+            else {
+                
+                //Reminder activated.
+                
+                let notifier: ReminderNotifier = ReminderNotifier(rawValue: Int(reminder.notifierType))!
+                
+                if notifier == .entry {
+                    region.notifyOnEntry = true
+                    region.notifyOnExit = false
+                }
+                else if notifier == .exit {
+                    region.notifyOnExit = true
+                    region.notifyOnEntry = false
+                }
+                if locationManager.monitoredRegions(contains: region) == false {
+                    locationManager.startMonitoring(region)
+                }
+            }
+        }
     }
     
 }

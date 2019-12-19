@@ -19,7 +19,10 @@ enum ReminderLocationStatus {
     case failedToFetchCurrentLocation
     case didEndFetchingCurrentLocation
     case didStartMonitoringRegion(region: CLRegion)
+    case monitoringFailedForRegion(region: CLRegion?, error: Error)
     case didEndMonitoringRegion(region: CLRegion)
+    case didEnterMonitoredRegion(region: CLRegion)
+    case didLeaveMonitoredRegion(region: CLRegion)
 }
 
 
@@ -66,6 +69,23 @@ class ReminderLocationManager: NSObject {
     }
     
     
+    
+    func startMonitoring(_ region: CLRegion) {
+        manager.startMonitoring(for: region)
+    }
+    
+    
+    func stopMonitoring(_ region: CLRegion) {
+        manager.stopMonitoring(for: region)
+        locationManagerDelegate?.reactToLocationStatus(.didEndMonitoringRegion(region: region))
+    }
+    
+    
+    func monitoredRegions(contains region: CLRegion) -> Bool {
+        return manager.monitoredRegions.contains(region)
+    }
+    
+    
     deinit {
         locationManagerDelegate = nil
     }
@@ -95,4 +115,32 @@ extension ReminderLocationManager: CLLocationManagerDelegate {
         }
         
     }
+    
+    
+    func locationManager(_ manager: CLLocationManager, didStartMonitoringFor region: CLRegion) {
+        
+        locationManagerDelegate?.reactToLocationStatus(.didStartMonitoringRegion(region: region))
+
+    }
+    
+    
+    func locationManager(_ manager: CLLocationManager, monitoringDidFailFor region: CLRegion?, withError error: Error) {
+        
+        locationManagerDelegate?.reactToLocationStatus(.monitoringFailedForRegion(region: region, error: error))
+    }
+    
+    
+    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
+        
+        locationManagerDelegate?.reactToLocationStatus(.didEnterMonitoredRegion(region: region))
+    }
+
+       
+    func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
+        
+        locationManagerDelegate?.reactToLocationStatus(.didLeaveMonitoredRegion(region: region))
+    }
+
+    
+    
 }
