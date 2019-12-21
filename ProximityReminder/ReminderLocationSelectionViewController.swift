@@ -302,7 +302,9 @@ extension ReminderLocationSelectionViewController: ReminderLocationManagerDelega
             
             case .locationAccessRequested:                      print("locationAccess_requested")
             
-            case .locationAccessGranted: print("locationAccess_granted")
+            case .locationAccessGranted:
+                print("locationAccess_granted")
+                beginFetchingCurrentLocation()
             
             case .locationAccessRejected: print("locationAccess_rejected")
             

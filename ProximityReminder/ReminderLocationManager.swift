@@ -36,10 +36,17 @@ class ReminderLocationManager: NSObject {
     private lazy var manager: CLLocationManager = {
         let locManager = CLLocationManager()
         locManager.delegate = self
+        locManager.allowsBackgroundLocationUpdates = true
+        locManager.pausesLocationUpdatesAutomatically = false
+        locManager.desiredAccuracy = kCLLocationAccuracyBest
         return locManager
     }()
     
     weak private var locationManagerDelegate: ReminderLocationManagerDelegate? = nil
+    
+    var monitoringRadius: Double {
+        return manager.maximumRegionMonitoringDistance
+    }
     
     
     required init(withDelegate delegate: ReminderLocationManagerDelegate? = nil) {
@@ -52,7 +59,7 @@ class ReminderLocationManager: NSObject {
         if CLLocationManager.authorizationStatus() == .notDetermined  {
             
             locationManagerDelegate?.reactToLocationStatus( .locationAccessRequested)
-            manager.requestWhenInUseAuthorization()
+            manager.requestAlwaysAuthorization()
         }
         else if CLLocationManager.authorizationStatus() == .authorizedAlways || CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
             
@@ -108,9 +115,8 @@ extension ReminderLocationManager: CLLocationManagerDelegate {
         
         if status == .authorizedAlways || status == .authorizedWhenInUse {
             locationManagerDelegate?.reactToLocationStatus( .locationAccessGranted)
-            fetchCurrentLocation()
         }
-        else {
+        else if status != .notDetermined {
             locationManagerDelegate?.reactToLocationStatus( .locationAccessRejected)
         }
         
@@ -131,13 +137,15 @@ extension ReminderLocationManager: CLLocationManagerDelegate {
     
     
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
-        
+            
+        print("didEnterRegion")
         locationManagerDelegate?.reactToLocationStatus(.didEnterMonitoredRegion(region: region))
     }
 
        
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
         
+            print("didExitRegion")
         locationManagerDelegate?.reactToLocationStatus(.didLeaveMonitoredRegion(region: region))
     }
 

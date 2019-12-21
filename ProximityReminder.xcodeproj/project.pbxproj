@@ -79,6 +79,7 @@
 		8E36604E238A83810012E19C /* ReminderListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderListViewModel.swift; sourceTree = "<group>"; };
 		8E366050238A83AB0012E19C /* ReminderListDisplayable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderListDisplayable.swift; sourceTree = "<group>"; };
 		8E366053238A84690012E19C /* ReminderLabelTextAttribute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderLabelTextAttribute.swift; sourceTree = "<group>"; };
+		8E6F241C23AE723300B4ED14 /* Google.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Google.gpx; sourceTree = "<group>"; };
 		8E7079B52398FEB000639308 /* ReminderTitleSubtitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderTitleSubtitleView.swift; sourceTree = "<group>"; };
 		8E7079B823993D7300639308 /* ReminderLocationSearchResultListDisplayable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderLocationSearchResultListDisplayable.swift; sourceTree = "<group>"; };
 		8E7079BB2399531500639308 /* ReminderTitleTextDisplayable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderTitleTextDisplayable.swift; sourceTree = "<group>"; };
@@ -192,6 +193,7 @@
 		8E79573A23897FE30028F0EE = {
 			isa = PBXGroup;
 			children = (
+				8E6F241C23AE723300B4ED14 /* Google.gpx */,
 				8E79574523897FE30028F0EE /* ProximityReminder */,
 				8E79574423897FE30028F0EE /* Products */,
 			);

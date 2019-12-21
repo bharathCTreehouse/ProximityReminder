@@ -22,6 +22,7 @@ class ReminderListViewController: UIViewController {
         super.viewDidLoad()
         configureNavigationBarButtonItems()
         fetchAllReminderData()
+        requestNotificationPermission()
     }
     
     
@@ -60,6 +61,23 @@ class ReminderListViewController: UIViewController {
         
         let navController: UINavigationController = UINavigationController(rootViewController: reminderDetailVC)
         present(navController, animated: true, completion: nil)
+        
+    }
+    
+    
+    func requestNotificationPermission() {
+        
+        let center = UNUserNotificationCenter.current()
+        center.requestAuthorization(options: [.alert, .badge, .sound], completionHandler: { (granted: Bool, err: Error?) -> Void in
+            
+            if granted == true && err == nil {
+                print("Thanks dude!!!")
+            }
+            else {
+                
+            }
+        })
+
         
     }
 }

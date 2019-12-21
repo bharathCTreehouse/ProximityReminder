@@ -20,6 +20,20 @@ class ReminderDetailViewController: UIViewController {
     lazy private var locationManager: ReminderLocationManager = {
        return ReminderLocationManager(withDelegate: self)
     }()
+    
+    lazy private var regionIdentifier: String = {
+        return reminder.objectID.uriRepresentation().description
+    }()
+    
+    var reminderLocRegion: CLCircularRegion? {
+        if let location = reminder.location {
+            return CLCircularRegion(center: .init(latitude: location.latitude, longitude: location.longitude), radius: locationManager.monitoringRadius, identifier: regionIdentifier)
+        }
+        else {
+            return nil
+        }
+    }
+
 
 
     
@@ -175,7 +189,7 @@ extension ReminderDetailViewController {
             do {
                 //ok to force save here. Unsaved data check already performed before getting here.
                 try CoreDataContextConfigurer.saveChangesPresentInMainContext(forceSave: true)
-                updateReminderNotificationStatus()
+                handleReminderActivationState()
                 dismiss(animated: true, completion: nil)
                 
             }
@@ -231,12 +245,46 @@ extension ReminderDetailViewController: ReminderLocationManagerDelegate {
             }
             
             case .didEnterMonitoredRegion(region: let enteredRegion): print("Region: \(enteredRegion)")
+                configureAndDisplayNotification()
             
             case .didLeaveMonitoredRegion(region: let enteredRegion): print("Region: \(enteredRegion)")
+                configureAndDisplayNotification()
             
             default: break
             
         }
+        
+    }
+    
+    
+    func configureAndDisplayNotification() {
+        
+            let notificationContent: UNMutableNotificationContent = UNMutableNotificationContent()
+            notificationContent.body = reminder.content
+            
+            var notifierString: String = "Arrived at\n\n"
+            if ReminderNotifier(rawValue: Int(reminder.notifierType)) == .exit {
+                notifierString = "Leaving \n\n"
+            }
+            notificationContent.subtitle = notifierString + reminder.location!.address
+        
+            let notificationTrigger: UNLocationNotificationTrigger = UNLocationNotificationTrigger(region: reminderLocRegion!, repeats: true)
+            
+            let req: UNNotificationRequest = UNNotificationRequest(identifier: regionIdentifier, content: notificationContent, trigger: notificationTrigger)
+            
+            let notificationCenter: UNUserNotificationCenter = UNUserNotificationCenter.current()
+            notificationCenter.add(req, withCompletionHandler: { (err: Error?) -> Void in
+                
+                if let err = err {
+                    //Could not schedule the notification
+                    print("Err: \(err.localizedDescription)")
+                }
+                else {
+                    //Scheduled successfully.
+                }
+            })
+            
+        
         
     }
     
@@ -301,14 +349,9 @@ extension ReminderDetailViewController: ReminderSwitchActionDelegate {
     
     
     
-    func updateReminderNotificationStatus() {
+    func handleReminderActivationState() {
         
-        if let loc = reminder.location {
-            
-            let regionIdentifier: String = reminder.objectID.uriRepresentation().description
-            
-            let region: CLCircularRegion = CLCircularRegion(center: .init(latitude: loc.latitude, longitude: loc.longitude), radius: .greatestFiniteMagnitude, identifier: regionIdentifier)
-            
+        if let region = reminderLocRegion {
             
             if reminder.isActivated == false {
                 
@@ -338,6 +381,7 @@ extension ReminderDetailViewController: ReminderSwitchActionDelegate {
                 }
                 if locationManager.monitoredRegions(contains: region) == false {
                     locationManager.startMonitoring(region)
+                    configureAndDisplayNotification()
                 }
             }
         }
