@@ -33,15 +33,8 @@ protocol ReminderLocationManagerDelegate: class {
 
 class ReminderLocationManager: NSObject {
     
-    private lazy var manager: CLLocationManager = {
-        let locManager = CLLocationManager()
-        locManager.delegate = self
-        locManager.allowsBackgroundLocationUpdates = true
-        locManager.pausesLocationUpdatesAutomatically = false
-        locManager.desiredAccuracy = kCLLocationAccuracyBest
-        return locManager
-    }()
-    
+    private var manager: CLLocationManager!
+       
     weak private var locationManagerDelegate: ReminderLocationManagerDelegate? = nil
     
     var monitoringRadius: Double {
@@ -51,6 +44,12 @@ class ReminderLocationManager: NSObject {
     
     required init(withDelegate delegate: ReminderLocationManagerDelegate? = nil) {
         locationManagerDelegate = delegate
+        manager = CLLocationManager()
+        super.init()
+        manager.delegate = self
+        manager.allowsBackgroundLocationUpdates = true
+        manager.pausesLocationUpdatesAutomatically = false
+        manager.desiredAccuracy = kCLLocationAccuracyBest
     }
     
     

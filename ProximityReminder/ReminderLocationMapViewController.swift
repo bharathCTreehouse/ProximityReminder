@@ -11,7 +11,7 @@ import MapKit
 import CoreLocation
 
 
-class ReminderLocationMapViewController: UIViewController {
+class ReminderLocationMapViewController: ReminderLocationMonitoringViewController {
     
     @IBOutlet weak private(set) var mapView: MKMapView!
     @IBOutlet weak private(set) var addressLabel: UILabel!

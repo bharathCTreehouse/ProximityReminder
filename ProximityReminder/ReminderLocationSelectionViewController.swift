@@ -9,7 +9,7 @@
 import UIKit
 import MapKit
 
-class ReminderLocationSelectionViewController: UIViewController {
+class ReminderLocationSelectionViewController: ReminderLocationMonitoringViewController {
     
     @IBOutlet private(set) var locationSearchBar: UISearchBar!
     @IBOutlet private(set) var notifierTypeSegmentControl: UISegmentedControl!
@@ -300,13 +300,12 @@ extension ReminderLocationSelectionViewController: ReminderLocationManagerDelega
         
         switch status {
             
-            case .locationAccessRequested:                      print("locationAccess_requested")
             
             case .locationAccessGranted:
-                print("locationAccess_granted")
                 beginFetchingCurrentLocation()
             
-            case .locationAccessRejected: print("locationAccess_rejected")
+            case .locationAccessRejected:
+                print("locationAccess_rejected")
             
             case .didStartFetchingCurrentLocation:
                   currentLocationView.changeActivityStatus(to: .inProgress)
@@ -315,8 +314,6 @@ extension ReminderLocationSelectionViewController: ReminderLocationManagerDelega
                   updateCurrentLocationView(withLocation: currLoc)
             
             case .failedToFetchCurrentLocation: print("failedToFetchCurrentLocation")
-            
-            case .didEndFetchingCurrentLocation: print("didEndFetchingCurrentLocation")
             
             default: break
 

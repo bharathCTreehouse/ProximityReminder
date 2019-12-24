@@ -10,7 +10,7 @@ import UIKit
 import CoreLocation
 import CoreData
 
-class ReminderDetailViewController: UIViewController {
+class ReminderDetailViewController: ReminderLocationMonitoringViewController {
     
     private(set) var reminderDetailTableView: ReminderDetailTableView!
     let reminder: Reminder
@@ -207,87 +207,25 @@ extension ReminderDetailViewController {
 extension ReminderDetailViewController: ReminderLocationManagerDelegate {
     
     
-    /*func beginRegionMonitoring() {
-        
-        let regionIdentifier: String = reminder.objectID.uriRepresentation().description
-        
-        if let lat = reminder.location?.latitude, let longi = reminder.location?.longitude {
-            
-            let regionToMonitor: CLCircularRegion = CLCircularRegion(center: .init(latitude: lat, longitude: longi), radius: .greatestFiniteMagnitude, identifier: regionIdentifier)
-            
-            let notifier: ReminderNotifier = ReminderNotifier(rawValue: Int(reminder.notifierType))!
-            
-            if notifier == .entry {
-                regionToMonitor.notifyOnEntry = true
-            }
-            else if notifier == .exit {
-                regionToMonitor.notifyOnExit = true
-            }
-           
-            locationManager.startMonitoring(regionToMonitor)
-            
-        }
-        
-        //let fetchReq: NSFetchRequest = Reminder.createFetchRequest()
-        //fetchReq.predicate = NSPredicate(format: "objectID.uriRepresentation().description == %@", regionIdentifier)
-        
-    }*/
-    
-  
     func reactToLocationStatus(_ status: ReminderLocationStatus) {
         
         switch status {
             
-            case .monitoringFailedForRegion(region: let failedRegion, error: let err):
-                if let failedRegion = failedRegion {
-                    print("Err: \(err.localizedDescription)")
-                    print("\(failedRegion.identifier)")
+        case .monitoringFailedForRegion(region: let failedRegion, error: let err):
+            if let failedRegion = failedRegion {
+                print("Err: \(err.localizedDescription)")
+                print("\(failedRegion.identifier)")
             }
             
-            case .didEnterMonitoredRegion(region: let enteredRegion): print("Region: \(enteredRegion)")
-                configureAndDisplayNotification()
+        case .didStartMonitoringRegion(region: let region):
+            print("Region: \(region), monitoring has begun successfully!")
+            //Region monitoring has begun successfully.
             
-            case .didLeaveMonitoredRegion(region: let enteredRegion): print("Region: \(enteredRegion)")
-                configureAndDisplayNotification()
-            
-            default: break
+        default: break
             
         }
         
     }
-    
-    
-    func configureAndDisplayNotification() {
-        
-            let notificationContent: UNMutableNotificationContent = UNMutableNotificationContent()
-            notificationContent.body = reminder.content
-            
-            var notifierString: String = "Arrived at\n\n"
-            if ReminderNotifier(rawValue: Int(reminder.notifierType)) == .exit {
-                notifierString = "Leaving \n\n"
-            }
-            notificationContent.subtitle = notifierString + reminder.location!.address
-        
-            let notificationTrigger: UNLocationNotificationTrigger = UNLocationNotificationTrigger(region: reminderLocRegion!, repeats: true)
-            
-            let req: UNNotificationRequest = UNNotificationRequest(identifier: regionIdentifier, content: notificationContent, trigger: notificationTrigger)
-            
-            let notificationCenter: UNUserNotificationCenter = UNUserNotificationCenter.current()
-            notificationCenter.add(req, withCompletionHandler: { (err: Error?) -> Void in
-                
-                if let err = err {
-                    //Could not schedule the notification
-                    print("Err: \(err.localizedDescription)")
-                }
-                else {
-                    //Scheduled successfully.
-                }
-            })
-            
-        
-        
-    }
-    
 }
 
 
@@ -381,7 +319,6 @@ extension ReminderDetailViewController: ReminderSwitchActionDelegate {
                 }
                 if locationManager.monitoredRegions(contains: region) == false {
                     locationManager.startMonitoring(region)
-                    configureAndDisplayNotification()
                 }
             }
         }

@@ -12,7 +12,7 @@ import MapKit
 import CoreData
 
 
-class ReminderListViewController: UIViewController {
+class ReminderListViewController: ReminderLocationMonitoringViewController {
     
     var reminderListTableView: ReminderListTableView!
 
