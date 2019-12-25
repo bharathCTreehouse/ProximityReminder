@@ -51,6 +51,7 @@ class ReminderListViewController: ReminderLocationMonitoringViewController {
         
         let newReminder: Reminder = Reminder.init(context: CoreDataContextConfigurer.mainContext())
         newReminder.lastModifiedDate = Date()
+        newReminder.identifier = newReminder.objectID.uriRepresentation().description
         presentDetailViewController(forReminder: newReminder)
     }
     

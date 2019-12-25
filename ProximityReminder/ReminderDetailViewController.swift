@@ -21,13 +21,13 @@ class ReminderDetailViewController: ReminderLocationMonitoringViewController {
        return ReminderLocationManager(withDelegate: self)
     }()
     
-    lazy private var regionIdentifier: String = {
-        return reminder.objectID.uriRepresentation().description
-    }()
+   /* lazy private var regionIdentifier: String = {
+        return reminder.identifier
+    }()*/
     
     var reminderLocRegion: CLCircularRegion? {
         if let location = reminder.location {
-            return CLCircularRegion(center: .init(latitude: location.latitude, longitude: location.longitude), radius: locationManager.monitoringRadius, identifier: regionIdentifier)
+            return CLCircularRegion(center: .init(latitude: location.latitude, longitude: location.longitude), radius: locationManager.monitoringRadius, identifier: reminder.identifier)
         }
         else {
             return nil
@@ -319,6 +319,10 @@ extension ReminderDetailViewController: ReminderSwitchActionDelegate {
                     region.notifyOnEntry = false
                 }
                 if locationManager.monitoredRegions(contains: region) == false {
+                    locationManager.startMonitoring(region)
+                }
+                else {
+                    locationManager.stopMonitoring(region)
                     locationManager.startMonitoring(region)
                 }
             }

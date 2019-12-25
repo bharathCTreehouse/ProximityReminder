@@ -50,6 +50,7 @@ class ReminderLocationManager: NSObject {
         manager.allowsBackgroundLocationUpdates = true
         manager.pausesLocationUpdatesAutomatically = false
         manager.desiredAccuracy = kCLLocationAccuracyBest
+        
     }
     
     
@@ -115,7 +116,11 @@ extension ReminderLocationManager: CLLocationManagerDelegate {
         if status == .authorizedAlways || status == .authorizedWhenInUse {
             locationManagerDelegate?.reactToLocationStatus( .locationAccessGranted)
         }
-        else if status != .notDetermined {
+        else if status == .notDetermined {
+            locationManagerDelegate?.reactToLocationStatus( .locationAccessRequested)
+            manager.requestAlwaysAuthorization()
+        }
+        else  {
             locationManagerDelegate?.reactToLocationStatus( .locationAccessRejected)
         }
         

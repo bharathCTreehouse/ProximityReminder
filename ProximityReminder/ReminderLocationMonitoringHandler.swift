@@ -76,6 +76,7 @@ class ReminderLocationMonitoringHandler: ReminderLocationManagerDelegate {
                 }
             })
             
+            
         }
         
     }
@@ -83,7 +84,7 @@ class ReminderLocationMonitoringHandler: ReminderLocationManagerDelegate {
     func reminder(withIdentifier identifier: String) -> Reminder? {
         
         let fetchReq: NSFetchRequest = Reminder.createFetchRequest()
-        //fetchReq.predicate = NSPredicate(format: "objectID.(uriRepresentation) == %@", url)
+        fetchReq.predicate = NSPredicate(format: "identifier == %@", identifier)
         let context: NSManagedObjectContext = CoreDataContextConfigurer.mainContext()
         fetchReq.fetchLimit = 1
         var rem: Reminder? = nil

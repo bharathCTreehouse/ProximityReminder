@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="15508" systemVersion="19B88" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="15508" systemVersion="18G103" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Location" representedClassName="Location" syncable="YES">
         <attribute name="address" attributeType="String"/>
         <attribute name="latitude" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
@@ -10,6 +10,7 @@
     </entity>
     <entity name="Reminder" representedClassName="Reminder" syncable="YES">
         <attribute name="content" attributeType="String" defaultValueString=""/>
+        <attribute name="identifier" attributeType="String"/>
         <attribute name="isActivated" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
         <attribute name="lastModifiedDate" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="notifierType" attributeType="Integer 16" defaultValueString="2" usesScalarValueType="YES"/>
@@ -17,6 +18,6 @@
     </entity>
     <elements>
         <element name="Location" positionX="-63" positionY="18" width="128" height="133"/>
-        <element name="Reminder" positionX="-63" positionY="-18" width="128" height="118"/>
+        <element name="Reminder" positionX="-63" positionY="-18" width="128" height="133"/>
     </elements>
 </model>

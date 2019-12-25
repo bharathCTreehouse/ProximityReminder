@@ -62,11 +62,11 @@ class ReminderLocationSelectionViewController: ReminderLocationMonitoringViewCon
         super.viewWillAppear(animated)
         reminderLocationManager = ReminderLocationManager(withDelegate: self)
         
-        currentLocationView.changeActivityStatus(to: .inProgress)
+        //currentLocationView.changeActivityStatus(to: .inProgress)
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: { () -> Void in
+        /*DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: { () -> Void in
             self.beginFetchingCurrentLocation()
-        })
+        })*/
     }
     
     
@@ -251,7 +251,8 @@ extension ReminderLocationSelectionViewController: ReminderLocationSelectionResp
                 //Create new location.
                 
                 let location: Location = Location.init(context: CoreDataContextConfigurer.mainContext())
-                location.uniqueIdentifier = "\(reminder.objectID)"
+                //location.uniqueIdentifier = "\(reminder.objectID)"
+                location.uniqueIdentifier = reminder.identifier
                 location.name = reminderLocation.locationName
                 location.address = locationVM.formattedAddress
                 location.latitude = reminderLocation.placeMark.location?.coordinate.latitude ?? 0.0   //TODO: Have this checked.
@@ -292,6 +293,8 @@ extension ReminderLocationSelectionViewController: ReminderLocationManagerDelega
     
     
     func beginFetchingCurrentLocation() {
+        
+        //currentLocationView.changeActivityStatus(to: .inProgress)
         reminderLocationManager?.fetchCurrentLocation()
     }
     
