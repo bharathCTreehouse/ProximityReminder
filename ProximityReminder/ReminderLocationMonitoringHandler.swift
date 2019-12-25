@@ -37,6 +37,7 @@ class ReminderLocationMonitoringHandler: ReminderLocationManagerDelegate {
     
     func notifyUser(about region: CLRegion) {
         
+        
         let notificationReminder: Reminder? = self.reminder(withIdentifier: region.identifier)
         
         guard let reminder = notificationReminder else {
@@ -47,6 +48,9 @@ class ReminderLocationMonitoringHandler: ReminderLocationManagerDelegate {
             
             //Just show an alert if the app is active.
             //Post a notification to allow the view controller being displayed to show an alert.
+            
+            print("Location notification fired!!!")
+
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "ReminderLocationMonitoringAlertNotification"), object: nil, userInfo: ["reminder": reminder])
          
         }
@@ -55,7 +59,7 @@ class ReminderLocationMonitoringHandler: ReminderLocationManagerDelegate {
             let notifierString: String = (reminder.notifierType == 0) ? "Arrived at\n\n" : "Left \n\n"
             
             let content: UNMutableNotificationContent = UNMutableNotificationContent()
-            content.body = reminder.content
+            content.body = reminder.content + "\n" + reminder.location!.address
             content.title = "Monitoring notifier"
             content.subtitle = notifierString
             let request: UNNotificationRequest = UNNotificationRequest(identifier: region.identifier, content: content, trigger: nil)
@@ -63,10 +67,12 @@ class ReminderLocationMonitoringHandler: ReminderLocationManagerDelegate {
                 
                 if error == nil {
                     //Location scheduled successfully.
+                    print("Location scheduled successfully")
+
                 }
                 else {
                     //Show an alert that scheduling failed.
-                    
+                    print("Location not scheduled")
                 }
             })
             
@@ -77,21 +83,29 @@ class ReminderLocationMonitoringHandler: ReminderLocationManagerDelegate {
     func reminder(withIdentifier identifier: String) -> Reminder? {
         
         let fetchReq: NSFetchRequest = Reminder.createFetchRequest()
-        fetchReq.predicate = NSPredicate(format: "objectID.uriRepresentation().description == %@", identifier)
+        //fetchReq.predicate = NSPredicate(format: "objectID.(uriRepresentation) == %@", url)
         let context: NSManagedObjectContext = CoreDataContextConfigurer.mainContext()
         fetchReq.fetchLimit = 1
+        var rem: Reminder? = nil
         
-        do {
-            let allReminders: [Reminder] = try context.fetch(fetchReq)
-            if allReminders.isEmpty == false {
-                return allReminders.first!
+        //context.performAndWait {
+            
+            do {
+                let allReminders: [Reminder] = try context.fetch(fetchReq)
+                if allReminders.isEmpty == false {
+                    print("FETCHED!!")
+                    rem = allReminders.first!
+                }
+                else {
+                    print("EMPTY")
+                }
+                
             }
-            
-        }
-        catch {
-            
-        }
+            catch(let err) {
+                print("Err: \(err.localizedDescription)")
+            }
+        //}
         
-        return nil
+        return rem
     }
 }

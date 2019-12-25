@@ -137,7 +137,7 @@ extension ReminderLocationManager: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
             
-        print("didEnterRegion")
+        print("didEnterRegion, \(self)")
         locationManagerDelegate?.reactToLocationStatus(.didEnterMonitoredRegion(region: region))
     }
 

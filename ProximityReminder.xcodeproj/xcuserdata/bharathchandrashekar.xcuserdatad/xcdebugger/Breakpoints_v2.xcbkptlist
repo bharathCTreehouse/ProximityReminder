@@ -7,64 +7,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "26ACFEC2-1671-45D4-AD94-042DE0EE6E62"
+            uuid = "138D7A30-655B-4FB1-8F73-E9C5E9DBA798"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ProximityReminder/ReminderDetailViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "212"
-            endingLineNumber = "212"
-            landmarkName = "reactToLocationStatus(_:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "26ACFEC2-1671-45D4-AD94-042DE0EE6E62 - 5a3fc7b221ba9d12"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "ProximityReminder.ReminderDetailViewController.reactToLocationStatus(ProximityReminder.ReminderLocationStatus) -&gt; ()"
-                  moduleName = "ProximityReminder"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/bharathchandrashekar/Desktop/iOSTechDegree/ProximityReminder/ProximityReminder/ReminderDetailViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "214"
-                  endingLineNumber = "214"
-                  offsetFromSymbolStart = "84">
-               </Location>
-               <Location
-                  uuid = "26ACFEC2-1671-45D4-AD94-042DE0EE6E62 - 5a3fc7b221ba9d12"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "ProximityReminder.ReminderDetailViewController.reactToLocationStatus(ProximityReminder.ReminderLocationStatus) -&gt; ()"
-                  moduleName = "ProximityReminder"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/bharathchandrashekar/Desktop/iOSTechDegree/ProximityReminder/ProximityReminder/ReminderDetailViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "214"
-                  endingLineNumber = "214"
-                  offsetFromSymbolStart = "188">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "FBB1C979-9430-4A8F-954F-6182238BE185"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ProximityReminder/ReminderDetailViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "221"
-            endingLineNumber = "221"
-            landmarkName = "reactToLocationStatus(_:)"
+            startingLineNumber = "292"
+            endingLineNumber = "292"
+            landmarkName = "handleReminderActivationState()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

@@ -211,17 +211,17 @@ extension ReminderDetailViewController: ReminderLocationManagerDelegate {
         
         switch status {
             
-        case .monitoringFailedForRegion(region: let failedRegion, error: let err):
-            if let failedRegion = failedRegion {
-                print("Err: \(err.localizedDescription)")
-                print("\(failedRegion.identifier)")
-            }
+            case .monitoringFailedForRegion(region: let failedRegion, error: let err):
+                if let failedRegion = failedRegion {
+                    print("Err: \(err.localizedDescription)")
+                    print("\(failedRegion.identifier)")
+                }
             
-        case .didStartMonitoringRegion(region: let region):
-            print("Region: \(region), monitoring has begun successfully!")
-            //Region monitoring has begun successfully.
+            case .didStartMonitoringRegion(region: let region):
+                print("Region: \(region), monitoring has begun successfully!")
+                //Region monitoring has begun successfully.
             
-        default: break
+            default: break
             
         }
         
@@ -300,6 +300,7 @@ extension ReminderDetailViewController: ReminderSwitchActionDelegate {
                     //Region was previously being monitored. So stop the notification here.
                     region.notifyOnExit = false
                     region.notifyOnEntry = false
+                    locationManager.stopMonitoring(region)
                 }
                 
             }

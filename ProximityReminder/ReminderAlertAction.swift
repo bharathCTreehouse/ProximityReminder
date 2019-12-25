@@ -23,10 +23,6 @@ class ReminderAlertAction {
         destructiveActionTitles = dstTitles
         cancelActionTitle = cancelTitle
     }
-    
-    deinit {
-        print("ReminderAlertAction")
-    }
 }
 
 
