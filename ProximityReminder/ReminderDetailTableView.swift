@@ -12,8 +12,8 @@ import UIKit
 
 class ReminderDetailTableView: UITableView {
     
-    var detailDataSource: ReminderDetailTableViewDataSource! = nil
-    var tapHandler: ((IndexPath) -> Void)? = nil
+    private var detailDataSource: ReminderDetailTableViewDataSource! = nil
+    private var tapHandler: ((IndexPath) -> Void)? = nil
     
     
     init(withDetailSource detailSource: ReminderDetailDisplayable, contentTextViewDelegate txtViewDelegate: UITextViewDelegate?, activationActionDelegate switchActionDelegate: ReminderSwitchActionDelegate, tapCompletion handler:  ((IndexPath) -> Void)?) {

@@ -35,20 +35,16 @@ extension ReminderLocationSearchDelegate: UISearchBarDelegate {
     
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        
         searchActionHandler(.searchAction(text: searchBar.text))
     }
 
    
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        
         searchActionHandler(.searchCancelAction)
-
     }
     
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        
         
         if searchText.isEmpty == true {
             searchActionHandler(.searchTextClearAction)

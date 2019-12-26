@@ -85,6 +85,11 @@ class ReminderDetailTableViewDataSource: NSObject, UITableViewDataSource {
         }
         
     }
+    
+    deinit {
+        contentTextViewDelegate = nil
+        reminderActivationActionDelegate = nil
+    }
 }
 
 

@@ -19,6 +19,4 @@ struct ReminderAlertHeading {
         alertTitle = title
         alertMessage = message
     }
-    
-   
 }

@@ -10,7 +10,6 @@ import Foundation
 import MapKit
 
 
-
 extension Array where Element == MKMapItem {
     
     var reminderLocations: [ReminderLocation] {

@@ -38,7 +38,7 @@ class ReminderLocationManager: NSObject {
     weak private var locationManagerDelegate: ReminderLocationManagerDelegate? = nil
     
     var monitoringRadius: Double {
-        return manager.maximumRegionMonitoringDistance
+        return 20.0
     }
     
     

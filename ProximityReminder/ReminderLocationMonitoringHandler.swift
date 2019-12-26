@@ -37,7 +37,6 @@ class ReminderLocationMonitoringHandler: ReminderLocationManagerDelegate {
     
     func notifyUser(about region: CLRegion) {
         
-        
         let notificationReminder: Reminder? = self.reminder(withIdentifier: region.identifier)
         
         guard let reminder = notificationReminder else {
@@ -76,7 +75,6 @@ class ReminderLocationMonitoringHandler: ReminderLocationManagerDelegate {
                 }
             })
             
-            
         }
         
     }
@@ -89,24 +87,26 @@ class ReminderLocationMonitoringHandler: ReminderLocationManagerDelegate {
         fetchReq.fetchLimit = 1
         var rem: Reminder? = nil
         
-        //context.performAndWait {
+        do {
+            let allReminders: [Reminder] = try context.fetch(fetchReq)
+            if allReminders.isEmpty == false {
+                print("FETCHED!!")
+                rem = allReminders.first!
+            }
+            else {
+                print("EMPTY")
+            }
             
-            do {
-                let allReminders: [Reminder] = try context.fetch(fetchReq)
-                if allReminders.isEmpty == false {
-                    print("FETCHED!!")
-                    rem = allReminders.first!
-                }
-                else {
-                    print("EMPTY")
-                }
-                
-            }
-            catch(let err) {
-                print("Err: \(err.localizedDescription)")
-            }
-        //}
+        }
+        catch(let err) {
+            print("Err: \(err.localizedDescription)")
+        }
         
         return rem
+    }
+    
+    
+    deinit {
+        locationManager = nil
     }
 }

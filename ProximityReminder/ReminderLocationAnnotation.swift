@@ -12,7 +12,7 @@ import MapKit
 
 class ReminderLocationAnnotation: NSObject, MKAnnotation {
     
-    let locationCoordinate: CLLocationCoordinate2D
+    private let locationCoordinate: CLLocationCoordinate2D
     
     init(withLocationCoordinate coordinate: CLLocationCoordinate2D) {
         locationCoordinate = coordinate

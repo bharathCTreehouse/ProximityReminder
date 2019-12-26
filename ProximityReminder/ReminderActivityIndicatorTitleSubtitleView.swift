@@ -44,7 +44,7 @@ class ReminderActivityIndicatorTitleSubtitleView: UIView {
     }
     
     
-    func configureTapGestureRecognizer() {
+    private func configureTapGestureRecognizer() {
         let tapGestRecog: UITapGestureRecognizer = UITapGestureRecognizer.init(target: self, action: #selector(entireViewTapped(_:)))
         addGestureRecognizer(tapGestRecog)
     }
@@ -61,7 +61,6 @@ class ReminderActivityIndicatorTitleSubtitleView: UIView {
     
     
     private func reactToStatusChange() {
-        
         
         if infoButton == nil {
             configureInfoButton()
@@ -136,6 +135,9 @@ class ReminderActivityIndicatorTitleSubtitleView: UIView {
         subtitleLabel = nil
         titleLabelLeadingConstraint = nil
         infoButton = nil
+        tapResponderHandler = nil
+        titleLabelBottomConstraint = nil
+        activityIndicatorView = nil
     }
     
 }
@@ -144,7 +146,7 @@ class ReminderActivityIndicatorTitleSubtitleView: UIView {
 extension ReminderActivityIndicatorTitleSubtitleView {
     
     
-    func configureTitleLabel(usingDetail detail: (text: String, attribute: ReminderLabelTextAttribute)) {
+    private func configureTitleLabel(usingDetail detail: (text: String, attribute: ReminderLabelTextAttribute)) {
         
         if titleLabel == nil {
             
@@ -178,7 +180,7 @@ extension ReminderActivityIndicatorTitleSubtitleView {
     }
     
     
-    func configureActivityIndicatorView(usingIndicatorInfo info: ReminderActivityIndicatorInfo) {
+    private func configureActivityIndicatorView(usingIndicatorInfo info: ReminderActivityIndicatorInfo) {
         
         activityIndicatorView = UIActivityIndicatorView.init(style: info.activityIndicatorStyle)
         activityIndicatorView!.color = info.backgroundColor
@@ -191,7 +193,7 @@ extension ReminderActivityIndicatorTitleSubtitleView {
     }
     
     
-    func configureSubtitleLabel(usingDetail detail: (text: String, attribute: ReminderLabelTextAttribute)) {
+    private func configureSubtitleLabel(usingDetail detail: (text: String, attribute: ReminderLabelTextAttribute)) {
         
         subtitleLabel = UILabel()
         subtitleLabel!.translatesAutoresizingMaskIntoConstraints = false
@@ -207,7 +209,7 @@ extension ReminderActivityIndicatorTitleSubtitleView {
     }
     
     
-    func configureInfoButton() {
+    private func configureInfoButton() {
         
         infoButton = UIButton.init(type: .infoDark)
         infoButton.translatesAutoresizingMaskIntoConstraints = false
@@ -219,7 +221,7 @@ extension ReminderActivityIndicatorTitleSubtitleView {
     }
     
     
-    @objc func infoButtonTapped(_ sender: UIButton) {
+    @objc private func infoButtonTapped(_ sender: UIButton) {
         tapResponderHandler?(activityStatus, .locationInfoTapped)
     }
 }

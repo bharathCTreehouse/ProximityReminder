@@ -22,8 +22,10 @@
 	<true/>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Location usage permission is required to fetch your current location and deliver reminder notifications.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Location usage permission is required to fetch your current location and deliver reminder notifications.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Please</string>
+	<string>Location usage permission is required to fetch your current location and deliver reminder notifications.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

@@ -16,9 +16,9 @@ class ReminderLocationMapViewController: ReminderLocationMonitoringViewControlle
     @IBOutlet weak private(set) var mapView: MKMapView!
     @IBOutlet weak private(set) var addressLabel: UILabel!
 
-    let locationCoordinate: CLLocationCoordinate2D
-    let locationName: String?
-    let locationAddress: String
+    private let locationCoordinate: CLLocationCoordinate2D
+    private let locationName: String?
+    private let locationAddress: String
     
     
     init(withLocationCoordinate location: CLLocationCoordinate2D, nameOfLocation name: String? = nil, addressOfLocation address: String) {

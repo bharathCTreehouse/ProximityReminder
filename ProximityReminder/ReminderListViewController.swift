@@ -121,6 +121,11 @@ class ReminderListViewController: ReminderLocationMonitoringViewController {
 
         
     }
+    
+    
+    deinit {
+        reminderListTableView = nil
+    }
 }
 
 

@@ -13,9 +13,9 @@ import CoreData
 class ReminderDetailViewController: ReminderLocationMonitoringViewController {
     
     private(set) var reminderDetailTableView: ReminderDetailTableView!
-    let reminder: Reminder
-    var detailViewModel: ReminderDetailViewModel!
-    var reminderObserversAdded: Bool = false
+    private let reminder: Reminder
+    private var detailViewModel: ReminderDetailViewModel!
+    private var reminderObserversAdded: Bool = false
     
     lazy private var locationManager: ReminderLocationManager = {
        return ReminderLocationManager(withDelegate: self)
@@ -38,6 +38,7 @@ class ReminderDetailViewController: ReminderLocationMonitoringViewController {
         
         self.reminder = reminder
         super.init(nibName: nil, bundle: nil)
+        self.reminder.addObserver(self, forKeyPath: "isActivated", options: .new, context: nil)
     }
     
     
@@ -107,6 +108,10 @@ class ReminderDetailViewController: ReminderLocationMonitoringViewController {
         if keyPath == "location" || keyPath == "notifierType" {
             reminderDetailTableView.refreshLocationContent()
         }
+        else if keyPath == "isActivated" {
+            //Activation switch toggled. No need to update location. Just refresh the appearance.
+            reminderDetailTableView.refreshLocationViewAppearance()
+        }
         else {
             super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
         }
@@ -120,6 +125,7 @@ class ReminderDetailViewController: ReminderLocationMonitoringViewController {
             reminder.removeObserver(self, forKeyPath: "location")
             reminder.removeObserver(self, forKeyPath: "notifierType")
         }
+        reminder.removeObserver(self, forKeyPath: "isActivated")
         reminderDetailTableView = nil
     }
 
@@ -275,11 +281,8 @@ extension ReminderDetailViewController: ReminderSwitchActionDelegate {
     
     func dualModeSwitchDidEndToggle(withCurrentState state: Bool) {
         
-        //TODO: KVO this??
+        //KVO will handle the UI change.
         reminder.isActivated = state
-        
-        //Activation switch toggled. No need to update location. Just refresh the appearance.
-        reminderDetailTableView.refreshLocationViewAppearance()
     }
     
     

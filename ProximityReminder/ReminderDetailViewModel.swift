@@ -34,10 +34,6 @@ enum ReminderContentEmptyState {
     }
 }
 
-enum ReminderLocationEmptyState {
-    
-}
-
 
 class ReminderDetailViewModel {
     
@@ -62,7 +58,6 @@ class ReminderDetailViewModel {
     
     
     func updateEmptyState(with state: ReminderContentEmptyState) {
-        
         contentEmptyState = state
     }
     
