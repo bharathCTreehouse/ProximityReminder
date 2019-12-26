@@ -11,13 +11,19 @@ import UIKit
 import CoreData
 
 
+enum ReminderTapMotive {
+    case viewing
+    case deletion
+}
+
+
 
 class ReminderListTableView: UITableView {
     
     var listDataSource: ReminderListTableViewDataSource! = nil
-    var reminderTappedHandler: ((Reminder) -> Void)? = nil
+    private(set) var reminderTappedHandler: ((Reminder, ReminderTapMotive) -> Void)! = nil
     
-    init(withFetchedResultsController controller: NSFetchedResultsController<Reminder>, reminderTapHandler handler: ((Reminder) -> Void)?) {
+    init(withFetchedResultsController controller: NSFetchedResultsController<Reminder>, reminderTapHandler handler: ((Reminder, ReminderTapMotive) -> Void)?) {
         
         reminderTappedHandler = handler
         super.init(frame: .zero, style: .grouped)
@@ -53,10 +59,12 @@ extension ReminderListTableView: UITableViewDelegate {
         
         let reminder: Reminder = listDataSource.fetchedController.object(at: indexPath)
         
-        reminderTappedHandler?(reminder)
+        reminderTappedHandler(reminder, .viewing)
         
         tableView.deselectRow(at: indexPath, animated: true)
         
     }
+    
+    
     
 }

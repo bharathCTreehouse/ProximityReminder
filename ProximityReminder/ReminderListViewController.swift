@@ -28,9 +28,15 @@ class ReminderListViewController: ReminderLocationMonitoringViewController {
     
     func configureReminderListTableView(withFetchedResultsController controller: NSFetchedResultsController<Reminder>) {
         
-        reminderListTableView = ReminderListTableView(withFetchedResultsController: controller, reminderTapHandler: { [unowned self] (tappedReminder: Reminder) -> Void in
+        
+        reminderListTableView = ReminderListTableView(withFetchedResultsController: controller, reminderTapHandler: { [unowned self] (tappedReminder: Reminder, reason: ReminderTapMotive) -> Void in
             
-            self.presentDetailViewController(forReminder: tappedReminder)
+            if reason == .viewing {
+                self.presentDetailViewController(forReminder: tappedReminder)
+            }
+            else if reason == .deletion {
+                self.alertUserAboutDeletion(ofReminder: tappedReminder)
+            }
         })
         view.addSubview(reminderListTableView)
         
@@ -62,6 +68,40 @@ class ReminderListViewController: ReminderLocationMonitoringViewController {
         
         let navController: UINavigationController = UINavigationController(rootViewController: reminderDetailVC)
         present(navController, animated: true, completion: nil)
+        
+    }
+    
+    
+    func alertUserAboutDeletion(ofReminder reminder: Reminder) {
+        
+        self.displayAlertController(withStyle: .alert, alertHeading: .init(withTitle: "Are you sure you want to delete this Reminder?", message: "Please note you will stop receiving monitoring notifications for this reminder on confirmation."), alertAction: .init(withDefaultActionTitles: [], destructiveActionTitles: ["YES"], cancelTitle: "NO"), actionTapHandler: { (actionIdx: Int) -> Void in
+            
+            if actionIdx == 0 {
+                
+                //Delete
+                
+                CoreDataContextConfigurer.mainContext().delete(reminder)
+                
+                
+                do {
+                UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [reminder.identifier])
+                    
+                    let remLocManager: ReminderLocationManager = ReminderLocationManager()
+                    
+                    if let region = remLocManager.monitoredRegion(withIdentifier: reminder.identifier) {
+                        
+                        remLocManager.stopMonitoring(region)
+                        
+                        try CoreDataContextConfigurer.saveChangesPresentInMainContext()
+
+                    }
+                }
+                catch {
+                    //Could not save.
+                }
+            }
+            
+        })
         
     }
     

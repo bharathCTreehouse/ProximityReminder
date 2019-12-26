@@ -21,10 +21,7 @@ class ReminderDetailViewController: ReminderLocationMonitoringViewController {
        return ReminderLocationManager(withDelegate: self)
     }()
     
-   /* lazy private var regionIdentifier: String = {
-        return reminder.identifier
-    }()*/
-    
+   
     var reminderLocRegion: CLCircularRegion? {
         if let location = reminder.location {
             return CLCircularRegion(center: .init(latitude: location.latitude, longitude: location.longitude), radius: locationManager.monitoringRadius, identifier: reminder.identifier)
@@ -297,7 +294,7 @@ extension ReminderDetailViewController: ReminderSwitchActionDelegate {
                 
                 if locationManager.monitoredRegions(contains: region) == true {
                     
-                    //Region was previously being monitored. So stop the notification here.
+                    //Region was previously being monitored. So stop the notification here and stop monitoring too.
                     region.notifyOnExit = false
                     region.notifyOnEntry = false
                     locationManager.stopMonitoring(region)

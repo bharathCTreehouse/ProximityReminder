@@ -53,6 +53,20 @@ class ReminderListTableViewDataSource: NSObject, UITableViewDataSource {
     }
     
     
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        
+        if editingStyle == .delete {
+            
+            let reminder: Reminder = fetchedController.object(at: indexPath)
+            let listTableView: ReminderListTableView = tableView as! ReminderListTableView
+            listTableView.reminderTappedHandler(reminder, .deletion)
+
+        }
+    }
+
+    
+    
     deinit {
         fetchedController = nil
     }

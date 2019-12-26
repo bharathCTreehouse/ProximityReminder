@@ -88,13 +88,30 @@ class ReminderLocationManager: NSObject {
     }
     
     
+    deinit {
+        locationManagerDelegate = nil
+    }
+}
+
+
+extension ReminderLocationManager {
+    
+    
     func monitoredRegions(contains region: CLRegion) -> Bool {
+        
         return manager.monitoredRegions.contains(region)
     }
     
     
-    deinit {
-        locationManagerDelegate = nil
+    func monitoredRegion(withIdentifier id: String) -> CLRegion? {
+        
+        
+        let filteredRegionList: Set<CLRegion> = manager.monitoredRegions.filter({ (reg: CLRegion) -> Bool in
+            
+            return reg.identifier == id
+        })
+        
+        return filteredRegionList.first
     }
 }
 
