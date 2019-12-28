@@ -12,6 +12,15 @@ import CoreData
 enum ReminderCoreDataError: Error {
     case saveFailure
     case stackCreationFailure
+    case unknownError
+    
+    var displayableMessage: String {
+        switch self {
+            case .saveFailure: return "Failed to save changes to disk. Please verify all the fields and try again."
+            case .stackCreationFailure: return "Failed to setup local database. Please reinstall the app and try again."
+            default: return "An unknown error has occurred. Please try again."
+        }
+    }
 }
 
 
@@ -60,8 +69,8 @@ class CoreDataContextConfigurer {
                 do {
                     try saveMainContext()
                 }
-                catch(let saveError as ReminderCoreDataError) {
-                    throw saveError
+                catch {
+                    throw ReminderCoreDataError.saveFailure
                 }
             }
             else {
@@ -72,8 +81,9 @@ class CoreDataContextConfigurer {
                     do {
                         try saveMainContext()
                     }
-                    catch(let saveError as ReminderCoreDataError) {
-                        throw saveError
+                    catch {
+                        throw ReminderCoreDataError.saveFailure
+
                     }
                 }
             }

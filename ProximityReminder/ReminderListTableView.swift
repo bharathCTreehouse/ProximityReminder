@@ -49,6 +49,12 @@ class ReminderListTableView: UITableView {
         register(UINib.init(nibName: "ReminderListTableViewCell", bundle: .main), forCellReuseIdentifier: "reminderListCell")
     }
     
+    
+    deinit {
+        listDataSource = nil
+        reminderTappedHandler = nil
+    }
+    
 }
 
 
@@ -58,13 +64,7 @@ extension ReminderListTableView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let reminder: Reminder = listDataSource.fetchedController.object(at: indexPath)
-        
         reminderTappedHandler(reminder, .viewing)
-        
         tableView.deselectRow(at: indexPath, animated: true)
-        
     }
-    
-    
-    
 }

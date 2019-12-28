@@ -28,7 +28,6 @@ class ReminderListViewController: ReminderLocationMonitoringViewController {
     
     func configureReminderListTableView(withFetchedResultsController controller: NSFetchedResultsController<Reminder>) {
         
-        
         reminderListTableView = ReminderListTableView(withFetchedResultsController: controller, reminderTapHandler: { [unowned self] (tappedReminder: Reminder, reason: ReminderTapMotive) -> Void in
             
             if reason == .viewing {
@@ -98,6 +97,7 @@ class ReminderListViewController: ReminderLocationMonitoringViewController {
                 }
                 catch {
                     //Could not save.
+                    self.displayAlertController(withStyle: .alert, alertHeading: .init(withTitle: "Failed to delete reminder. Please try again.", message: nil), alertAction: .init(withDefaultActionTitles: ["OK"], destructiveActionTitles: [], cancelTitle: nil))
                 }
             }
             
@@ -109,16 +109,24 @@ class ReminderListViewController: ReminderLocationMonitoringViewController {
     func requestNotificationPermission() {
         
         let center = UNUserNotificationCenter.current()
+        
         center.requestAuthorization(options: [.alert, .badge, .sound], completionHandler: { (granted: Bool, err: Error?) -> Void in
             
-            if granted == true && err == nil {
-                print("Thanks dude!!!")
-            }
-            else {
+            
+            if granted == false {
                 
+                //Permission denied.
+                
+                self.displayAlertController(withStyle: .alert, alertHeading: .init(withTitle: "Notification permission denied", message: "You won't receive monitoring notifications"), alertAction: .init(withDefaultActionTitles: ["OK"], destructiveActionTitles: [], cancelTitle: nil))
             }
+            else if err != nil {
+                
+                //Something went wrong.
+                
+                self.displayAlertController(withStyle: .alert, alertHeading: .init(withTitle: "Notification permission error", message: err!.localizedDescription), alertAction: .init(withDefaultActionTitles: ["OK"], destructiveActionTitles: [], cancelTitle: nil))
+            }
+            
         })
-
         
     }
     
@@ -132,7 +140,6 @@ class ReminderListViewController: ReminderLocationMonitoringViewController {
 
 extension ReminderListViewController: NSFetchedResultsControllerDelegate {
     
-    
     func fetchAllReminderData() {
         
         let sorter: NSSortDescriptor = NSSortDescriptor.init(key: "lastModifiedDate", ascending: false)
@@ -140,7 +147,6 @@ extension ReminderListViewController: NSFetchedResultsControllerDelegate {
         let fetchedResultsController: NSFetchedResultsController<Reminder> = FetchedResultsControllerCreator.fetchedResultsControllerForReminder(withPredicate: nil, propertiesToGet: nil, sortDescriptors: [sorter], inContext: CoreDataContextConfigurer.mainContext(), sectionNameKey: "lastModifiedDateSansTime")
         
         fetchedResultsController.delegate = self
-        
         
         do {
             
@@ -157,35 +163,78 @@ extension ReminderListViewController: NSFetchedResultsControllerDelegate {
             }
         }
         catch(let err as NSError) {
-            print("Failed to fetch all reminders: \(err.localizedDescription)")
+            
+            self.displayAlertController(withStyle: .alert, alertHeading: .init(withTitle: "Failed to fetch all reminders", message: err.localizedDescription), alertAction: .init(withDefaultActionTitles: ["OK"], destructiveActionTitles: [], cancelTitle: nil))
         }
     }
     
     
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         
-        //reminderListTableView.beginUpdates()
-        
+        reminderListTableView.beginUpdates()
     }
     
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
         
-        //reminderListTableView.reloadData()
-
+        
+        if type == .insert {
+            reminderListTableView.insertSections(IndexSet.init(integer: sectionIndex), with: .fade)
+        }
+        else if type == .update {
+            reminderListTableView.reloadSections(IndexSet.init(integer: sectionIndex), with: .automatic)
+        }
+        else if type == .delete {
+            reminderListTableView.deleteSections(IndexSet.init(integer: sectionIndex), with: .fade)
+        }
+        else if type != .move {
+            reminderListTableView.reloadData()
+        }
+        
     }
     
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         
-        reminderListTableView.reloadData()
+        if type == .insert {
+            reminderListTableView.insertRows(at: [newIndexPath!], with: .fade)
+        }
+        else if type == .update {
+            reminderListTableView.reloadRows(at: [indexPath!], with: .automatic)
+        }
+        else if type == .delete {
+            reminderListTableView.deleteRows(at: [indexPath!], with: .fade)
+        }
+        else if type == .move {
+            
+            if indexPath! != newIndexPath! {
+                
+                //The new and old index paths are different.
+                //So let us first reorder the rows and then reload after a slight delay.
+                reminderListTableView.moveRow(at: indexPath!, to: newIndexPath!)
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
+                    self.reminderListTableView.reloadRows(at: [newIndexPath!], with: .automatic)
+                }
+            }
+            else {
+                //New and old index paths the same. So no need to reorder. Just reload.
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
+                    self.reminderListTableView.reloadRows(at: [newIndexPath!], with: .automatic)
+                }
+            }
+            
+        }
+        else {
+            reminderListTableView.reloadData()
+        }
         
     }
     
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         
-        //reminderListTableView.endUpdates()
+        reminderListTableView.endUpdates()
         
     }
 }

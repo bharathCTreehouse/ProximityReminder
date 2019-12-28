@@ -7,64 +7,64 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "2B13E61B-6FBB-4CC1-A9B6-8D015F6C4CF1"
+            uuid = "13722854-F09A-4D61-99F5-D094A9327790"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "ProximityReminder/ReminderLocationManager.swift"
+            filePath = "ProximityReminder/ReminderLocationMonitoringViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "142"
-            endingLineNumber = "142"
-            landmarkName = "locationManager(_:didEnterRegion:)"
+            startingLineNumber = "32"
+            endingLineNumber = "32"
+            landmarkName = "viewDidDisappear(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "2AB43964-248A-4D2B-BE2A-6DAC77EC886D"
+            uuid = "78018D07-EAB3-4EA6-B230-2F9DBE100199"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "ProximityReminder/ReminderDetailViewController.swift"
+            filePath = "ProximityReminder/ReminderLocationMonitoringViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "382"
-            endingLineNumber = "382"
-            landmarkName = "handleReminderActivationState()"
+            startingLineNumber = "24"
+            endingLineNumber = "24"
+            landmarkName = "viewDidAppear(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "519A189B-536F-411F-8CD7-3A909A74932B"
+            uuid = "E231E724-1018-4D1B-8FFA-23FAEB492113"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "ProximityReminder/ReminderDetailViewController.swift"
+            filePath = "ProximityReminder/ReminderLocationMonitoringViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "262"
-            endingLineNumber = "262"
-            landmarkName = "configureAndDisplayNotification()"
+            startingLineNumber = "40"
+            endingLineNumber = "40"
+            landmarkName = "locationMonitoringAlertViewControllerNotificationFired(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "063619C3-B216-4DE2-AD12-AC9ED8866017"
+            uuid = "FAF0BF14-C854-4731-A607-FF2895D57EEE"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "ProximityReminder/ReminderDetailViewController.swift"
+            filePath = "ProximityReminder/ReminderLocationMonitoringViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "278"
-            endingLineNumber = "278"
-            landmarkName = "configureAndDisplayNotification()"
+            startingLineNumber = "80"
+            endingLineNumber = "80"
+            landmarkName = "alertActionTapped(atIndex:forReminder:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

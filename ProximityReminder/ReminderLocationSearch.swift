@@ -27,10 +27,10 @@ class ReminderLocationSearch {
         
         let searchRequest: MKLocalSearch.Request = MKLocalSearch.Request()
         searchRequest.naturalLanguageQuery = text
-        localSearch = MKLocalSearch.init(request: searchRequest)
+        searchRequest.pointOfInterestFilter = .includingAll
         
+        localSearch = MKLocalSearch.init(request: searchRequest)
         localSearch.start { (response: MKLocalSearch.Response?, error: Error?) in
-            
             completionHandler(response?.mapItems ?? [], error)
         }
     }

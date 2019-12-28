@@ -11,6 +11,7 @@ import CoreLocation
 
 
 enum ReminderLocationStatus {
+    
     case locationAccessRequested
     case locationAccessGranted
     case locationAccessRejected
@@ -38,11 +39,12 @@ class ReminderLocationManager: NSObject {
     weak private var locationManagerDelegate: ReminderLocationManagerDelegate? = nil
     
     var monitoringRadius: Double {
-        return 20.0
+        return 10.0
     }
     
     
     required init(withDelegate delegate: ReminderLocationManagerDelegate? = nil) {
+        
         locationManagerDelegate = delegate
         manager = CLLocationManager()
         super.init()
@@ -50,7 +52,6 @@ class ReminderLocationManager: NSObject {
         manager.allowsBackgroundLocationUpdates = true
         manager.pausesLocationUpdatesAutomatically = false
         manager.desiredAccuracy = kCLLocationAccuracyBest
-        
     }
     
     
@@ -69,12 +70,10 @@ class ReminderLocationManager: NSObject {
     }
     
     
-    
     func stopFetchingCurrentLocation() {
         locationManagerDelegate?.reactToLocationStatus( .didEndFetchingCurrentLocation)
         manager.stopUpdatingLocation()
     }
-    
     
     
     func startMonitoring(_ region: CLRegion) {
@@ -96,15 +95,12 @@ class ReminderLocationManager: NSObject {
 
 extension ReminderLocationManager {
     
-    
     func monitoredRegions(contains region: CLRegion) -> Bool {
-        
         return manager.monitoredRegions.contains(region)
     }
     
     
     func monitoredRegion(withIdentifier id: String) -> CLRegion? {
-        
         
         let filteredRegionList: Set<CLRegion> = manager.monitoredRegions.filter({ (reg: CLRegion) -> Bool in
             
@@ -118,6 +114,7 @@ extension ReminderLocationManager {
 
 
 extension ReminderLocationManager: CLLocationManagerDelegate {
+    
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
@@ -166,10 +163,8 @@ extension ReminderLocationManager: CLLocationManagerDelegate {
        
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
         
-            print("didExitRegion")
+        print("didExitRegion")
         locationManagerDelegate?.reactToLocationStatus(.didLeaveMonitoredRegion(region: region))
     }
-
-    
     
 }

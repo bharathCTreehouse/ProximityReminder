@@ -11,7 +11,5 @@ import UIKit
 
 
 protocol ReminderDetailDisplayable: ReminderInformationDisplayable {
-    
     var notifierActivationStatus: ReminderDualModeDisplayable { get }
-    
 }

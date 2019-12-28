@@ -86,7 +86,6 @@ extension ReminderDetailTableView: UITableViewDelegate {
 extension ReminderDetailTableView {
     
     func refreshContentViewAppearance() {
-        
         detailDataSource.updateContentTextViewAppearance(forTableView: self)
     }
     
@@ -96,7 +95,6 @@ extension ReminderDetailTableView {
     
     
     func refreshContentView() {
-        
         refreshContentViewAppearance()
         refreshContentTextViewText()
     }

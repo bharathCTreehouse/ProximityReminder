@@ -43,26 +43,21 @@ class ReminderLocationTableViewCell: UITableViewCell {
     
     
     func update(notifierTypeWith notifierDetail: (String, ReminderLabelTextAttribute) ) {
-        
         titleSubtitleView.update(titleLabelWith: notifierDetail)
     }
     
     
     func update(locationWith locationDetail: (String, ReminderLabelTextAttribute) ) {
-        
         titleSubtitleView.update(subtitleLabelWith: locationDetail)
     }
     
     
     func updateLocationDetailAlpha(using attr: ReminderLabelTextAttribute) {
-        
         titleSubtitleView.changeSubtitleLabelAlphaValue(to: attr.reminderViewAlpha)
-        
     }
     
     
     func updateNotifierDetailAlpha(using attr: ReminderLabelTextAttribute) {
-        
         titleSubtitleView.changeTitleLabelAlphaValue(to: attr.reminderViewAlpha)
     }
     

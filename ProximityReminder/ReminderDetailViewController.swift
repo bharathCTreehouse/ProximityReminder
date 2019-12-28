@@ -164,8 +164,18 @@ extension ReminderDetailViewController {
                         self.dismiss(animated: true, completion: nil)
                         
                     }
-                    catch  {
-                        //Show save failure error.
+                    catch (let error as ReminderCoreDataError)  {
+                        
+                        //Show save failure error
+                        
+                        self.displayAlertController(withStyle: .alert, alertHeading: .init(withTitle: error.displayableMessage, message: nil), alertAction: .init(withDefaultActionTitles: ["OK"], destructiveActionTitles: [], cancelTitle: nil), actionTapHandler: { (actIdx: Int) -> Void in
+                            
+                        })
+                    }
+                    catch {
+                        self.displayAlertController(withStyle: .alert, alertHeading: .init(withTitle: ReminderCoreDataError.unknownError.displayableMessage, message: nil), alertAction: .init(withDefaultActionTitles: ["OK"], destructiveActionTitles: [], cancelTitle: nil), actionTapHandler: { (actIdx: Int) -> Void in
+                            
+                        })
                     }
                 }
                     
@@ -196,9 +206,20 @@ extension ReminderDetailViewController {
                 dismiss(animated: true, completion: nil)
                 
             }
-            catch {
+            catch (let error as ReminderCoreDataError) {
+                
                 //Show save failure error
+                
+                displayAlertController(withStyle: .alert, alertHeading: .init(withTitle: error.displayableMessage, message: nil), alertAction: .init(withDefaultActionTitles: ["OK"], destructiveActionTitles: [], cancelTitle: nil), actionTapHandler: { (actIdx: Int) -> Void in
+                    
+                })
             }
+            catch {
+                displayAlertController(withStyle: .alert, alertHeading: .init(withTitle: ReminderCoreDataError.unknownError.displayableMessage, message: nil), alertAction: .init(withDefaultActionTitles: ["OK"], destructiveActionTitles: [], cancelTitle: nil), actionTapHandler: { (actIdx: Int) -> Void in
+                    
+                })
+            }
+                
         }
         else {
             dismiss(animated: true, completion: nil)
@@ -214,18 +235,18 @@ extension ReminderDetailViewController: ReminderLocationManagerDelegate {
         
         switch status {
             
-            case .monitoringFailedForRegion(region: let failedRegion, error: let err):
-                if let failedRegion = failedRegion {
-                    print("Err: \(err.localizedDescription)")
-                    print("\(failedRegion.identifier)")
+            case .monitoringFailedForRegion(_ , error: let err):
+            
+                displayAlertController(withStyle: .alert, alertHeading: .init(withTitle: "Failed to start monitoring", message: err.localizedDescription), alertAction: .init(withDefaultActionTitles: ["OK"], destructiveActionTitles: [], cancelTitle: nil)) { (idx) in
+                
                 }
             
+            
             case .didStartMonitoringRegion(region: let region):
-                print("Region: \(region), monitoring has begun successfully!")
                 //Region monitoring has begun successfully.
+                print("Region: \(region), monitoring has begun successfully!")
             
             default: break
-            
         }
         
     }
@@ -322,6 +343,13 @@ extension ReminderDetailViewController: ReminderSwitchActionDelegate {
                     locationManager.startMonitoring(region)
                 }
                 else {
+                    //Remove pending local notifications.
+                    //UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [])
+                    
+                    //UNUserNotificationCenter.current().getPendingNotificationRequests(completionHandler: { (requests: [UNNotificationRequest]) -> Void in
+                        
+                    //})
+                    
                     locationManager.stopMonitoring(region)
                     locationManager.startMonitoring(region)
                 }

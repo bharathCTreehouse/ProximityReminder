@@ -48,19 +48,19 @@ class ReminderLocationMonitoringHandler: ReminderLocationManagerDelegate {
             //Just show an alert if the app is active.
             //Post a notification to allow the view controller being displayed to show an alert.
             
-            print("Location notification fired!!!")
-
+            print("Location notification fired!!! (App is active)")
+            
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "ReminderLocationMonitoringAlertNotification"), object: nil, userInfo: ["reminder": reminder])
-         
+            
         }
         else {
             
-            let notifierString: String = (reminder.notifierType == 0) ? "Arrived at\n\n" : "Left \n\n"
+            let notifierString: String = (reminder.notifierType == 0) ? "ARRIVED " : "LEFT "
             
             let content: UNMutableNotificationContent = UNMutableNotificationContent()
-            content.body = reminder.content + "\n" + reminder.location!.address
-            content.title = "Monitoring notifier"
-            content.subtitle = notifierString
+            content.body = reminder.content
+            content.title = notifierString
+            content.subtitle = reminder.location!.address
             let request: UNNotificationRequest = UNNotificationRequest(identifier: region.identifier, content: content, trigger: nil)
             UNUserNotificationCenter.current().add(request, withCompletionHandler: { (error: Error?) -> Void in
                 
@@ -90,18 +90,12 @@ class ReminderLocationMonitoringHandler: ReminderLocationManagerDelegate {
         do {
             let allReminders: [Reminder] = try context.fetch(fetchReq)
             if allReminders.isEmpty == false {
-                print("FETCHED!!")
                 rem = allReminders.first!
             }
-            else {
-                print("EMPTY")
-            }
-            
         }
         catch(let err) {
             print("Err: \(err.localizedDescription)")
         }
-        
         return rem
     }
     

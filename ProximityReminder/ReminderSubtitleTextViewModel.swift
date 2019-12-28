@@ -31,7 +31,6 @@ class ReminderSubtitleTextViewModel: ReminderTitleTextViewModel {
 
 extension ReminderSubtitleTextViewModel: ReminderSubtitleTextDisplayable {
     
-    
     var subtitleTextDetail: (text: String, attribute: ReminderLabelTextAttribute) {
         
         return (text: subtitleText, attribute: ReminderLabelTextAttribute(withFont: subtitleFont, color: subtitleColor, alpha: subtitleAlphaValue))

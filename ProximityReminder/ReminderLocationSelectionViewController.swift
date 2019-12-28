@@ -61,12 +61,6 @@ class ReminderLocationSelectionViewController: ReminderLocationMonitoringViewCon
         
         super.viewWillAppear(animated)
         reminderLocationManager = ReminderLocationManager(withDelegate: self)
-        
-        //currentLocationView.changeActivityStatus(to: .inProgress)
-        
-        /*DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: { () -> Void in
-            self.beginFetchingCurrentLocation()
-        })*/
     }
     
     
@@ -156,16 +150,15 @@ class ReminderLocationSelectionViewController: ReminderLocationMonitoringViewCon
         switch state {
             
             case .searchAction(let searchText):
-            initiateSearch(withText: searchText)
+                initiateSearch(withText: searchText)
             
             case .searchCancelAction:
-            locationSearchBar.text = nil
-            locationSearchBar.endEditing(true)
+                locationSearchBar.text = nil
+                locationSearchBar.endEditing(true)
             
-            case .searchTextClearAction: print("")
-            //Clears search results and show only current location.
-            
-            
+            case .searchTextClearAction:
+                //Clears search results and show only current location.
+                listViewModels.removeAll()
         }
     }
     
@@ -220,7 +213,6 @@ class ReminderLocationSelectionViewController: ReminderLocationMonitoringViewCon
 
 extension ReminderLocationSelectionViewController: ReminderLocationSelectionResponder {
     
-    
     func reactTo(tapType type: ReminderLocationTapType, atIndexPath idxPath: IndexPath) {
         
         let locationVM: ReminderLocationListViewModel = listViewModels[idxPath.row]
@@ -251,12 +243,11 @@ extension ReminderLocationSelectionViewController: ReminderLocationSelectionResp
                 //Create new location.
                 
                 let location: Location = Location.init(context: CoreDataContextConfigurer.mainContext())
-                //location.uniqueIdentifier = "\(reminder.objectID)"
                 location.uniqueIdentifier = reminder.identifier
                 location.name = reminderLocation.locationName
                 location.address = locationVM.formattedAddress
-                location.latitude = reminderLocation.placeMark.location?.coordinate.latitude ?? 0.0   //TODO: Have this checked.
-                location.longitude = reminderLocation.placeMark.location?.coordinate.longitude ?? 0.0  //TODO: Have this checked.
+                location.latitude = reminderLocation.placeMark.location?.coordinate.latitude ?? 0.0
+                location.longitude = reminderLocation.placeMark.location?.coordinate.longitude ?? 0.0
                 reminder.location = location
             }
             else {
@@ -266,8 +257,8 @@ extension ReminderLocationSelectionViewController: ReminderLocationSelectionResp
                 let loc: Location = reminder.location!
                 loc.name = reminderLocation.locationName
                 loc.address = locationVM.formattedAddress
-                loc.latitude = reminderLocation.placeMark.location?.coordinate.latitude ?? 0.0   //TODO: Have this checked.
-                loc.longitude = reminderLocation.placeMark.location?.coordinate.longitude ?? 0.0  //TODO: Have this checked.
+                loc.latitude = reminderLocation.placeMark.location?.coordinate.latitude ?? 0.0
+                loc.longitude = reminderLocation.placeMark.location?.coordinate.longitude ?? 0.0
                 reminder.location = loc
             }
             
@@ -293,8 +284,6 @@ extension ReminderLocationSelectionViewController: ReminderLocationManagerDelega
     
     
     func beginFetchingCurrentLocation() {
-        
-        //currentLocationView.changeActivityStatus(to: .inProgress)
         reminderLocationManager?.fetchCurrentLocation()
     }
     
@@ -303,12 +292,11 @@ extension ReminderLocationSelectionViewController: ReminderLocationManagerDelega
         
         switch status {
             
-            
             case .locationAccessGranted:
                 beginFetchingCurrentLocation()
             
             case .locationAccessRejected:
-                print("locationAccess_rejected")
+                displayAlertController(withStyle: .alert, alertHeading: .init(withTitle: "Location permission denied", message: "You will not receive monitoring notifications or alerts"), alertAction: .init(withDefaultActionTitles: ["OK"], destructiveActionTitles: [], cancelTitle: nil))
             
             case .didStartFetchingCurrentLocation:
                   currentLocationView.changeActivityStatus(to: .inProgress)
@@ -316,7 +304,8 @@ extension ReminderLocationSelectionViewController: ReminderLocationManagerDelega
             case .currentLocationFetched(location: let currLoc):
                   updateCurrentLocationView(withLocation: currLoc)
             
-            case .failedToFetchCurrentLocation: print("failedToFetchCurrentLocation")
+            case .failedToFetchCurrentLocation:
+                displayAlertController(withStyle: .alert, alertHeading: .init(withTitle: "Failed to fetch current location. Please restart the app and try again.", message: nil), alertAction: .init(withDefaultActionTitles: ["OK"], destructiveActionTitles: [], cancelTitle: nil))
             
             default: break
 
@@ -329,7 +318,6 @@ extension ReminderLocationSelectionViewController: ReminderLocationManagerDelega
         let geoCoder: CLGeocoder = CLGeocoder()
         
         geoCoder.reverseGeocodeLocation(loc) { ( allPlacemarks: [CLPlacemark]?, err: Error?) in
-            
             
             guard let _ = self.reminderLocationManager else {
                 return
