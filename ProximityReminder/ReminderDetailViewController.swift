@@ -318,6 +318,9 @@ extension ReminderDetailViewController: ReminderSwitchActionDelegate {
                 
                 if locationManager.monitoredRegions(contains: region) == true {
                     
+                    //Remove pending local notifications.
+                UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [region.identifier])
+
                     //Region was previously being monitored. So stop the notification here and stop monitoring too.
                     region.notifyOnExit = false
                     region.notifyOnEntry = false
@@ -328,6 +331,9 @@ extension ReminderDetailViewController: ReminderSwitchActionDelegate {
             else {
                 
                 //Reminder activated.
+                
+                //Remove pending local notifications.
+                UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [region.identifier])
                 
                 let notifier: ReminderNotifier = ReminderNotifier(rawValue: Int(reminder.notifierType))!
                 
@@ -343,13 +349,6 @@ extension ReminderDetailViewController: ReminderSwitchActionDelegate {
                     locationManager.startMonitoring(region)
                 }
                 else {
-                    //Remove pending local notifications.
-                    //UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [])
-                    
-                    //UNUserNotificationCenter.current().getPendingNotificationRequests(completionHandler: { (requests: [UNNotificationRequest]) -> Void in
-                        
-                    //})
-                    
                     locationManager.stopMonitoring(region)
                     locationManager.startMonitoring(region)
                 }

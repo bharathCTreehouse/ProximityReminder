@@ -57,7 +57,7 @@ class ReminderLocationMonitoringViewController: UIViewController, ReminderLocati
                     
                 }
                 else {
-                    //An alert controller is currently presented. But it is not the monitoring one. What do we do??
+                    //An alert controller is currently presented. But it is not the monitoring one.
                 }
             }
         }
