@@ -155,7 +155,10 @@ class ReminderLocationSelectionViewController: ReminderLocationMonitoringViewCon
             case .searchCancelAction:
                 locationSearchBar.text = nil
                 locationSearchBar.endEditing(true)
-            
+                //Clears search results and show only current location.
+                listViewModels.removeAll()
+
+
             case .searchTextClearAction:
                 //Clears search results and show only current location.
                 listViewModels.removeAll()

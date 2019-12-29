@@ -57,7 +57,7 @@ class ReminderLocationMapViewController: ReminderLocationMonitoringViewControlle
     
     func addOverlayCircle() {
         
-        let circle: MKCircle = MKCircle.init(center: locationCoordinate, radius: 40.0)
+        let circle: MKCircle = MKCircle.init(center: locationCoordinate, radius: 50.0)
         mapView.addOverlay(circle)
     }
 
