@@ -69,7 +69,6 @@ class ReminderLocationListTableViewCell: UITableViewCell {
     
     
     @objc func infoButtonTapped(_ sender: UIButton) {
-        
         infoButtonTappedHandler?(indexPath)
     }
     

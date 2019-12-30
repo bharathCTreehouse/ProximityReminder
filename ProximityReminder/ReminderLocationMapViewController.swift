@@ -10,6 +10,11 @@ import UIKit
 import MapKit
 import CoreLocation
 
+enum ReminderLocationMapViewControllerDismissalMode {
+    case usingCloseButton
+    case defaultBackButton
+}
+
 
 class ReminderLocationMapViewController: ReminderLocationMonitoringViewController {
     
@@ -19,13 +24,15 @@ class ReminderLocationMapViewController: ReminderLocationMonitoringViewControlle
     private let locationCoordinate: CLLocationCoordinate2D
     private let locationName: String?
     private let locationAddress: String
+    private let dismissalMode: ReminderLocationMapViewControllerDismissalMode
     
     
-    init(withLocationCoordinate location: CLLocationCoordinate2D, nameOfLocation name: String? = nil, addressOfLocation address: String) {
+    init(withLocationCoordinate location: CLLocationCoordinate2D, nameOfLocation name: String? = nil, addressOfLocation address: String, modeOfDismissal mode: ReminderLocationMapViewControllerDismissalMode = .defaultBackButton) {
         
         locationCoordinate = location
         locationName = name
         locationAddress = address
+        dismissalMode = mode
         super.init(nibName: "ReminderLocationMapViewController", bundle: .main)
     }
     
@@ -40,6 +47,10 @@ class ReminderLocationMapViewController: ReminderLocationMonitoringViewControlle
         addressLabel.text = locationAddress
         loadLocationAndAnnotate()
         addOverlayCircle()
+        
+        if dismissalMode == .usingCloseButton {
+            navigationItem.leftBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .close, target: self, action: #selector(closeButtonTapped(_:)))
+        }
     }
     
     
@@ -59,6 +70,11 @@ class ReminderLocationMapViewController: ReminderLocationMonitoringViewControlle
         
         let circle: MKCircle = MKCircle.init(center: locationCoordinate, radius: 50.0)
         mapView.addOverlay(circle)
+    }
+    
+    
+    @objc func closeButtonTapped(_ sender: UIBarButtonItem) {
+        dismiss(animated: true, completion: nil)
     }
 
 

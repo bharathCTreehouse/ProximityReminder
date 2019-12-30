@@ -76,30 +76,55 @@ class ReminderDetailViewController: ReminderLocationMonitoringViewController {
         
         detailViewModel = ReminderDetailViewModel(withReminder: reminder)
         
-        reminderDetailTableView = ReminderDetailTableView(withDetailSource: detailViewModel, contentTextViewDelegate: self, activationActionDelegate: self, tapCompletion: { [unowned self] (tappedIndexPath: IndexPath) -> Void in
+        reminderDetailTableView = ReminderDetailTableView(withDetailSource: detailViewModel, contentTextViewDelegate: self, activationActionDelegate: self, tapCompletion: { [unowned self] (tappedIndexPath: IndexPath?, tapType: ReminderDetailTapType) -> Void in
             
-            let locationSelectionVC: ReminderLocationSelectionViewController = ReminderLocationSelectionViewController(withReminder: self.reminder)
-            
-            //Observe changes to reminder notifier type.
-            self.reminder.addObserver(self, forKeyPath: "notifierType", options: .new, context: nil)
-            
-            //Observe changes to reminder location.
-            self.reminder.addObserver(self, forKeyPath: "location", options: .new, context: nil)
-            
-            self.reminderObserversAdded = true
-            
-            self.navigationController?.pushViewController(locationSelectionVC, animated: true)
+            if tapType == .locationSelection {
+                
+                let locationSelectionVC: ReminderLocationSelectionViewController = ReminderLocationSelectionViewController(withReminder: self.reminder)
+                
+                //Observe changes to reminder notifier type.
+                self.reminder.addObserver(self, forKeyPath: "notifierType", options: .new, context: nil)
+                
+                //Observe changes to reminder location.
+                self.reminder.addObserver(self, forKeyPath: "location", options: .new, context: nil)
+                
+                self.reminderObserversAdded = true
+                
+                self.navigationController?.pushViewController(locationSelectionVC, animated: true)
+            }
+            else if tapType == .displayLocationOnMap {
+                
+                //Show the currently set location of the reminder on the map.
+                let lat: Double? = self.reminder.location?.latitude
+                let longi: Double? = self.reminder.location?.longitude
+                
+                if let lat = lat, let longi = longi {
+                    
+                    let mapVC: ReminderLocationMapViewController = ReminderLocationMapViewController(withLocationCoordinate: .init(latitude: lat, longitude: longi), nameOfLocation: self.reminder.location?.name, addressOfLocation: self.reminder.location?.address ?? "", modeOfDismissal: .usingCloseButton)
+                    let navController: UINavigationController = UINavigationController.init(rootViewController: mapVC)
+                    self.present(navController, animated: true, completion: nil)
+                }
+            }
         })
         
         view.addSubview(reminderDetailTableView)
         
         reminderDetailTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         reminderDetailTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        
         reminderDetailTableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         reminderDetailTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         
-        
+        handleLocationMapViewAppearance()
+    }
+    
+    
+    func handleLocationMapViewAppearance() {
+        if reminder.location == nil {
+            reminderDetailTableView.enableMapLocationView(false)
+        }
+        else {
+            reminderDetailTableView.enableMapLocationView(true)
+        }
     }
     
     
@@ -107,6 +132,7 @@ class ReminderDetailViewController: ReminderLocationMonitoringViewController {
         
         if keyPath == "location" || keyPath == "notifierType" {
             reminderDetailTableView.refreshLocationContent()
+            handleLocationMapViewAppearance()
         }
         else if keyPath == "isActivated" {
             //Activation switch toggled. No need to update location. Just refresh the appearance.
