@@ -27,7 +27,7 @@ enum ReminderLocationStatus {
 }
 
 
-protocol ReminderLocationManagerDelegate: class {
+protocol ReminderLocationManagerDelegate: AnyObject {
     func reactToLocationStatus(_ status: ReminderLocationStatus)
 }
 

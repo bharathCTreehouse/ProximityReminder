@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 
-protocol ReminderLocationListTableViewInfoButtonResponder: class {
+protocol ReminderLocationListTableViewInfoButtonResponder: AnyObject {
     func locationInfoButtonTapped(atIndexPath idxPath: IndexPath)
 }
 

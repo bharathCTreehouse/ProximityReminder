@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 
-protocol ReminderSwitchActionDelegate: class {
+protocol ReminderSwitchActionDelegate: AnyObject {
     func dualModeSwitchDidEndToggle(withCurrentState state: Bool)
 }
 

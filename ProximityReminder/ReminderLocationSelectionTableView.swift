@@ -18,7 +18,7 @@ enum ReminderLocationTapType {
 }
 
 
-protocol ReminderLocationSelectionResponder: class {
+protocol ReminderLocationSelectionResponder: AnyObject {
     
     func reactTo(tapType type: ReminderLocationTapType, atIndexPath idxPath: IndexPath)
 }
